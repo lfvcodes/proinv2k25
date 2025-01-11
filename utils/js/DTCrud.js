@@ -97,11 +97,11 @@ function setCrudControls(settings) {
       <div hidden class="m-auto my-1 py-1 row alert alert-secondary shadow-sm rounded-pill" id="options">
          <span id="dt-selected" class="col m-auto text-start"></span>
          <div id="dt-controls" class="col m-auto p-auto text-end">
-            <button type="button" onclick="view_${DTConfig.NameSection}()"
+            <button type="button" control="view" onclick="view_${DTConfig.NameSection}()"
                class="btn rounded-circle btn-primary controls">
                <i class="m-auto bi bi-eye text-white"></i>
             </button>
-            <button type="button" onclick="edit_${DTConfig.NameSection}()"
+            <button type="button" control="edit" onclick="edit_${DTConfig.NameSection}()"
                class="btn rounded-circle btn-primary controls">
                <i class="m-auto bi bi-pencil text-white"></i>
             </button>
@@ -109,7 +109,7 @@ function setCrudControls(settings) {
                class="btn rounded-circle btn-primary delete">
                <i class="m-auto bi bi-list-check text-white"></i>
             </button>
-            <button type="button" onclick="delete_${DTConfig.NameSection}()"
+            <button type="button" control="delete" onclick="delete_${DTConfig.NameSection}()"
                class="btn rounded-circle btn-danger delete">
                <i class="m-auto bi bi-trash text-white"></i>
             </button>

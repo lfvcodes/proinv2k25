@@ -29,6 +29,7 @@ export function loadCrud(instance, hideCols = []) {
       }
       
       element.prop('disabled', view ? true : false);
+      form.find(`input[name="${key}"]`).prop('disabled',view ? true : false);
     });
   }
 
@@ -215,4 +216,12 @@ export function loadCrud(instance, hideCols = []) {
     }
   });
 
+}
+
+export function crudAlterControls(controlEvents){
+  $(document).ready(function () {
+    $.each(controlEvents, function (control, trigger) { 
+       $(`#dt-controls button[control="${control}"]`).on(trigger.event,trigger.fn);  
+    });
+  });
 }
