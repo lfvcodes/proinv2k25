@@ -4,7 +4,7 @@ require_once(__DIR__ . "/../../connections/db.php");
 require_once __DIR__ . '/../../utils/php/utils.php';
 require_once __DIR__ . '/../api_header.php';
 
-if ($post['endpoint'] == 'getList') {
+if ($post['endpoint'] === 'getList') {
   $query = 'SELECT c.id_categoria AS id,c.nom_categoria AS nom
     FROM pro_1categoria c
    WHERE c.activo = ? ORDER BY c.nom_categoria ASC';
@@ -13,7 +13,7 @@ if ($post['endpoint'] == 'getList') {
   resultResponse($rs, 'all');
 }
 
-if ($post['endpoint'] == 'add') {
+if ($post['endpoint'] === 'add') {
 
   $query = "INSERT INTO pro_1categoria VALUES (?,?)";
   $params = [
@@ -30,7 +30,7 @@ if ($post['endpoint'] == 'add') {
   endif;
 }
 
-if ($post['endpoint'] == 'update') {
+if ($post['endpoint'] === 'update') {
   $query = "UPDATE pro_1categoria SET id_categoria = ?,nom_categoria = ? WHERE id_categoria = ?";
 
   $params = [
@@ -47,7 +47,7 @@ if ($post['endpoint'] == 'update') {
   endif;
 }
 
-if ($post['endpoint'] == 'delete') {
+if ($post['endpoint'] === 'delete') {
   $query = "DELETE FROM pro_1categoria WHERE id_categoria IN ";
   $delItems = implode("','", $post['list']);
   $query .= "('{$delItems}')";
@@ -59,4 +59,10 @@ if ($post['endpoint'] == 'delete') {
   else:
     responseJSON(['status' => 200, 'message' => 'Categoria(as) Borrada(s) Correctamente']);
   endif;
+}
+
+if ($post['endpoint'] === 'getListOptionCat') {
+  $query = 'SELECT id_categoria AS id,nom_categoria AS text FROM pro_1categoria WHERE ? ORDER BY nom_categoria ASC';
+  $rs = prepareRS($conexion, $query, [1]);
+  resultResponse($rs, 'all');
 }

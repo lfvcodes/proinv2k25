@@ -114,7 +114,7 @@ export function loadCrud(instance, hideCols = []) {
         response(`${instance}/`, { endpoint: 'delete', list: deleteElements })
           .then(data => {
             refreshTable();
-            crudAlert(`Borrar ${instance}(es)`, data.message, 'success');
+            crudAlert(`Borrar Registro(s) de ${instance}`, data.message, 'success');
           }).catch(error => {
             const msgError = (error.responseJSON && error.responseJSON.message) || 'Error desconocido';
             crudAlert(`Error al Borrar  ${instance}`, `${msgError}`, 'danger');

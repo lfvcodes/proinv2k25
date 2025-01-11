@@ -21,8 +21,8 @@ importModals();
         <i class="menu-icon tf-icons bi bi-boxes me-1"></i>Inventario
       </h5>
       <div class="col text-end">
-        <button type="button" class="btn btn-primary btn-md" data-bs-toggle="modal" data-bs-target="#mdl-product">
-          <i class="bx bx-plus-circle"></i>Agregar Articulo
+        <button type="button" class="btn btn-primary btn-md" data-bs-toggle="modal" data-bs-target="#mdl-inventario">
+          <i class="bx bx-plus-circle"></i>Agregar
         </button>
       </div>
     </div>
@@ -32,19 +32,19 @@ importModals();
     <table id="tbl-inventario" class="table table-striped table-hover display nowrap">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Código</th>
-          <th>CAlterno</th>
-          <th>Producto</th>
-          <th>U.M</th>
-          <th>Stock</th>
-          <th>P.Costo</th>
-          <th>P.Venta</th>
-          <th>S.Minimo</th>
-          <th>S.Maximo</th>
-          <th>Categoria</th>
-          <th>U.B%</th>
-          <th>Acción</th>
+          <th title="Codigo de Sistema">ID</th>
+          <th hidden>COD</th>
+          <th title="Codigo Alternativo">Cód Alterno</th>
+          <th title="Nombre de Producto">Producto</th>
+          <th title="Existencia">Stock</th>
+          <th title="Precio de Costo">P.Costo</th>
+          <th title="Precio de Venta">P.Venta</th>
+          <th title="Utilidad Bruta">U.B%</th>
+          <th hidden>Descripcion</th>
+          <th hidden>Categoria</th>
+          <th hidden>S.Minimo</th>
+          <th hidden>S.Maximo</th>
+          <th hidden>U.M</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
