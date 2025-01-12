@@ -1,0 +1,707 @@
+/* Fonts */
+@font-face {
+  font-family: "Roboto";
+  font-weight: 300;
+  src: url("../fonts/Montserrat-Normal.ttf");
+  /* IE9 Compat Modes */
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-weight: 400;
+  src: url("../fonts/Montserrat-Normal.ttf");
+}
+
+/* Typography */
+body {
+  font-size: 1rem;
+  font-weight: normal;
+  font-weight: initial;
+  line-height: 1.5;
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-weight: 500;
+}
+
+p {
+  font-size: 0.875rem;
+}
+
+h1,
+.h1,
+.h1 {
+  font-size: 2.19rem;
+}
+
+h2,
+.h2,
+.h2 {
+  font-size: 1.875rem;
+}
+
+h3,
+.h3,
+.h3 {
+  font-size: 1.5rem;
+}
+
+h4,
+.h4,
+.h4 {
+  font-size: 1.125rem;
+}
+
+h5,
+.h5,
+.h5 {
+  font-size: 1rem;
+}
+
+h6,
+.h6,
+.h6 {
+  font-size: 0.9375rem;
+}
+
+p {
+  font-size: 0.875rem;
+}
+
+.display-1 {
+  font-size: 3.75rem;
+}
+@media (max-width: 991px) {
+  .display-1 {
+    font-size: 3rem;
+  }
+}
+
+.display-2 {
+  font-size: 3.125rem;
+}
+@media (max-width: 991px) {
+  .display-2 {
+    font-size: 2.5rem;
+  }
+}
+
+.display-3 {
+  font-size: 2.5rem;
+}
+@media (max-width: 991px) {
+  .display-3 {
+    font-size: 2rem;
+  }
+}
+
+.display-4 {
+  font-size: 1.875rem;
+}
+@media (max-width: 991px) {
+  .display-4 {
+    font-size: 1.5rem;
+  }
+}
+
+.display-5 {
+  font-size: 1.25rem;
+}
+@media (max-width: 991px) {
+  .display-5 {
+    font-size: 1rem;
+  }
+}
+
+.blockquote {
+  padding: 1.25rem;
+  border: 1px solid #2c2e33;
+}
+
+address p {
+  margin-bottom: 0;
+}
+
+.blockquote-primary {
+  border-color: var(--bs-primary);
+}
+.blockquote-primary .blockquote-footer {
+  color: var(--bs-primary);
+}
+
+.blockquote-secondary {
+  border-color: #e4eaec;
+}
+.blockquote-secondary .blockquote-footer {
+  color: #e4eaec;
+}
+
+.blockquote-success {
+  border-color: #00d25b;
+}
+.blockquote-success .blockquote-footer {
+  color: #00d25b;
+}
+
+.blockquote-info {
+  border-color: #8f5fe8;
+}
+.blockquote-info .blockquote-footer {
+  color: #8f5fe8;
+}
+
+.blockquote-warning {
+  border-color: #ffab00;
+}
+.blockquote-warning .blockquote-footer {
+  color: #ffab00;
+}
+
+.blockquote-danger {
+  border-color: #fc424a;
+}
+.blockquote-danger .blockquote-footer {
+  color: #fc424a;
+}
+
+.blockquote-light {
+  border-color: #ffffff;
+}
+.blockquote-light .blockquote-footer {
+  color: #ffffff;
+}
+
+.blockquote-dark {
+  border-color: #0d0d0d;
+}
+.blockquote-dark .blockquote-footer {
+  color: #0d0d0d;
+}
+
+.error-page h1,
+.error-page .h1 {
+  font-size: 12rem;
+}
+@media (max-width: 991px) {
+  .error-page h1,
+  .error-page .h1 {
+    font-size: 8rem;
+  }
+}
+
+.icon-lg {
+  font-size: 3.75rem;
+}
+
+.icon-md {
+  font-size: 1.875rem;
+}
+
+.icon-sm {
+  font-size: 1rem;
+}
+
+/* Miscellanoeous */
+body,
+html {
+  overflow-x: hidden;
+  padding-right: 0 !important;
+  background-color: #f9fafb;
+}
+
+*:-moz-full-screen,
+*:-webkit-full-screen,
+*:fullscreen *:-ms-fullscreen {
+  overflow: auto;
+}
+
+.container-scroller {
+  overflow: hidden;
+}
+
+pre {
+  background: color(gray-lighter);
+  padding: 15px;
+  font-size: 14px;
+}
+
+code {
+  padding: 5px;
+  color: #fc424a;
+  font-weight: 300;
+  font-size: 0.875rem;
+  border-radius: 4px;
+}
+
+.page-header {
+  margin: 0 0 1.5rem 0;
+}
+.page-header .breadcrumb {
+  border: 0;
+  margin-bottom: 0;
+}
+
+.page-title {
+  color: #ffffff;
+  font-size: 1.125rem;
+  margin-bottom: 0;
+}
+.page-title .page-title-icon {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  text-align: center;
+  box-shadow: 0px 3px 8.3px 0.7px rgba(163, 93, 255, 0.35);
+}
+.page-title .page-title-icon i {
+  font-size: 0.9375rem;
+  line-height: 36px;
+}
+
+/* Utilities */
+.grid-margin {
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 576px) {
+  .grid-margin-sm-0 {
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .grid-margin-md-0 {
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 992px) {
+  .grid-margin-lg-0 {
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid-margin-xl-0 {
+    margin-bottom: 0;
+  }
+}
+
+.img-lg {
+  width: 92px;
+  height: 92px;
+}
+
+.img-sm {
+  width: 43px;
+  height: 43px;
+}
+
+.img-xs {
+  width: 35px;
+  height: 35px;
+}
+
+.img-ss {
+  width: 26px;
+  height: 26px;
+}
+
+.stretch-card {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: stretch;
+  align-items: stretch;
+  -webkit-justify-content: stretch;
+  justify-content: stretch;
+}
+.stretch-card > .card {
+  width: 100%;
+  min-width: 100%;
+}
+
+@media (min-width: 576px) {
+  .border-right-sm {
+    border-right: 1px solid #2c2e33;
+  }
+}
+
+@media (min-width: 768px) {
+  .border-right-md {
+    border-right: 1px solid #2c2e33;
+  }
+}
+
+@media (min-width: 992px) {
+  .border-right-lg {
+    border-right: 1px solid #2c2e33;
+  }
+}
+
+@media (min-width: 576px) {
+  .border-left-sm {
+    border-left: 1px solid #2c2e33;
+  }
+}
+
+@media (min-width: 768px) {
+  .border-left-md {
+    border-left: 1px solid #2c2e33;
+  }
+}
+
+@media (min-width: 992px) {
+  .border-left-lg {
+    border-left: 1px solid #2c2e33;
+  }
+}
+
+.text-gray,
+.card .card-subtitle {
+  color: #8c8c8c;
+}
+
+.text-black {
+  color: #000000;
+}
+
+.text-small {
+  font-size: 12px;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.font-weight-light {
+  font-weight: 300;
+}
+
+.font-weight-medium {
+  font-weight: 500;
+}
+
+.font-weight-bold {
+  font-weight: 700;
+}
+
+.font-weight-normal {
+  font-weight: normal;
+}
+
+.bg-gray-dark {
+  background: color(gray-dark);
+}
+
+/* Backgrounds  */
+.bg-gradient-primary {
+  background: theme-color(primary);
+}
+
+.bg-gradient-secondary {
+  background: theme-color(secondary);
+}
+
+.bg-gradient-success {
+  background: theme-color(success);
+}
+
+.bg-gradient-info {
+  background: theme-color(info);
+}
+
+.bg-gradient-warning {
+  background: theme-color(warning);
+}
+
+.bg-gradient-danger {
+  background: theme-color(danger);
+}
+
+.bg-gradient-light {
+  background: theme-color(light);
+}
+
+.bg-gradient-dark {
+  background: theme-color(dark);
+}
+
+.sidebar-grdient-dark {
+  background: #6a008a;
+  background: -moz-linear-gradient(top, #6a008a 0%, #6a008a 20%, #fa0053 100%);
+  background: -webkit-gradient(
+    left top,
+    left bottom,
+    color-stop(0%, #6a008a),
+    color-stop(20%, #6a008a),
+    color-stop(100%, #fa0053)
+  );
+  background: -webkit-linear-gradient(
+    top,
+    #6a008a 0%,
+    #6a008a 20%,
+    #fa0053 100%
+  );
+  background: -o-linear-gradient(top, #6a008a 0%, #6a008a 20%, #fa0053 100%);
+  background: -ms-linear-gradient(top, #6a008a 0%, #6a008a 20%, #fa0053 100%);
+  background: linear-gradient(to bottom, #6a008a 0%, #6a008a 20%, #fa0053 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6a008a', endColorstr='#fa0053', GradientType=0 );
+  color: #ffffff;
+}
+
+/*-------------------------------------------------------------------*/
+/* === Core Styles === */
+/* Reset Styles */
+body {
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.form-control,
+.asColorPicker-input,
+.dataTables_wrapper select,
+.jsgrid .jsgrid-table .jsgrid-filter-row input[type="text"],
+.jsgrid .jsgrid-table .jsgrid-filter-row select,
+.jsgrid .jsgrid-table .jsgrid-filter-row input[type="number"],
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--single .select2-search__field,
+.typeahead,
+.tt-query,
+.tt-hint,
+.form-control:focus,
+.asColorPicker-input:focus,
+.dataTables_wrapper select:focus,
+.jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type="text"],
+.jsgrid .jsgrid-table .jsgrid-filter-row select:focus,
+.jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type="number"],
+.select2-container--default .select2-selection--single:focus,
+.select2-container--default
+  .select2-selection--single
+  .select2-search__field:focus,
+.typeahead:focus,
+.tt-query:focus,
+.tt-hint:focus {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+}
+
+.form-control,
+.asColorPicker-input,
+.dataTables_wrapper select,
+.jsgrid .jsgrid-table .jsgrid-filter-row input[type="text"],
+.jsgrid .jsgrid-table .jsgrid-filter-row select,
+.jsgrid .jsgrid-table .jsgrid-filter-row input[type="number"],
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--single .select2-search__field,
+.typeahead,
+.tt-query,
+.tt-hint {
+  box-shadow: none;
+}
+
+.form-control:focus,
+.asColorPicker-input:focus,
+.dataTables_wrapper select:focus,
+.jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type="text"],
+.jsgrid .jsgrid-table .jsgrid-filter-row select:focus,
+.jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type="number"],
+.select2-container--default .select2-selection--single:focus,
+.select2-container--default
+  .select2-selection--single
+  .select2-search__field:focus,
+.typeahead:focus,
+.tt-query:focus,
+.tt-hint:focus {
+  outline: 0;
+  box-shadow: none;
+  background: #191c20;
+  border: none;
+}
+
+a,
+div,
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+p,
+span {
+  text-shadow: none;
+}
+
+[type="button"]:focus,
+a:active,
+a:focus,
+a:visited,
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+input[type="file"] > input[type="button"]::-moz-focus-inner,
+select::-moz-focus-inner {
+  outline: 0;
+}
+
+input,
+.form-control:focus,
+.asColorPicker-input:focus,
+.dataTables_wrapper select:focus,
+.jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type="text"],
+.jsgrid .jsgrid-table .jsgrid-filter-row select:focus,
+.jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type="number"],
+.select2-container--default .select2-selection--single:focus,
+.select2-container--default
+  .select2-selection--single
+  .select2-search__field:focus,
+.typeahead:focus,
+.tt-query:focus,
+.tt-hint:focus,
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+  outline-width: 0;
+  outline-color: transparent;
+  box-shadow: none;
+  outline-style: none;
+}
+
+textarea {
+  resize: none;
+  overflow-x: hidden;
+}
+
+.btn,
+.fc button,
+.ajax-upload-dragdrop .ajax-file-upload,
+.swal2-modal .swal2-buttonswrapper .swal2-styled,
+.swal2-modal .swal2-buttonswrapper .swal2-styled.swal2-confirm,
+.swal2-modal .swal2-buttonswrapper .swal2-styled.swal2-cancel,
+.btn-group.open .dropdown-toggle,
+.fc .open.fc-button-group .dropdown-toggle,
+.btn:active,
+.fc button:active,
+.ajax-upload-dragdrop .ajax-file-upload:active,
+.swal2-modal .swal2-buttonswrapper .swal2-styled:active,
+.btn:focus,
+.fc button:focus,
+.ajax-upload-dragdrop .ajax-file-upload:focus,
+.swal2-modal .swal2-buttonswrapper .swal2-styled:focus,
+.btn:hover,
+.fc button:hover,
+.ajax-upload-dragdrop .ajax-file-upload:hover,
+.swal2-modal .swal2-buttonswrapper .swal2-styled:hover,
+.btn:visited,
+.fc button:visited,
+.ajax-upload-dragdrop .ajax-file-upload:visited,
+.swal2-modal .swal2-buttonswrapper .swal2-styled:visited,
+a,
+a:active,
+a:checked,
+a:focus,
+a:hover,
+a:visited,
+body,
+button,
+button:active,
+button:hover,
+button:visited,
+div,
+input,
+input:active,
+input:focus,
+input:hover,
+input:visited,
+select,
+select:active,
+select:focus,
+select:visited,
+textarea,
+textarea:active,
+textarea:focus,
+textarea:hover,
+textarea:visited {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.btn.active.focus,
+.fc button.active.focus,
+.ajax-upload-dragdrop .active.focus.ajax-file-upload,
+.swal2-modal .swal2-buttonswrapper .active.focus.swal2-styled,
+.btn.active:focus,
+.fc button.active:focus,
+.ajax-upload-dragdrop .active.ajax-file-upload:focus,
+.swal2-modal .swal2-buttonswrapper .active.swal2-styled:focus,
+.btn.focus,
+.fc button.focus,
+.ajax-upload-dragdrop .focus.ajax-file-upload,
+.swal2-modal .swal2-buttonswrapper .focus.swal2-styled,
+.btn:active.focus,
+.fc button:active.focus,
+.ajax-upload-dragdrop .ajax-file-upload:active.focus,
+.swal2-modal .swal2-buttonswrapper .swal2-styled:active.focus,
+.btn:active:focus,
+.fc button:active:focus,
+.ajax-upload-dragdrop .ajax-file-upload:active:focus,
+.swal2-modal .swal2-buttonswrapper .swal2-styled:active:focus,
+.btn:focus,
+.fc button:focus,
+.ajax-upload-dragdrop .ajax-file-upload:focus,
+.swal2-modal .swal2-buttonswrapper .swal2-styled:focus,
+button,
+button:active,
+button:checked,
+button:focus,
+button:hover,
+button:visited {
+  outline: 0;
+  outline-offset: 0;
+}
+
+.bootstrap-select .dropdown-toggle:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+
+.dropdown-menu > li > a:active,
+.dropdown-menu > li > a:focus,
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:visited {
+  outline: 0;
+}
+
+a:focus,
+input:focus {
+  border-color: transparent;
+  outline: none;
+}

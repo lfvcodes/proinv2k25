@@ -26,7 +26,7 @@
         <li class="nav-item">
           <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
             data-toggle="offcanvas">
-            <span class="bi bi-toggles text-light"></span>
+            <span class="bx bx-menu text-light"></span>
           </button>
         </li>
         <li class="nav-item nav-settings d-flex">
