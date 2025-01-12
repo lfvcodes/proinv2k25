@@ -62,7 +62,7 @@
 /* === Import Bootstrap functions and variables === */
 
 @import "bslight.css";
-
+@import url("./core.css");
 /*-------------------------------------------------------------------*/
 /* === Template mixins === */
 /* Miscellaneous Mixins */
@@ -146,8 +146,7 @@
   animation-name: fadeInUp;
 }
 
-@import url("./core.css");
-@import url("./demol.css");
+/*@import url("./demol.css");*/
 /*-------------------------------------------------------------------*/
 /* === Components === */
 /* Badges */
