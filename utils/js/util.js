@@ -83,7 +83,6 @@ export var DTConfig = {
 export var SAConfig = {
   title: '¿Está Seguro(a) de Confirmar esta Operación?',
   text: '',
-  type: 'question',
   icon: 'question',
   showCancelButton: true,
   confirmButtonColor: '#1D7CA1',

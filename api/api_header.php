@@ -25,6 +25,7 @@ $query = null;
 
 function resultResponse($rs, $type)
 {
+
    if ($type == 'single'):
       $dataResponse = $rs->fetch();
    else:

@@ -44,10 +44,8 @@
    <?php if ($title == 'Inventario'): ?>
       <script src="<?= APP_PATH; ?>libraries/js/barcode/barcode.all.min.js"></script>
    <?php endif; ?>
-
-   <script src="<?= APP_PATH; ?>libraries/js/sweetalert2/sweetalert2.all.min.js"></script>
 <?php endif; ?>
-
+<script src="<?= APP_PATH; ?>libraries/js/sweetalert2/sweetalert2.all.min.js"></script>
 <script type="module" src="./index.js?r=<?= substr(rand(), 0, 4); ?>"></script>
 
 </body>

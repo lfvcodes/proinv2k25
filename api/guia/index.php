@@ -22,7 +22,6 @@ if ($post['endpoint'] == 'getListOptionDetail') {
 
 if ($post['endpoint'] == 'add') {
 
-
   $end = sizeof($post['vent']);
 
   $ext_query = 'INSERT INTO pro_2guia (id_guia,fecha_guia,id_conductor,id_vehiculo,log_user) VALUES (?,?,?,?,?)';

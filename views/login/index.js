@@ -12,7 +12,7 @@ $(document).ready(function () {
         changeLocation('inicio/');
       }).catch(error => {
         const msgError = (error.responseJSON && error.responseJSON.message) || 'Error desconocido';
-        alert('ERROR: ' + msgError);
+        Swal.fire('ERROR',msgError,'error');
       })
   });
 

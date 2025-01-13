@@ -34,7 +34,7 @@ require_once __DIR__ . '/../utils/php/importmap.php';
   <?php if ($title !== 'Login' || $title !== 'Inicio'): ?>
 
     <link rel="stylesheet"
-      href="<?= APP_PATH; ?>libraries/js/dataTables/dataTables.dataTables.min.css" />
+      href="<?= APP_PATH; ?>libraries/js/dataTables/dataTables.min.css" />
 
     <link rel="stylesheet"
       href="<?= APP_PATH; ?>libraries/js/dataTables/dataTables.bootstrap5.min.css" />
@@ -50,8 +50,6 @@ require_once __DIR__ . '/../utils/php/importmap.php';
       href="<?= APP_PATH; ?>libraries/js/select2/select2.b5theme.css" />
   <?php endif; ?>
 
-  <link rel="stylesheet"
-    href="<?= APP_PATH; ?>libraries/js/sweetalert2/sweetalert2.min.css" />
   <title>ProInv | <?= $title ?></title>
   <?php
   $jsFolder = __DIR__ . '/../utils/js/';

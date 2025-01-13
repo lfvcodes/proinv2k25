@@ -1,38 +1,3 @@
-<fieldset id="mdl-cxp" title="Registrar Cuenta de pago">
-  <div style="max-height: calc(100vh - 200px); overflow-y: auto;" class="modal-body">
-
-    <div class="row mb-3">
-      <div class="col input-group">
-        <label class="input-group-text" for="prov">Proveedor</label>
-        <select required class="form-select prov" name="prov" id="prov">
-          <option value="">Seleccionar uno</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <div class="col input-group">
-        <label class="input-group-text" for="monto">Monto a Pagar </label>
-        <input class="form-control" placeholder="$" required step="0.01" type="number" name="monto" id="monto">
-      </div>
-
-      <div class="col input-group">
-        <label class="input-group-text" for="vence">Fecha de Vencimiento</label>
-        <input class="form-control" required type="date" name="vence" id="vence">
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <div class="col input-group">
-        <label class="input-group-text" for="concepto">Concepto / Descripción</label>
-        <input placeholder="Describa el concepto de pago a proveedor"
-          class="form-control" required type="text" maxlength="350" name="concepto" id="concepto">
-      </div>
-    </div>
-    <input type="hidden" value="setCuenta" name="endpoint">
-  </div>
-</fieldset>
-
 <fieldset id="mdl-compra" title="Registrar Compra">
 
   <div class="row mb-3">
