@@ -35,39 +35,39 @@ if ($post['endpoint'] === 'revertCxpSolvent') {
 }
 
 if ($post['endpoint'] === 'setAbono') {
-  responseJSON(['status' => 200, 'message' => $post]);
-  $params = $values = [];
-  $query = 'INSERT INTO pro_3dcxp_abono (id_cxp,fecha_abono,monto_abono,concepto_abono) VALUES ';
-  $tventa = 0;
-  $end = sizeof($post['monto']);
-  if ($end > 0):
-    for ($i = 0; $i < $end; $i++) {
-      $values[] = '(?,?,?,?)';
-      $params[] = $post['id'];
-      $params[] = $post['fec'][$i];
-      $params[] = $post['monto'][$i];
-      $params[] = $post['concepto'][$i];
-    }
-    $valuesString = implode(',', $values);
-    $query .= $valuesString;
-    if (!prepareRS($conexion, $query, $params)):
-      $error = $_SESSION['error'];
-      unset($_SESSION['error']);
-      responseJSON(['status' => 400, 'error' => $error]);
-    else:
-      responseJSON(['status' => 200, 'message' => "Cuenta por Pagar Actualizada Correctamente"]);
-    endif;
 
+  $query = 'DELETE FROM pro_3dcxp_abono WHERE id_cxp = ?';
+  if (!prepareRS($conexion, $query, [$post['id']])):
+    $error = $_SESSION['error'];
+    unset($_SESSION['error']);
+    responseJSON(['status' => 400, 'error' => $error]);
   else:
-    $query = 'DELETE FROM pro_3dcxp_abono WHERE id_cxp = ?';
-    if (!prepareRS($conexion, $query, [$post['id']])):
-      $error = $_SESSION['error'];
-      unset($_SESSION['error']);
-      responseJSON(['status' => 400, 'error' => $error]);
-    else:
-      responseJSON(['status' => 200, 'message' => "Abonos de Cuentas por Pagar Borrado(s) Correctamente"]);
-    #setBitacora('CXP','BORRAR CXP',$params,$_SESSION['pro']['usr']['user']);
-    endif;
+
+    $params = $values = [];
+    $query = 'REPLACE INTO pro_3dcxp_abono (id_abono,id_cxp,fecha_abono,monto_abono,concepto_abono) VALUES ';
+    $end = sizeof($post['monto[]']);
+    if ($end > 0 && !is_null($post['monto[]'])) {
+      for ($i = 0; $i < $end; $i++) {
+        $values[] = '(?,?,?,?,?)';
+        $params[] = ($i + 1);
+        $params[] = $post['id'];
+        $params[] = ($end == 1) ? $post['fec[]'] : $post['fec[]'][$i];
+        $params[] = ($end == 1) ? $post['monto[]'] : $post['monto[]'][$i];
+        $params[] = ($end == 1) ? $post['concepto[]'] : $post['concepto[]'][$i];
+      }
+      $valuesString = implode(',', $values);
+      $query .= $valuesString;
+
+      if (!prepareRS($conexion, $query, $params)):
+        $error = $_SESSION['error'];
+        unset($_SESSION['error']);
+        responseJSON(['status' => 400, 'error' => $error]);
+      else:
+        responseJSON(['status' => 200, 'message' => "Cuenta por Pagar Actualizada Correctamente"]);
+      endif;
+    } else {
+      responseJSON(['status' => 200, 'message' => "Abono(s) de Cuenta(s) por Pagar Borrado(s) Correctamente"]);
+    }
   endif;
 }
 

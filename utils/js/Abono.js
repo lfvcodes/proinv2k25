@@ -1,9 +1,10 @@
-import { response, SAConfig } from "@util";
+import { prepareFormData, response, SAConfig } from "@util";
 
 function saveAbono(instance, $data) {
   let total_abono = 0;
   let title = instance == "cxp" ? "Cuenta por Pagar" : "Cuenta por Cobrar";
   let closeCall = false;
+
   $("#tbl-abono tbody tr").each(function () {
     if ($(this).find("td:eq(1) .monto").val() < 0) {
       Swal.fire("No pueden haber abonos con valores negativos", "", "error");
@@ -36,17 +37,24 @@ function saveAbono(instance, $data) {
     return false;
   }
 
-  SAConfig.title = `¿Está seguro(a) de Agregar/Actualizar Abono de ${title}?`;
+  SAConfig.title = `¿Está seguro(a) de Actualizar Abono de ${title}?`;
 
   Swal.fire(SAConfig).then((result) => {
     if (result.value == true) {
-      let $frmabono = $("#form-abono")[0];
-      let frmData = new FormData($frmabono);
-      frmData.append("endpoint", "setAbono");
-      frmData.append("mdeuda", $data["monto"]);
-      frmData.append("id", $data["cod"]);
-      console.log(frmData);
-      response(`${instance}/`, frmData);
+      let $frm = $("#form-abono");
+      let frmData = prepareFormData($frm);
+      frmData.endpoint = "setAbono";
+      frmData.mdeuda = $data["monto"];
+      frmData.id = $data["cod"];
+      response(`${instance}/`, frmData).then((answer) => {
+        if (answer.status == 200) {
+          Swal.fire(answer.message, "", "success").then(() => {
+            $("#mdl-abono").modal("hide");
+          });
+        } else {
+          Swal.fire(answer.error, "", "error");
+        }
+      });
     } else return false;
   });
 }
@@ -99,7 +107,7 @@ export function loadAbono(btn, instance) {
   let $lblTotal = `<label class="fw-bold" id="totalabono"></label>`;
   let $lblCount = `<label class="fw-bold me-2" id="countabono"></label>`;
   const $btnSaveAbono = $("#mdl-abono .modal-footer .btn-primary");
-  const $frm = `<form id="form-abono" method="POST"></form>`;
+  const $frm = `<form action="#" id="form-abono" enctype="multipart/form-data" method="POST"></form>`;
 
   $("#mdl-abono .modal-footer").prepend([$lblCount, $lblTotal]);
   $("#mdl-abono .modal-title").text($lblTitle);
@@ -115,7 +123,7 @@ export function loadAbono(btn, instance) {
   $("#mdl-abono").on("hide.bs.modal", () => {
     $("#totalabono,#countabono").remove();
     $btnSaveAbono.unbind("click");
-    $frm.unwrap();
+    $("#mdl-abono #form-contained").unwrap();
   });
 
   $("#mdl-abono").modal("show");
