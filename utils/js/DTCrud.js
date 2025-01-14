@@ -80,13 +80,16 @@ window.unselectAllRows = function () {
   tbl.draw();
 };
 
-export function refreshTable() {
+export function refreshTable(callBack) {
+  callBack = callBack || null;
   response(`${DTConfig.NameSection}/`, { endpoint: "getList" })
     .then((data) => {
       var table = $(`#tbl-${DTConfig.NameSection}`);
       var jsonTable = data.result;
       table.DataTable().clear();
       table.DataTable().rows.add(jsonTable).draw();
+      $("#options").hide();
+      callBack();
     })
     .catch((error) => {
       const msgError =
