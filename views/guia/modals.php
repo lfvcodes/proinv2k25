@@ -39,7 +39,8 @@
         <th width="15%">#Items</th>
         <th width="20%">Monto</th>
         <th width="5%">
-          <button onclick="add();" class="btn btn-sm rounded-pill btn-primary" type="button" id="agregarFila"> +
+          <button onclick="add();" class="btn btn-sm rounded-pill p-2 btn-primary" type="button" id="agregarFila">
+            <i class="bi bi-plus-circle m-0"></i>
           </button>
         </th>
       </thead>
@@ -50,7 +51,11 @@
           </td>
           <td><input readonly class="form-control cant" min="1" step="1" type="number"></td>
           <td><input readonly class="form-control monto" min="0.01" step="0.01" type="number"></td>
-          <td><button onclick="remove(this);" type="button" class="btn btn-sm rounded-pill btn-danger">-</button></td>
+          <td>
+            <button onclick="remove(this);" type="button" class="btn btn-sm rounded-pill p-2 btn-danger">
+              <i class="bi bi-dash-circle m-0"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>

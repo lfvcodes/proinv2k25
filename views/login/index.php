@@ -49,7 +49,7 @@ require_once __DIR__ . '/../../includes/head.php';
                 </div>
               </div>
               <div class="mb-3">
-                <button id="btn-log" class="btn btn-primary d-grid w-100" type="submit">Iniciar Sesión</button>
+                <button id="btn-log" class="btn btn-primary rounded-pill p-2 d-grid w-100" type="submit">Iniciar Sesión</button>
               </div>
             </form>
             <p align="justify">

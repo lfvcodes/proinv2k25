@@ -19,11 +19,11 @@ if ($post['endpoint'] === 'enter') {
       unset($userData['psw']);
       $cookie = generateToken($userData);
       #setBitacora('LOGIN', "INICIAR SESION", array(), $row['log_user']);
-      responseJSON(['status' => 200, 'msg' => 'OK']);
+      responseJSON(['status' => 200, 'message' => 'OK']);
     } else {
-      responseJSON(['status' => 400, 'error' => 'Datos Incorrectos']);
+      responseJSON(['status' => 400, 'message' => 'Datos Incorrectos']);
     }
   } else {
-    responseJSON(['status' => 400, 'error' => 'Datos Incorrectos']);
+    responseJSON(['status' => 400, 'message' => 'Datos Incorrectos']);
   }
 }
