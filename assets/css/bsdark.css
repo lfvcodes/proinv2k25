@@ -1798,8 +1798,8 @@ progress {
   --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
   --bs-table-active-color: #212529;
   --bs-table-active-bg: rgba(0, 0, 0, 0.1);
-  /*--bs-table-hover-color: #212529;*/
-  --bs-table-hover-bg: #000000;
+  --bs-table-hover-color: #ffffff;
+  --bs-table-hover-bg: #212529;
   width: 100%;
   margin-bottom: 1rem;
   color: #ffffff;
@@ -1861,7 +1861,8 @@ progress {
 
 .table-hover > tbody > tr:hover > * {
   --bs-table-accent-bg: var(--bs-table-hover-bg);
-  color: var(--bs-table-hover-color);
+  background: var(--bs-table-hover-bg) !important;
+  color: var(--bs-table-hover-color) !important;
 }
 
 .table-primary {

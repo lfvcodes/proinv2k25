@@ -211,6 +211,16 @@ div.dt-container .dt-paging .dt-paging-button {
   }
 }
 
+.table tbody tr:hover:not(.selected) > * {
+  color: var(--bs-primary) !important;
+  font-weight: bold !important;
+  cursor: pointer;
+}
+
+body.theme-dark .table tbody tr:hover:not(.selected) > * {
+  color: #1d7ca1 !important;
+}
+
 .content-wrapper {
   background: var(--bs-content-wrapper);
   padding: 0.36rem;

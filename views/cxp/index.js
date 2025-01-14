@@ -90,13 +90,24 @@ loadComponents();
 loadCrud("cxp", ["cod", "idp", "fechac", "fecha"]);
 
 $(document).ready(function () {
-  $(".dt-buttons").removeClass("offset-3 offset-lg-5");
   let $btnCxpConfirmed = `<button class="btn btn-outline-primary ms-2 rounded-pill" 
     onclick="loadCxpConfirmed()" type="button">
     <span><i class="bi bi-check text-success me-1"></i>Ver cuentas Confirmadas</span>
   </button>`;
 
   $(".dt-buttons").append($btnCxpConfirmed);
+
+  $("#tbl-cxp tbody tr").each(function () {
+    var estadoCell = $(this).find("td:last");
+
+    if (estadoCell.text() === "V") {
+      estadoCell.html('<span class="badge bg-danger">Vencida</span>');
+    } else if (estadoCell.text() === "P") {
+      estadoCell.html(
+        '<span class="badge bg-warning text-dark">Pendiente</span>'
+      );
+    }
+  });
 
   alterCxpControl();
 });
