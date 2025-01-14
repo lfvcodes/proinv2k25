@@ -1,12 +1,14 @@
-import { loadComponents,response,empty,SAConfig } from '@util';
-import { loadCrud } from '@StartCrud';
-import {refreshTable} from '@DTCrud';
+import { loadComponents, response, empty, SAConfig } from "@util";
+import { loadCrud } from "@StartCrud";
+import { refreshTable } from "@DTCrud";
+import { addAbono, removeAbono, loadAbono } from "@Abono";
 
-window.loadCxpConfirmed = function(){
-  response('cxp/',{endpoint:'getCxpSolvent'}).then(data => {
-    let table = $('#tbl-solv').find('tbody');
-    data.result.forEach(element => {
-      let comprobante = (empty(element.nota) == false) ? 'N'+element.nota : 'F'+element.fact;
+window.loadCxpConfirmed = function () {
+  response("cxp/", { endpoint: "getCxpSolvent" }).then((data) => {
+    let table = $("#tbl-solv").find("tbody");
+    data.result.forEach((element) => {
+      let comprobante =
+        empty(element.nota) == false ? "N" + element.nota : "F" + element.fact;
       table.append(`<tr vt="${element.compra}">
         <td>${comprobante}</td>
         <td>${element.prov}</td>
@@ -17,49 +19,84 @@ window.loadCxpConfirmed = function(){
           <i title="Revertir Cuenta" class="btn btn-secondary rounded-pill text-right bi bi-arrow-left"></i>
         </td>
         </tr>`);
-      });
     });
-  
-  $('#mdl-solvent').on('hidden.bs.modal',function(){
-    $('#tbl-solv tbody').html("");
   });
-  $('#mdl-solvent').modal('show');
-}
 
-window.revertCxpConfirmed = function(btn){
-  let compra = $(btn).parent('tr').attr('vt');
-  let comp = $(btn).parent('tr').find('td:first').html().trim();
+  $("#mdl-solvent").on("hidden.bs.modal", function () {
+    $("#tbl-solv tbody").html("");
+  });
+  $("#mdl-solvent").modal("show");
+};
+
+window.revertCxpConfirmed = function (btn) {
+  let compra = $(btn).parent("tr").attr("vt");
+  let comp = $(btn).parent("tr").find("td:first").html().trim();
 
   SAConfig.title = `¿Está seguro que desea Revertir la Cuenta ${comp}? \n
    Esta pasará a la lista de No confirmadas (pendientes o vencidas)`;
-  
-   Swal.fire(SAConfig).then((result) => {
-     if (result.value == true) {
-       
-      response('cxp/',{endpoint:'revertCxpSolvent',idCompra:compra}).then(data => {
-        console.log(data);
-        if(data.status == 200){
-          Swal.fire(data.message,'','success').then(() => {});
-        }else{
-          Swal.fire(`Error al Intentar Revertir Cuenta por pagar `+data.error,'','error').then(() => {});
+
+  Swal.fire(SAConfig).then((result) => {
+    if (result.value == true) {
+      response("cxp/", { endpoint: "revertCxpSolvent", idCompra: compra }).then(
+        (data) => {
+          console.log(data);
+          if (data.status == 200) {
+            Swal.fire(data.message, "", "success").then(() => {});
+          } else {
+            Swal.fire(
+              `Error al Intentar Revertir Cuenta por pagar ` + data.error,
+              "",
+              "error"
+            ).then(() => {});
+          }
+          $("#mdl-solvent").modal("hide");
+          refreshTable();
         }
-        $('#mdl-solvent').modal('hide');
-        refreshTable();
-      });
+      );
+    } else return;
+  });
+};
 
-     } else return;
-   });
+window.confirmCxp = function (btn) {
+  let data = atob($(btn).attr("row"));
+  console.log(data);
+  $("#mdl-compra").modal("show");
+};
 
-}
+window.loadAbono = loadAbono;
+
+window.alterCxpControl = function () {
+  let btnAddPay = $('#dt-controls button[control="edit"]');
+  let btnConfirm = $('#dt-controls button[control="view"]');
+
+  window.addAbono = addAbono;
+  window.removeAbono = removeAbono;
+
+  $("#tbl-cxp").on("select.dt deselect.dt", () => {
+    btnConfirm.html(`<i class="m-auto bi bi-check text-white"></i>`);
+    btnAddPay.html(`<i class="m-auto bi bi-plus text-white"></i>`);
+  });
+
+  btnConfirm.click(() => {
+    confirmCxp(btnConfirm);
+  });
+
+  btnAddPay.click(() => {
+    loadAbono(btnAddPay, "cxp");
+  });
+};
 
 loadComponents();
-loadCrud('cxp',['cod','idp','fechac','fecha']);
+loadCrud("cxp", ["cod", "idp", "fechac", "fecha"]);
 
 $(document).ready(function () {
-  $('.dt-buttons').removeClass('offset-3 offset-lg-5');
+  $(".dt-buttons").removeClass("offset-3 offset-lg-5");
   let $btnCxpConfirmed = `<button class="btn btn-outline-primary ms-2 rounded-pill" 
     onclick="loadCxpConfirmed()" type="button">
     <span><i class="bi bi-check text-success me-1"></i>Ver cuentas Confirmadas</span>
   </button>`;
-  $('.dt-buttons').append($btnCxpConfirmed);
+
+  $(".dt-buttons").append($btnCxpConfirmed);
+
+  alterCxpControl();
 });

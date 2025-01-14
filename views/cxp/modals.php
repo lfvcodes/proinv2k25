@@ -90,17 +90,19 @@
   <input type="hidden" value="setCompra" name="endpoint">
 </fieldset>
 
-<fieldset id="mdl-abono" title="Registrar Abono de Pago">
+<fieldset id="mdl-abono" size="lg" title="Registrar Abono de Pago">
 
   <label class="form-label text-primary">Abonos Asociados a la Cuenta</label>
-  <div class="row mb-3">
+  <div id="form-contained" class="row container mb-3">
     <table id="tbl-abono" class="table-sm table-striped">
       <thead>
         <th>Fecha</th>
         <th>Monto</th>
         <th>Concepto</th>
-        <th width="5%">
-          <button type="button" onclick="addAbono();" class="btn btn-sm btn-primary" id="agregarFila"> + </button>
+        <th class="text-center" width="5%">
+          <button type="button" onclick="addAbono();" class="btn btn-sm btn-primary p-2 rounded-pill" id="agregarFila">
+            <i class="bi bi-plus-circle m-0"></i>
+          </button>
         </th>
       </thead>
       <tbody>
@@ -109,15 +111,15 @@
           <td><input class="form-control monto" placeholder="$" required step="0.01" type="number" name="monto[]"></td>
           <td><input placeholder="Describa el concepto de Abono"
               class="form-control" required type="text" maxlength="350" name="concepto[]"></td>
-          <td><button onclick="removeAbono(this);" type="button" class="btn btn-sm btn-danger">-</button></td>
+          <td class="text-center">
+            <button onclick="removeAbono(this);" type="button" class="btn btn-sm btn-danger p-2 rounded-pill">
+              <i class="bi bi-dash-circle m-0"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
-  <input type="hidden" name="id">
-  <input type="hidden" name="mdeuda">
-  <input type="hidden" value="setAbono" name="endpoint">
-
 </fieldset>
 
 <fieldset id="mdl-solvent" title="Cuentas por Pagar Confirmadas Recientemente">

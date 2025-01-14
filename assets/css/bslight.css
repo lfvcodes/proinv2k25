@@ -8404,7 +8404,9 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 }
 
 @media (min-width: 992px) {
-  .modal-lg,
+  .modal-lg{
+    max-width: 80%;
+  }
   .modal-xl {
     max-width: 90%;
   }
