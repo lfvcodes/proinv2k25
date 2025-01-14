@@ -4828,7 +4828,7 @@ CREATE TABLE IF NOT EXISTS `pro_2cxp` (
   CONSTRAINT `FK_pro_2cxp_pro_2compra` FOREIGN KEY (`id_compra`) REFERENCES `pro_2compra` (`id_pago`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_2cxp: ~55 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_2cxp: ~52 rows (aproximadamente)
 DELETE FROM `pro_2cxp`;
 INSERT INTO `pro_2cxp` (`id_cxp`, `id_proveedor`, `id_compra`, `monto`, `concepto`, `fvencimiento`, `fecha_cobro`, `estado`, `log_user`, `registro`) VALUES
 	(25, '408648490', 20, 292.74, 'SERVILLETAS', '2023-12-07', '2023-12-07', 'S', 'OSTORRES', '2023-11-30 18:55:15'),
@@ -4861,7 +4861,7 @@ INSERT INTO `pro_2cxp` (`id_cxp`, `id_proveedor`, `id_compra`, `monto`, `concept
 	(91, '401279600', 63, 26.7, 'B1,SERVILLETAS', '2024-01-18', '2024-01-18', 'S', 'OSTORRES', '2024-01-11 20:12:03'),
 	(92, '7364803', 51, 37.8, 'JABON AZUL', '2024-01-18', '2024-01-18', 'S', 'OSTORRES', '2024-01-11 20:18:16'),
 	(93, '7364803', 71, 24, 'QUIMICOS', '2024-01-18', '2024-01-18', 'S', 'OSTORRES', '2024-01-11 20:18:40'),
-	(94, '7364803', 76, 93.87, 'PRODUCTOS QUIMICOS', '2024-01-18', '2024-01-18', 'S', 'OSTORRES', '2024-01-11 20:21:55'),
+	(94, '7364803', 76, 93.87, 'PRODUCTOS QUIMICOS', '2024-01-18', NULL, 'P', 'OSTORRES', '2024-01-11 20:21:55'),
 	(95, '41159679-5', 73, 117, 'papel higienico noam', '2024-01-18', '2024-01-18', 'S', 'OSTORRES', '2024-01-11 20:23:21'),
 	(96, '412628402', 90, 110, 'GUANTES NITRILO NEGROS', '2024-01-18', '2024-01-18', 'S', 'OSTORRES', '2024-01-11 20:25:02'),
 	(97, '412051938', 88, 175.7, 'tinas t2', '2024-01-18', '2024-01-18', 'S', 'OSTORRES', '2024-01-11 20:25:34'),
@@ -4873,17 +4873,14 @@ INSERT INTO `pro_2cxp` (`id_cxp`, `id_proveedor`, `id_compra`, `monto`, `concept
 	(105, '401279600', 117, 72, 'PRODUCTOS VARIOS', '2024-01-24', '2024-01-24', 'V', 'MGACUNA', '2024-01-17 21:38:26'),
 	(106, '7364803', 120, 43.52, 'QUIMICOS', '2024-01-25', '2024-01-25', 'V', 'MGACUNA', '2024-01-18 14:34:13'),
 	(108, '7364803', 124, 104, 'QUIMICOS', '2024-01-26', '2024-01-26', 'V', 'MGACUNA', '2024-01-19 16:10:48'),
-	(109, '401279600', 107, 45.4, 'ACOMODAR EL NRO DE NOTA', '2024-01-26', '2024-01-26', 'S', 'OSTORRES', '2024-01-19 16:20:49'),
-	(110, '401279600', 79, 148.9, 'PRODUCTOS VARIOS', '2024-01-30', '2024-01-30', 'S', 'OSTORRES', '2024-01-23 18:43:18'),
+	(109, '401279600', 107, 45.4, 'ACOMODAR EL NRO DE NOTA', '2024-01-26', NULL, 'P', 'OSTORRES', '2024-01-19 16:20:49'),
+	(110, '401279600', 79, 148.9, 'PRODUCTOS VARIOS', '2024-01-30', NULL, 'P', 'OSTORRES', '2024-01-23 18:43:18'),
 	(111, '401279600', 75, 42, 'SERVILLETAS', '2024-01-30', '2024-01-30', 'S', 'OSTORRES', '2024-01-23 18:43:56'),
 	(112, '401279600', 123, 50.8, 'PRODUCTOS VARIOS', '2024-01-30', '2024-01-30', 'S', 'OSTORRES', '2024-01-23 18:54:37'),
-	(113, '7364803', 96, 78.8, 'QUIMICOS', '2024-01-30', '2024-01-30', 'S', 'OSTORRES', '2024-01-23 18:55:08'),
-	(114, '7364803', 102, 44.8, 'QUIMICOS', '2024-01-30', '2024-01-30', 'S', 'OSTORRES', '2024-01-23 18:55:58'),
+	(113, '7364803', 96, 78.8, 'QUIMICOS', '2024-01-30', NULL, 'P', 'OSTORRES', '2024-01-23 18:55:08'),
 	(115, '29560163-8', 85, 197.8, 'QUIMICOS', '2024-01-30', '2024-01-30', 'S', 'OSTORRES', '2024-01-23 19:18:29'),
 	(116, '29560163-8', 93, 67.68, 'QUIMICO', '2024-01-30', '2024-01-30', 'S', 'OSTORRES', '2024-01-23 19:18:57'),
 	(117, '29560163-8', 109, 52, 'QUIMICOS', '2024-01-30', '2024-01-30', 'S', 'OSTORRES', '2024-01-23 19:19:38'),
-	(118, '408648490', 103, 276, 'SERVILLETAS Z PEQUEÃA 20X160', '2024-01-30', '2024-01-30', 'S', 'OSTORRES', '2024-01-23 19:23:26'),
-	(119, '7364803', 131, 20, 'QUIMICOS', '2024-01-31', '2024-01-31', 'V', 'MGACUNA', '2024-01-24 16:27:11'),
 	(120, '400982804', 132, 114.54, 'PRODUCTOS VARIOS', '2024-01-31', '2024-01-31', 'V', 'MGACUNA', '2024-01-24 16:36:36'),
 	(122, '400982804', 135, 13, 'venta de proxx', '2024-02-27', NULL, 'V', 'admin', '2024-02-20 13:47:38');
 
@@ -4915,7 +4912,7 @@ CREATE TABLE IF NOT EXISTS `pro_2empresa` (
   PRIMARY KEY (`rif_empresa`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_2empresa: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_2empresa: ~0 rows (aproximadamente)
 DELETE FROM `pro_2empresa`;
 INSERT INTO `pro_2empresa` (`rif_empresa`, `nom_empresa`, `tel_empresa`, `email_empresa`, `direccion_empresa`, `vendedor`, `lector_barras`, `cod_alternativo`, `percomision`, `activo`) VALUES
 	('J-88888888-4', 'mi negocio', '02512678548', 'minegocio08@hotmail.com', 'Av. Celestial Casa N° 476 Urb. CoolMart  II, Barquisimeto,Estado Lara', 1, 1, 1, 5, 'S');
@@ -6044,18 +6041,19 @@ INSERT INTO `pro_3dcxc_abono` (`id_abono`, `id_cxc`, `fecha_abono`, `monto_abono
 
 -- Volcando estructura para tabla bd_proinv2k25.pro_3dcxp_abono
 CREATE TABLE IF NOT EXISTS `pro_3dcxp_abono` (
-  `id_abono` int(11) NOT NULL AUTO_INCREMENT,
+  `id_abono` int(11) NOT NULL,
   `id_cxp` int(11) NOT NULL DEFAULT '0',
   `fecha_abono` date NOT NULL,
   `monto_abono` double NOT NULL DEFAULT '0',
   `concepto_abono` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id_abono`,`id_cxp`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_3dcxp_abono: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_3dcxp_abono: ~0 rows (aproximadamente)
 DELETE FROM `pro_3dcxp_abono`;
 INSERT INTO `pro_3dcxp_abono` (`id_abono`, `id_cxp`, `fecha_abono`, `monto_abono`, `concepto_abono`) VALUES
-	(1, 68, '2024-01-23', 9.1, 'ABONO');
+	(1, 68, '2024-01-23', 9.1, 'ABONOX'),
+	(2, 113, '2025-01-14', 10, 'nuevo abono');
 
 -- Volcando estructura para tabla bd_proinv2k25.pro_3degreso_otro
 CREATE TABLE IF NOT EXISTS `pro_3degreso_otro` (
@@ -6085,7 +6083,7 @@ CREATE TABLE IF NOT EXISTS `pro_3dguia` (
   CONSTRAINT `pro_3dguia_ibfk_1` FOREIGN KEY (`id_guia`) REFERENCES `pro_2guia` (`id_guia`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_3dguia: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_3dguia: ~0 rows (aproximadamente)
 DELETE FROM `pro_3dguia`;
 INSERT INTO `pro_3dguia` (`id_detalle`, `id_guia`, `id_venta`) VALUES
 	(1, 2, 10);
@@ -7462,7 +7460,7 @@ CREATE TABLE IF NOT EXISTS `pro_4producto_hist` (
   CONSTRAINT `FK_pro_4producto_hist_pro_2producto` FOREIGN KEY (`cod_producto`) REFERENCES `pro_2producto` (`cod_producto`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_4producto_hist: ~394 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_4producto_hist: ~393 rows (aproximadamente)
 DELETE FROM `pro_4producto_hist`;
 INSERT INTO `pro_4producto_hist` (`fecha_precio`, `cod_producto`, `pcosto`, `pventa`) VALUES
 	('2023-12-29', 8, 13.59, 20.4),
@@ -7921,6 +7919,44 @@ INSERT INTO `pro_4tasa` (`id_act`, `tasa`, `log_user`, `fecha_tasa`) VALUES
 	(47, 38.38, 'admin', '2024-01-25 19:37:56'),
 	(48, 38.03, 'admin', '2024-02-20 12:54:39'),
 	(49, 36.26, 'admin', '2024-04-02 13:07:13');
+
+-- Volcando estructura para procedimiento bd_proinv2k25.pro_5confirmarCxp
+DELIMITER //
+CREATE PROCEDURE `pro_5confirmarCxp`(
+	IN `in_tasa` FLOAT,
+	IN `in_cxp_descripcion` TEXT,
+	IN `in_status` VARCHAR(1),
+	IN `in_fcobro` DATE,
+	IN `in_id` INT
+)
+    COMMENT 'confirmar cuenta por pagar'
+BEGIN
+	  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+	    DECLARE err_msg TEXT; 
+		 GET DIAGNOSTICS CONDITION 1 err_msg = MESSAGE_TEXT;
+        -- En caso de error, revertir la transacción y devolver el código y mensaje de error
+        ROLLBACK;
+        SELECT 400 AS status,CONCAT('Error durante la ejecución del procedimiento ',err_msg) AS error;
+    END;
+    
+    -- Iniciar transacción
+    START TRANSACTION;
+    
+    -- Intentar realizar las operaciones
+    BEGIN
+       	UPDATE pro_2compra SET tasa = in_tasa WHERE id_pago = in_id;
+	
+			UPDATE pro_2cxp SET concepto = in_cxp_descripcion, estado = in_status,fecha_cobro = in_fcobro 
+			WHERE id_compra = in_id;
+			
+        -- Si todo es exitoso, confirmar la transacción y devolver el código y mensaje de éxito
+        COMMIT;
+        SELECT 200 AS status, CONCAT('Se ha Confirmado la Cuenta por Pagar Correctamente') AS message;
+    END;
+
+END//
+DELIMITER ;
 
 -- Volcando estructura para procedimiento bd_proinv2k25.pro_5editProducto
 DELIMITER //

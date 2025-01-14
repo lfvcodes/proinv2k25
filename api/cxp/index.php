@@ -16,6 +16,22 @@ if ($post['endpoint'] === 'getList') {
   resultResponse($rs, 'all');
 }
 
+if ($post['endpoint'] === 'confirmCompra') {
+
+  $params = array(
+    $post['tasa'],
+    $post['desc'],
+    'S',
+    $post['fcobro'],
+    $post['id'],
+  );
+
+  $query = "CALL pro_5confirmarCxp (?,?,?,?,?)";
+  $rs = prepareRS($conexion, $query, $params);
+  responseJSON($rs->fetch(PDO::FETCH_ASSOC));
+  #setBitacora('INVENTARIO','AGREGAR PRODUCTO',$params,$_SESSION['pro']['usr']['user']);
+}
+
 if ($post['endpoint'] === 'getCxpSolvent') {
   $query = 'SELECT v.id_pago AS compra,v.cod_nota AS nota, v.cod_factura AS fact,c.razon_social AS prov, cx.monto,  DATE_FORMAT(cx.fecha_cobro, "%d/%m/%Y") AS cobro FROM pro_2cxp cx JOIN pro_2compra v ON cx.id_compra = v.id_pago JOIN pro_1proveedor c ON cx.id_proveedor = c.id_proveedor WHERE estado = ? ORDER BY fecha_cobro DESC';
   $rs = prepareRS($conexion, $query, ['S']);
