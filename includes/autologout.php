@@ -1,5 +1,4 @@
 <?php
-
 if ($session) {
    $time_logout = $session['exp'] - time();
    $seconds_waiting = 30;
@@ -10,24 +9,19 @@ if ($session) {
       } from "@util";
 
       const secondsWaiting = <?= $seconds_waiting; ?>;
+      const timeLogout = <?= $time_logout; ?>;
 
-      <?php
-      if ($time_logout <= $seconds_waiting) {
-      ?>
+      if (timeLogout <= secondsWaiting) {
          showAutoLogout({
-            secondsWaiting: <?= $time_logout; ?>
-         })
-      <?php
+            secondsWaiting: timeLogout
+         });
       } else {
-      ?>
          setTimeout(() => {
             showAutoLogout({
                secondsWaiting
-            })
-         }, <?= ($time_logout - $seconds_waiting) * 800 ?>);
-      <?php
+            });
+         }, (timeLogout - secondsWaiting) * 900);
       }
-      ?>
    </script>
 <?php
 }

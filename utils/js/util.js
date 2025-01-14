@@ -155,49 +155,17 @@ export const showAutoLogout = ({
     confirmButtonText: "Actualizar sesión",
   };
 
-  Swal.fire({ ...optionsSwal }).then((res) => {
-    if (res.isConfirmed) {
-      showLoading({ message: "Actualizando sesión" });
-      clearTimeout(timerLogout);
-
-      var json = response("refresh-session/", { endpoint: "refresh" });
-
-      if (json.status == 200) {
-        clearTimeout(timerLogout);
-        showNotification({ type: "success", message: json.message });
-
-        const newTime = json.time;
-        secondsWaiting = DEFAULT_SECONDS_WAITING;
-
-        if (newTime <= secondsWaiting) {
-          secondsWaiting = newTime;
-          showAutoLogout({ secondsWaiting });
-        } else {
-          setTimeout(() => {
-            showAutoLogout({ secondsWaiting });
-          }, (newTime - secondsWaiting) * VALUE_SECONDS);
-        }
-      } else {
-        showNotification({ message: json.error });
-        setTimeout(() => {
-          changeLocation("exit/");
-        }, secondsNow * 1000);
-      }
-    }
-  });
-
   function fnRefresh() {
     timerLogout = setTimeout(() => {
       try {
         secondsNow--;
         Swal.update({
           ...optionsSwal,
-          html: `<span style="font-weight: bold; font-size: 2rem;">${
+          html: `<span style="font-weight: bold; font-size: 3rem;">${
             message + secondsNow + " segundos"
           }</span>`,
         });
       } catch (error) {}
-
       if (secondsNow < 0) {
         Swal.close();
         window.location.replace("../exit/");
@@ -208,6 +176,33 @@ export const showAutoLogout = ({
   }
 
   fnRefresh();
+
+  Swal.fire({ ...optionsSwal }).then((res) => {
+    if (res.isConfirmed) {
+      showLoading({ message: "Actualizando sesión" });
+      clearTimeout(timerLogout);
+
+      response("refresh-session/", { endpoint: "refresh" }).then((json) => {
+        if (json.status == 200) {
+          clearTimeout(timerLogout);
+          showNotification({ type: "success", message: json.message });
+
+          const newTime = json.time;
+          secondsWaiting = DEFAULT_SECONDS_WAITING;
+
+          if (newTime <= secondsWaiting) {
+            secondsWaiting = newTime;
+            showAutoLogout({ secondsWaiting });
+          } else return;
+        } else {
+          showNotification({ message: json.error });
+          setTimeout(() => {
+            changeLocation("exit/");
+          }, secondsNow * 1000);
+        }
+      });
+    }
+  });
 };
 
 export function prepareFormData(form) {

@@ -1,12 +1,12 @@
 import { DTConfig, response, empty } from "@util";
 
 /* LIBRERIA ABSTRACTA PARA CRUDS */
-var tbl = {};
+let tbl = {};
 export function initCrudDataTable(sectionName, hiddenCols) {
   DTConfig.NameSection = sectionName;
   response(`${DTConfig.NameSection}/`, { endpoint: "getList" })
     .then((data) => {
-      var cols = Object.keys(data.result[0]).map((key) => ({
+      let cols = Object.keys(data.result[0]).map((key) => ({
         data: key,
         visible: !hiddenCols.includes(key),
       }));
@@ -107,19 +107,19 @@ function setCrudControls(settings) {
          <span id="dt-selected" class="col m-auto text-start"></span>
          <div id="dt-controls" class="col m-auto p-auto text-end">
             <button type="button" control="view" onclick="view_${DTConfig.NameSection}()"
-               class="btn rounded-circle btn-primary controls">
+               class="btn rounded-circle p-2 btn-primary controls">
                <i class="m-auto bi bi-eye text-white"></i>
             </button>
             <button type="button" control="edit" onclick="edit_${DTConfig.NameSection}()"
-               class="btn rounded-circle btn-primary controls">
+               class="btn rounded-circle p-2 btn-primary controls">
                <i class="m-auto bi bi-pencil text-white"></i>
             </button>
             <button type="button" onclick="unselectAllRows()"
-               class="btn rounded-circle btn-primary delete">
+               class="btn rounded-circle p-2 btn-primary delete">
                <i class="m-auto bi bi-list-check text-white"></i>
             </button>
             <button type="button" control="delete" onclick="delete_${DTConfig.NameSection}()"
-               class="btn rounded-circle btn-danger delete">
+               class="btn rounded-circle p-2 btn-danger delete">
                <i class="m-auto bi bi-trash text-white"></i>
             </button>
          </div>
