@@ -7920,6 +7920,44 @@ INSERT INTO `pro_4tasa` (`id_act`, `tasa`, `log_user`, `fecha_tasa`) VALUES
 	(48, 38.03, 'admin', '2024-02-20 12:54:39'),
 	(49, 36.26, 'admin', '2024-04-02 13:07:13');
 
+-- Volcando estructura para procedimiento bd_proinv2k25.pro_5confirmarCxx
+DELIMITER //
+CREATE PROCEDURE `pro_5confirmarCxc`(
+	IN `in_tasa` FLOAT,
+	IN `in_cxc_descripcion` TEXT,
+	IN `in_status` VARCHAR(1),
+	IN `in_fcobro` DATE,
+	IN `in_id` INT
+)
+    COMMENT 'confirmar cuenta por cobrar'
+BEGIN
+	  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+	    DECLARE err_msg TEXT; 
+		 GET DIAGNOSTICS CONDITION 1 err_msg = MESSAGE_TEXT;
+        -- En caso de error, revertir la transacción y devolver el código y mensaje de error
+        ROLLBACK;
+        SELECT 400 AS status,CONCAT('Error durante la ejecución del procedimiento ',err_msg) AS error;
+    END;
+    
+    -- Iniciar transacción
+    START TRANSACTION;
+    
+    -- Intentar realizar las operaciones
+    BEGIN
+       	UPDATE pro_2venta SET tasa = in_tasa WHERE id_venta = in_id;
+	
+			UPDATE pro_2cxc SET concepto = in_cxc_descripcion, estado = in_status,fecha_cobro = in_fcobro 
+			WHERE id_venta = in_id;
+			
+        -- Si todo es exitoso, confirmar la transacción y devolver el código y mensaje de éxito
+        COMMIT;
+        SELECT 200 AS status, CONCAT('Se ha Confirmado la Cuenta por Cobrar Correctamente') AS message;
+    END;
+
+END//
+DELIMITER ;
+
 -- Volcando estructura para procedimiento bd_proinv2k25.pro_5confirmarCxp
 DELIMITER //
 CREATE PROCEDURE `pro_5confirmarCxp`(
