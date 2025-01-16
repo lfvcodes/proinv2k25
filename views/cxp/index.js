@@ -240,4 +240,11 @@ loadCrud("cxp", $hideCols);
 
 $(function () {
   startDOM();
+  $('#tbl-cxp').DataTable().on("draw.dt",() => {
+    startDOM();  
+  });
+
+  $('#tbl-cxp').DataTable().on("search.dt",() => {
+    startDOM();  
+  });
 });

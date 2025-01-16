@@ -103,7 +103,7 @@ export function loadAbono(btn, instance) {
   let $data = JSON.parse($jsonData)[0];
 
   let title = instance == "cxp" ? "Cuentas por Pagar" : "Cuentas por Cobrar";
-  let $lblTitle = `Registrar Abono de Pago de ${title} ${$data.compra} (${$data.nom})`;
+  let $lblTitle = `Registrar Abono de Pago de ${title} ${ instance == "cxp" ? $data.compra : $data.venta} (${$data.nom})`;
   let $lblTotal = `<label class="fw-bold" id="totalabono"></label>`;
   let $lblCount = `<label class="fw-bold me-2" id="countabono"></label>`;
   const $btnSaveAbono = $("#mdl-abono .modal-footer .btn-primary");
