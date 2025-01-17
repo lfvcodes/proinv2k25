@@ -56,7 +56,7 @@
       </div>
       <div class="col input-group">
         <label class="input-group-text" for="tasa">Tasa de Cambio</label>
-        <input id="tasa" name="tasa" class="form-control tasa" value="<?php echo $_SESSION['pro']['tasa']; ?>"
+        <input id="tasa" name="tasa" class="form-control tasa"
           min="0.01" step="0.01" type="number">
       </div>
     </div>

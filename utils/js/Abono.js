@@ -1,4 +1,4 @@
-import { prepareFormData, response, SAConfig } from "@util";
+import { prepareFormData, response, SAConfig,empty } from "@util";
 
 function saveAbono(instance, $data) {
   let total_abono = 0;
@@ -66,9 +66,6 @@ function loadAbonoItems(instance, $cod) {
   }).then((answer) => {
     if (answer.status == 200) {
       let $tbl = answer.result;
-
-      let counterAbono = 0;
-      let tabono = 0.0;
       for (let i = 0; i < $tbl.length; i++) {
         let trAbono = `<tr>
           <td><input class="form-control fec" value="${$tbl[i]["fecha_abono"]}" required type="date" name="fec[]"></td>
@@ -82,34 +79,61 @@ function loadAbonoItems(instance, $cod) {
           </td>
         </tr>`;
         $("#tbl-abono tbody").append(trAbono);
-        tabono += $tbl[i]["monto_abono"];
-        counterAbono++;
       }
-      $("#countabono").html(`#Abonos: ${counterAbono}`);
-      $("#totalabono").html(
-        "Total: $ " +
-          tabono.toLocaleString("es-ES", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-            useGrouping: true,
-          })
-      );
+      refreshItemStatus();
     }
   });
+}
+
+function refreshItemStatus(){
+  let tdeuda = Number($('#mdeuda').attr('mnt'));
+  let totalGeneral = 0;
+  let tabono = 0;
+  let count = 0;
+  $("#tbl-abono tbody tr").each(function () {
+    if(!empty($(this).find("td:eq(1) .monto").val())){
+      tabono += Number($(this).find("td:eq(1) .monto").val());
+      count++;
+    }
+  });
+
+  $('#countabono').html(`#Abonos: ${count}`);
+
+  $("#totalabono").html(
+    "Total Abono: $ " +
+      tabono.toLocaleString("es-ES", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+        useGrouping: true,
+      })
+  );
+
+  totalGeneral = (tdeuda - tabono);
+  $("#total").html(
+    "Total Deuda: $ " +
+      totalGeneral.toLocaleString("es-ES", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+        useGrouping: true,
+      })
+  );
 }
 
 export function loadAbono(btn, instance) {
   let $jsonData = atob($(btn).attr("row"));
   let $data = JSON.parse($jsonData)[0];
-
+  
   let title = instance == "cxp" ? "Cuentas por Pagar" : "Cuentas por Cobrar";
   let $lblTitle = `Registrar Abono de Pago de ${title} ${ instance == "cxp" ? $data.compra : $data.venta} (${$data.nom})`;
-  let $lblTotal = `<label class="fw-bold" id="totalabono"></label>`;
-  let $lblCount = `<label class="fw-bold me-2" id="countabono"></label>`;
+  let $lblCount = `<label class="me-2" id="countabono"></label>`;
+  let $lblDeuda = `<label class="text-danger me-2" mnt="${$data.monto}" id="mdeuda">Deuda: $${$data.monto}</label>`;
+  let $lblTotalAbono = `<label class="me-2" id="totalabono"></label>`;
+  let $lblTotal = `<label class="fw-bold" id="total"></label>`;
+  
   const $btnSaveAbono = $("#mdl-abono .modal-footer .btn-primary");
   const $frm = `<form action="#" id="form-abono" enctype="multipart/form-data" method="POST"></form>`;
-
-  $("#mdl-abono .modal-footer").prepend([$lblCount, $lblTotal]);
+  $('#mdl-abono .modal-footer').html(`<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button><button type="button" class="btn btn-primary">Guardar</button>`)
+  $("#mdl-abono .modal-footer").prepend([$lblDeuda,$lblCount,$lblTotalAbono,$lblTotal]);
   $("#mdl-abono .modal-title").text($lblTitle);
   $("#mdl-abono #form-contained").wrap($frm);
   $("#tbl-abono tbody").html("");
@@ -121,7 +145,6 @@ export function loadAbono(btn, instance) {
   });
 
   $("#mdl-abono").on("hide.bs.modal", () => {
-    $("#totalabono,#countabono").remove();
     $btnSaveAbono.unbind("click");
     $("#mdl-abono #form-contained").unwrap();
   });
@@ -144,50 +167,17 @@ export function addAbono() {
   </tr>
   `);
 
-  $("#tbl-abono tbody tr td .monto").change(function (e) {
-    e.preventDefault();
-    var tabono = 0;
-    $("#tbl-abono tbody tr").each(function () {
-      tabono += Number($(this).find("td:eq(1) .monto").val());
-    });
-    $("#totalabono").html(
-      "Total: $ " +
-        tabono.toLocaleString("es-ES", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-          useGrouping: true,
-        })
-    );
+  $("#tbl-abono tbody tr td .monto").on('change',function () {
+    refreshItemStatus();
   });
 
-  var tabono = 0;
-  $("#tbl-abono tbody tr").each(function () {
-    tabono += Number($(this).find("td:eq(1) .monto").val());
-  });
-  $("#totalabono").html(
-    "Total: $ " +
-      tabono.toLocaleString("es-ES", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-        useGrouping: true,
-      })
-  );
+  refreshItemStatus();
 }
 
 export function removeAbono(btn) {
-  var tabono = 0;
   $(btn).parent("td").parent("tr").remove();
-  $("#tbl-abono tbody tr").each(function () {
-    tabono += Number($(this).find("td:eq(1) .monto").val());
-  });
-  $("#totalabono").html(
-    "Total: $ " +
-      tabono.toLocaleString("es-ES", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-        useGrouping: true,
-      })
-  );
+
+  refreshItemStatus();
 
   if ($("#tbl-abono tbody tr").length < 1) {
     return false;
