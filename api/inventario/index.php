@@ -9,7 +9,7 @@ if ($post['endpoint'] == 'getList') {
   resultResponse($rs, 'all');
 }
 
-if ($post['endpoint'] == 'add') {
+if ($post['endpoint'] === 'add') {
 
   $query = "CALL pro_5setProducto (?,?,?,?,?,?,?,?,?,?,?)";
   $params = [
@@ -31,7 +31,7 @@ if ($post['endpoint'] == 'add') {
   #setBitacora('INVENTARIO','AGREGAR PRODUCTO',$params,$_SESSION['pro']['usr']['user']);
 }
 
-if ($post['endpoint'] == 'update') {
+if ($post['endpoint'] === 'update') {
   $query = "CALL pro_5editProducto (?,?,?,?,?,?,?,?,?,?,?)";
   $params = [
     strtoupper($post['cod_product']),
@@ -52,7 +52,7 @@ if ($post['endpoint'] == 'update') {
   #setBitacora('INVENTARIO','MODIFICAR PRODUCTO',$params,$_SESSION['pro']['usr']['user']);
 }
 
-if ($post['endpoint'] == 'delete') {
+if ($post['endpoint'] === 'delete') {
   $query = "DELETE FROM pro_2producto WHERE cod_producto IN ";
   $delItems = implode("','", $post['list']);
   $query .= "('{$delItems}')";
@@ -65,4 +65,24 @@ if ($post['endpoint'] == 'delete') {
     responseJSON(['status' => 200, 'message' => "Producto(s) de Inventario {$delItems} Borrado(s) Correctamente"]);
   #setBitacora('INVENTARIO','BORRAR PRODUCTO',$params,$_SESSION['pro']['usr']['user']);
   endif;
+}
+
+if ($post['endpoint'] === 'getProductSupplier') {
+  $query = 'SELECT 
+    CONCAT(p.sig_idproveedor,"-",p.id_proveedor) AS rif,
+    p.razon_social AS nombre,
+    sub.ucompra
+FROM pro_1proveedor p
+JOIN (
+    SELECT 
+        c.id_proveedor,
+        DATE(MAX(c.fecha_compra)) AS ucompra
+    FROM pro_3dcompra dc
+    JOIN pro_2compra c ON dc.id_pago = c.id_pago
+    WHERE dc.cod_producto = ?
+    GROUP BY c.id_proveedor
+) AS sub ON p.id_proveedor = sub.id_proveedor';
+
+  $rs = prepareRS($conexion, $query, [$post['id']]);
+  resultResponse($rs, 'all');
 }

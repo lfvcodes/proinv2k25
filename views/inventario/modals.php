@@ -100,12 +100,22 @@
   </div>
   <div class="row">
     <div class="col-12 text-center">
-      <span title="Ver Proveedores de este producto" class="btn btn-outline-primary rounded-pill">
+      <button hidden id="btn-see-prov" type="button" onclick="viewSuppliers()"
+        title="Ver Proveedores de este producto" class="btn btn-outline-primary rounded-pill">
         Ver Proveedores del Producto <i class="bi bi-arrow-down"></i>
-      </span>
+      </button>
     </div>
   </div>
-
+  <div class="row mt-4">
+    <table hidden id="tbl-prov" class="table table-sm table-striped text-center">
+      <thead>
+        <th>RIF</th>
+        <th>Nombre</th>
+        <th>Ultima Compra</th>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
   <input type="hidden" value="" name="id">
   <input type="hidden" value="add" name="endpoint">

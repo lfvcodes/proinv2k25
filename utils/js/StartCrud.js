@@ -219,7 +219,7 @@ export function loadCrud(instance, hideCols = []) {
 }
 
 export function crudAlterControls(controlEvents){
-  $(document).ready(function () {
+  $(function(){
     $.each(controlEvents, function (control, trigger) { 
        $(`#dt-controls button[control="${control}"]`).on(trigger.event,trigger.fn);  
     });
