@@ -146,7 +146,9 @@ export function loadAbono(btn, instance) {
 
   $("#mdl-abono").on("hide.bs.modal", () => {
     $btnSaveAbono.unbind("click");
-    $("#mdl-abono #form-contained").unwrap();
+    if($('#form-abono').length > 0 && $('#form-contained').length > 0){
+      $("#mdl-abono #form-contained").unwrap();
+    }
   });
 
   $("#mdl-abono").modal("show");

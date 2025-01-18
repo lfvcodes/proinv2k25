@@ -17,7 +17,7 @@ $(function () {
     e.preventDefault(); /* prevenir el evento de click por default */
     var usr = $("#log").val().trim();
     var psw = $("#psw").val().trim();
-    response("/login/", { log: usr, pass: psw, endpoint: "enter" })
+    response("login/", { log: btoa(usr), pass: btoa(psw), endpoint: "enter" })
       .then((data) => {
         if (data.status == 200) {
           changeLocation("inicio/");

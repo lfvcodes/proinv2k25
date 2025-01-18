@@ -6,8 +6,8 @@ require_once __DIR__ . '/../api_header.php';
 
 if ($post['endpoint'] === 'enter') {
 
-  $usr = filter_var($post['log'], FILTER_SANITIZE_STRING);
-  $psw = filter_var($post['pass'], FILTER_SANITIZE_STRING);
+  $usr = filter_var(base64_decode($post['log']), FILTER_SANITIZE_STRING);
+  $psw = filter_var(base64_decode($post['pass']), FILTER_SANITIZE_STRING);
   $query = 'SELECT * FROM v_usuario WHERE log_user = ? AND activo = ? LIMIT 1';
 
   $rs = prepareRS($conexion, $query, [$usr, 'S']);

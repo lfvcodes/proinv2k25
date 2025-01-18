@@ -226,7 +226,7 @@ export function response($url, $data, isAsync) {
       type: "POST",
       url: API_PATH + $url,
       data: JSON.stringify($data),
-      contentType: "application/json; charset=utf-8",
+      contentType: "application/json; charset=UTF-8",
       dataType: "json",
       async: isAsync || false,
     })
