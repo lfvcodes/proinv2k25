@@ -10,7 +10,7 @@ $title = 'Cotizacion';
 
 require_once __DIR__ . '/../../includes/head.php';
 require_once __DIR__ . '/../../includes/header.php';
-
+importExtModal(__DIR__ . '/../../views/venta/modals.php');
 importModals();
 ?>
 
@@ -27,25 +27,26 @@ importModals();
       </div>
     </div>
   </div>
-  <div class="table-responsive text-nowrap">
+  <div class="card-body pt-0 pb-1">
+    <div class="table-responsive text-nowrap">
 
-    <table id="tbl-cotizacion" class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>#Comprobante</th>
-          <th>Fecha</th>
-          <th>idcliente</th>
-          <th>Cliente</th>
-          <th>Concepto</th>
-          <th>Usuario</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody class="table-border-bottom-0">
+      <table id="tbl-cotizacion" class="table table-striped table-hover w-100">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>#Comprobante</th>
+            <th>Fecha</th>
+            <th>idcliente</th>
+            <th>Concepto</th>
+            <th>Usuario</th>
+            <th hidden>Registro</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
 
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 

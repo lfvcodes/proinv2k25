@@ -10,7 +10,6 @@ $title = 'Cuentas por Cobrar';
 
 require_once __DIR__ . '/../../includes/head.php';
 require_once __DIR__ . '/../../includes/header.php';
-
 importModals();
 ?>
 
