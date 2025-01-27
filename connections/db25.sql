@@ -4429,15 +4429,14 @@ CREATE TABLE IF NOT EXISTS `pro_2cotizacion` (
   PRIMARY KEY (`id_cotizacion`),
   KEY `id_cliente` (`id_cliente`),
   CONSTRAINT `FK_pro_2cotizacion_pro_1cliente` FOREIGN KEY (`id_cliente`) REFERENCES `pro_1cliente` (`id_cliente`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_2cotizacion: ~4 rows (aproximadamente)
 DELETE FROM `pro_2cotizacion`;
 INSERT INTO `pro_2cotizacion` (`id_cotizacion`, `cod_nota`, `fecha_cotizacion`, `id_cliente`, `descripcion`, `log_user`, `registro`) VALUES
 	(1, '80023899', '2023-11-09 00:00:00', '31743930-9', 'COMPRA SERV-PAPEL-TOALLAS NUEVAS', 'admin', '2023-11-09 14:19:43'),
 	(2, '1', '2023-11-23 00:00:00', '301854853', 'PRODUCTOS VARIOS', 'OSTORRES', '2023-11-23 16:06:33'),
-	(3, '3', '2023-12-06 00:00:00', '297216251', 'COTIZACION PRODUCTOS VARIOS', 'OSTORRES', '2023-12-06 14:29:01'),
-	(5, '999999999999999999999999', '2024-02-21 09:59:00', '408564432', 'nuevo concepto', 'admin', '2024-02-21 13:59:50');
+	(3, '3', '2023-12-06 00:00:00', '297216251', 'COTIZACION PRODUCTOS VARIOS', 'OSTORRES', '2023-12-06 14:29:01');
 
 -- Volcando estructura para tabla bd_proinv2k25.pro_2cxc
 CREATE TABLE IF NOT EXISTS `pro_2cxc` (
@@ -4912,7 +4911,7 @@ CREATE TABLE IF NOT EXISTS `pro_2empresa` (
   PRIMARY KEY (`rif_empresa`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_2empresa: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_2empresa: ~1 rows (aproximadamente)
 DELETE FROM `pro_2empresa`;
 INSERT INTO `pro_2empresa` (`rif_empresa`, `nom_empresa`, `tel_empresa`, `email_empresa`, `direccion_empresa`, `vendedor`, `lector_barras`, `cod_alternativo`, `percomision`, `activo`) VALUES
 	('J-88888888-4', 'mi negocio', '02512678548', 'minegocio08@hotmail.com', 'Av. Celestial Casa N° 476 Urb. CoolMart  II, Barquisimeto,Estado Lara', 1, 1, 1, 5, 'S');
@@ -5987,7 +5986,7 @@ CREATE TABLE IF NOT EXISTS `pro_3dcotizacion` (
   CONSTRAINT `FK_pro_3dcotizacion_pro_2producto` FOREIGN KEY (`cod_producto`) REFERENCES `pro_2producto` (`cod_producto`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_3dcotizacion: ~22 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_3dcotizacion: ~19 rows (aproximadamente)
 DELETE FROM `pro_3dcotizacion`;
 INSERT INTO `pro_3dcotizacion` (`id_detalle`, `id_cotizacion`, `cod_producto`, `cant`, `monto`) VALUES
 	(1, 1, 128, 1, 13.3),
@@ -6008,10 +6007,7 @@ INSERT INTO `pro_3dcotizacion` (`id_detalle`, `id_cotizacion`, `cod_producto`, `
 	(30, 3, 115, 3, 9),
 	(31, 3, 143, 24, 2.75),
 	(32, 3, 184, 1, 37.13),
-	(33, 3, 9, 2, 31.9),
-	(40, 5, 77, 5, 26.26),
-	(41, 5, 227, 6, 1.79),
-	(42, 5, 34, 4, 2.7);
+	(33, 3, 9, 2, 31.9);
 
 -- Volcando estructura para tabla bd_proinv2k25.pro_3dcxc_abono
 CREATE TABLE IF NOT EXISTS `pro_3dcxc_abono` (
@@ -6049,7 +6045,7 @@ CREATE TABLE IF NOT EXISTS `pro_3dcxp_abono` (
   PRIMARY KEY (`id_abono`,`id_cxp`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_3dcxp_abono: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_3dcxp_abono: ~2 rows (aproximadamente)
 DELETE FROM `pro_3dcxp_abono`;
 INSERT INTO `pro_3dcxp_abono` (`id_abono`, `id_cxp`, `fecha_abono`, `monto_abono`, `concepto_abono`) VALUES
 	(1, 68, '2024-01-23', 9.1, 'ABONOX'),
@@ -6083,7 +6079,7 @@ CREATE TABLE IF NOT EXISTS `pro_3dguia` (
   CONSTRAINT `pro_3dguia_ibfk_1` FOREIGN KEY (`id_guia`) REFERENCES `pro_2guia` (`id_guia`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_3dguia: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_3dguia: ~1 rows (aproximadamente)
 DELETE FROM `pro_3dguia`;
 INSERT INTO `pro_3dguia` (`id_detalle`, `id_guia`, `id_venta`) VALUES
 	(1, 2, 10);
@@ -7460,7 +7456,7 @@ CREATE TABLE IF NOT EXISTS `pro_4producto_hist` (
   CONSTRAINT `FK_pro_4producto_hist_pro_2producto` FOREIGN KEY (`cod_producto`) REFERENCES `pro_2producto` (`cod_producto`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_4producto_hist: ~393 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_4producto_hist: ~394 rows (aproximadamente)
 DELETE FROM `pro_4producto_hist`;
 INSERT INTO `pro_4producto_hist` (`fecha_precio`, `cod_producto`, `pcosto`, `pventa`) VALUES
 	('2023-12-29', 8, 13.59, 20.4),
@@ -7920,7 +7916,7 @@ INSERT INTO `pro_4tasa` (`id_act`, `tasa`, `log_user`, `fecha_tasa`) VALUES
 	(48, 38.03, 'admin', '2024-02-20 12:54:39'),
 	(49, 36.26, 'admin', '2024-04-02 13:07:13');
 
--- Volcando estructura para procedimiento bd_proinv2k25.pro_5confirmarCxx
+-- Volcando estructura para procedimiento bd_proinv2k25.pro_5confirmarCxc
 DELIMITER //
 CREATE PROCEDURE `pro_5confirmarCxc`(
 	IN `in_tasa` FLOAT,

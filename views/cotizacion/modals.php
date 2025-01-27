@@ -21,10 +21,10 @@
 
    <div class="row mb-3">
       <div class="col input-group">
-         <label class="input-group-text" for="fact">
+         <label class="input-group-text" for="ncot">
             <i class="bi bi-receipt me-1"></i>N° Cotizacion
          </label>
-         <input required class="form-control fact" maxlength="64" type="text" name="fact" id="fact">
+         <input required class="form-control ncot" maxlength="64" type="text" name="ncot" id="ncot">
       </div>
       <div class="col input-group">
          <label class="input-group-text" for="fex">Fecha de Expedición</label>
@@ -51,7 +51,7 @@
             <th width="20%">Precio</th>
             <th width="20%">Total Item</th>
             <th width="5%">
-               <button type="button" onclick="add();" class="btn btn-sm btn-primary p-2 rounded-pill" id="agregarFila">
+               <button type="button" onclick="addCot();" class="btn btn-sm btn-primary p-2 rounded-pill" id="agregarFila">
                   <i class="bi bi-plus-circle m-0"></i>
                </button>
             </th>
@@ -65,7 +65,7 @@
                <td><input required readonly name="monto[]" class="form-control monto" min="0.01" step="0.01" type="number"></td>
                <td><input readonly class="form-control titem" type="number"></td>
                <td>
-                  <button onclick="remove(this);" type="button" class="btn btn-sm btn-danger rounded-pill p-2">
+                  <button onclick="removeCot(this);" type="button" class="btn btn-sm btn-danger rounded-pill p-2">
                      <i class="bi bi-dash-circle m-0"></i>
                   </button>
                </td>
@@ -79,10 +79,9 @@
          <label class="input-group-text" for="stotal">
             Total
          </label>
-         <input hidden required readonly placeholder="Bs." type="text" class="form-control fw-bold" name="stotal" id="stotal">
+
          <input required readonly placeholder="$." type="text" class="form-control fw-bold" name="stotald" id="stotald">
       </div>
    </div>
-
-   <input type="hidden" value="setCotizacion" name="action">
+   <input type="hidden" value="add" name="endpoint">
 </fieldset>

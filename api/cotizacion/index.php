@@ -4,10 +4,42 @@ require_once __DIR__ . '/../../utils/php/utils.php';
 require_once __DIR__ . '/../api_header.php';
 
 if ($post['endpoint'] == 'getList') {
-  $query = 'SELECT * FROM pro_2cotizacion';
+  $query = 'SELECT c.id_cotizacion AS cod,c.* FROM pro_2cotizacion c';
   $rs = prepareRS($conexion, $query, []);
   resultResponse($rs, 'all');
 }
+
+if ($post['endpoint'] == 'getCotizacion') {
+  $query = 'SELECT cl.razon_social,DATE(c.registro) AS fregistro,
+  TIME_FORMAT(TIME(c.registro), "%H:%i") AS tregistro,
+  DATE(c.fecha_cotizacion) AS fvencimiento,c.* 
+  FROM pro_2cotizacion c JOIN pro_1cliente cl ON c.id_cliente = cl.id_cliente
+  WHERE c.id_cotizacion = ?';
+  $rs = prepareRS($conexion, $query, [$post['idCot']]);
+  $dataResponse =  $rs->fetch(PDO::FETCH_ASSOC);
+
+  $queryDetail = 'SELECT * FROM pro_3dcotizacion dc
+  JOIN pro_2producto p ON dc.cod_producto = p.cod_producto
+  WHERE id_cotizacion = ?';
+  $rsd = prepareRS($conexion, $queryDetail, [$post['idCot']]);
+  $dataDetail = $rsd->fetchAll(PDO::FETCH_ASSOC);
+  if (!empty($dataResponse)) {
+    responseJSON([
+      'status' => 200,
+      'message' => 'Información encontrada exitosamente',
+      'result' => [
+        'cotizacion' => $dataResponse,
+        'detail' => $dataDetail
+      ]
+    ]);
+  } else {
+    responseJSON([
+      'status' => 400,
+      'message' => 'No se encontro la información',
+    ]);
+  }
+}
+
 
 if ($post['endpoint'] === 'add') {
 
@@ -32,7 +64,11 @@ if ($post['endpoint'] === 'add') {
 }
 
 if ($post['endpoint'] === 'update') {
-  $query = "CALL pro_5editProducto (?,?,?,?,?,?,?,?,?,?,?)";
+  responseJSON([
+    'status' => 200,
+    'message' => $post,
+  ]);
+  /*$query = "CALL pro_5editProducto (?,?,?,?,?,?,?,?,?,?,?)";
   $params = [
     strtoupper($post['cod_product']),
     !empty($post['cod_alt']) ? $post['cod_alt'] : '0',
@@ -49,11 +85,13 @@ if ($post['endpoint'] === 'update') {
 
   $rs = prepareRS($conexion, $query, $params);
   responseJSON($rs->fetch(PDO::FETCH_ASSOC));
+  */
   #setBitacora('INVENTARIO','MODIFICAR PRODUCTO',$params,$_SESSION['pro']['usr']['user']);
 }
 
+
 if ($post['endpoint'] === 'delete') {
-  $query = "DELETE FROM pro_2producto WHERE cod_producto IN ";
+  $query = "DELETE FROM pro_2cotizacion WHERE id_cotizacion IN ";
   $delItems = implode("','", $post['list']);
   $query .= "('{$delItems}')";
 
@@ -62,7 +100,7 @@ if ($post['endpoint'] === 'delete') {
     unset($_SESSION['error']);
     responseJSON(['status' => 400, 'error' => $error]);
   else:
-    responseJSON(['status' => 200, 'message' => "Producto(s) de Inventario {$delItems} Borrado(s) Correctamente"]);
+    responseJSON(['status' => 200, 'message' => "Cotizacion(es) '{$delItems}' Borrada(s) Correctamente"]);
   #setBitacora('INVENTARIO','BORRAR PRODUCTO',$params,$_SESSION['pro']['usr']['user']);
   endif;
 }

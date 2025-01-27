@@ -33,6 +33,7 @@ importModals();
       <table id="tbl-cotizacion" class="table table-striped table-hover w-100">
         <thead>
           <tr>
+            <th hidden>cod</th>
             <th>ID</th>
             <th>#Comprobante</th>
             <th>Fecha</th>
