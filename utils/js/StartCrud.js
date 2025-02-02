@@ -47,9 +47,25 @@ export function loadCrud(instance, hideCols = []) {
 
   form.on("submit", function (e) {
     e.preventDefault();
-    var formData = $(this).serializeArray();
-    var dataSend = formData.reduce((obj, item) => {
-      obj[item.name] = item.value;
+
+    let formData = $(this).serializeArray();
+
+    let dataSend = formData.reduce((obj, item) => {
+      // Verifica si el nombre del campo indica que es un array
+      if (item.name.endsWith("[]")) {
+        // Retira el sufijo '[]' para guardar el valor
+        const key = item.name.slice(0, -2);
+
+        // Si la propiedad no existe, inicializa un array
+        if (!obj[key]) {
+          obj[key] = [];
+        }
+        // Agrega el valor al array de esa propiedad
+        obj[key].push(item.value);
+      } else {
+        // Para los campos que no son arrays, simplemente asigna el valor
+        obj[item.name] = item.value;
+      }
       return obj;
     }, {});
 

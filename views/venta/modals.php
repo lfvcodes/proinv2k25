@@ -56,7 +56,7 @@
    <label class="form-label text-primary">Detalle de venta</label>
 
    <div class="row mb-3">
-      <table class="table table-sm" id="tbl-cond">
+      <table class="table table-sm" id="tbl-items">
          <thead>
             <th width="40%">Item</th>
             <th width="15%">Cantidad</th>

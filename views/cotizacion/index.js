@@ -3,7 +3,7 @@ import { loadCrud } from "@StartCrud";
 
 const hiddenCols = ["cod", "registro"];
 loadComponents();
-loadCrud("cotizacion", hiddenCols);
+loadCrud("cotizacion", hiddenCols, true);
 
 function startDOM() {
   let dataRow = $('#dt-controls button[control="view"]').attr("row");
@@ -25,26 +25,26 @@ function startDOM() {
   });
 }
 
-function refreshItemStatus() {
+window.refreshItemStatus = function () {
   let totalCot = 0;
   let count = 0;
-  $("#tbl-cond tbody tr").each(function () {
-    if (!empty($(this).find("td:eq(3) .monto").val())) {
-      totalCot += Number($(this).find("td:eq(3) .monto").val());
+  $("#mdl-cotizacion #tbl-cond tbody tr").each(function () {
+    if (!empty($(this).find("td:eq(3) .titem").val())) {
+      totalCot += Number($(this).find("td:eq(3) .titem").val());
       count++;
     }
   });
 
   $("#countItems").html(`#Items: ${count}`);
 
-  $("#stotald").val(
+  $("#mdl-cotizacion #stotald").val(
     totalCot.toLocaleString("es-ES", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
       useGrouping: true,
     })
   );
-}
+};
 
 window.addCot = function () {
   $("#tbl-cond tbody").append(`
@@ -53,7 +53,7 @@ window.addCot = function () {
           <select class="form-select form-control prod" name="prod[]"></select>
         </td>
         <td>
-          <input type="number" required onkeyup="calcm(this)" onchange="calcm(this)" name="cant[]" 
+          <input type="number" required name="cant[]" 
           class="form-control cant" min="1" step="1" value="">
         </td>
         <td>
@@ -134,7 +134,7 @@ function loadCotizacion(data, $type) {
           </select>
         </td>
         <td>
-          <input type="number" required onkeyup="calcm(this)" onchange="calcm(this)" name="cant[]" 
+          <input type="number" required name="cant[]" 
           class="form-control cant" min="1" step="1" value="${item.cant}" >
         </td>
         <td>
@@ -144,7 +144,7 @@ function loadCotizacion(data, $type) {
           class="form-control monto" min="0.01" step="0.01">
         </td>
         <td>
-          <input type="number" readonly class="form-control titem" value="${total_item}">
+          <input type="number" disabled class="form-control titem" value="${total_item}">
         </td>
         <td>
           ${
@@ -197,7 +197,6 @@ window.alterControl = function () {
     let data = await getCotizacionData(row.id_cotizacion);
 
     if (data) {
-      console.log(data);
       loadCotizacion(data, "edit");
     } else {
       console.log("error en respuesta");

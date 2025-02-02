@@ -20,14 +20,14 @@ function importModals()
     $dref = !empty($detailRef) ?  "dref='{$detailRef}'" : '';
 
     $crud = $formElement->getAttribute('crud') ?: '';
-    $crudForm = $crud ? "<form  enctype='multipart/form-data' method='POST' class='modal-content'>" : "<div class='modal-content'>";
+    $crudForm = $crud ? "<form enctype='multipart/form-data' method='POST' class='modal-content'>" : "<div class='modal-content'>";
     $crudFormClose = $crud ? '</form>' : '</div>';
     $crudFormButton = $crud ? 'submit' : 'button';
     $size = $formElement->getAttribute('size') ?: 'xl';
 
     $title = utf8_decode($formElement->getAttribute('title')) ?: '';
     $scroll = $formElement->getAttribute('scroll') ?: false;
-    $styleBody = ($scroll) ? 'style="max-height: calc(100vh - 200px); overflow-y: auto;"' : '';
+    $styleBody = ($scroll) ? 'style="max-height: calc(100vh - 240px); overflow-y: auto;"' : '';
 
     $modal = "<div class='modal fade' id='{$id}' {$detailMode} {$dref} tabindex='-1'
              data-bs-backdrop='static' data-bs-keyboard='false'

@@ -64,11 +64,49 @@ if ($post['endpoint'] === 'add') {
 }
 
 if ($post['endpoint'] === 'update') {
-  responseJSON([
-    'status' => 200,
-    'message' => $post,
-  ]);
-  /*$query = "CALL pro_5editProducto (?,?,?,?,?,?,?,?,?,?,?)";
+
+  $end = sizeof($post['cant']);
+  $params = array(
+    $post['freg'] . ' ' . $post['ftime'],
+    $post['optcliente'],
+    $post['desc'],
+    $session['user'],
+    $post['ncot'],
+  );
+
+  $queryUpdate = 'UPDATE pro_2cotizacion SET fecha_cotizacion = ?, id_cliente = ?, descripcion = ?, log_user = ? WHERE id_cotizacion = ?';
+  $rs = prepareRS($conexion, $queryUpdate, $params);
+
+  if (!$rs) {
+    responseJSON(['status' => 400, 'message' => 'Error al intentar Modificar 1']);
+  } else {
+
+    if (!prepareRS($conexion, 'DELETE FROM pro_3dcotizacion WHERE id_cotizacion = ?', [$post['ncot']])) {
+      responseJSON(['status' => 400, 'message' => 'Error al intentar Modificar2']);
+    } else {
+      $values = array();
+      $params2 = array();
+      $int_query = 'INSERT INTO pro_3dcotizacion (id_cotizacion,cod_producto,cant,monto) VALUES ';
+      $mtotal = 0;
+      for ($i = 0; $i < $end; $i++) {
+        $values[] = '(?,?,?,?)';
+        $params2[] = $post['ncot'];
+        $params2[] = $post['prod'][$i];
+        $params2[] = $post['cant'][$i];
+        $params2[] = $post['monto'][$i];
+        $mtotal += ($post['monto'][$i] * $post['cant'][$i]);
+      }
+      $valuesString = implode(',', $values);
+      $int_query .= $valuesString;
+      if (!prepareRS($conexion, $int_query, $params2)) {
+        responseJSON(['status' => 400, 'message' => 'Error al intentar Modificar3']);
+        #setBitacora('COTIZACIONES', 'MODIFICAR COTIZACION: ' . $post['fact'], $params, $_SESSION['pro']['usr']['user']);
+      } else {
+        responseJSON(['status' => 200, 'message' => 'Cotizacion Modificada Correctamente']);
+      }
+    }
+
+    /*$query = "CALL pro_5editProducto (?,?,?,?,?,?,?,?,?,?,?)";
   $params = [
     strtoupper($post['cod_product']),
     !empty($post['cod_alt']) ? $post['cod_alt'] : '0',
@@ -86,7 +124,8 @@ if ($post['endpoint'] === 'update') {
   $rs = prepareRS($conexion, $query, $params);
   responseJSON($rs->fetch(PDO::FETCH_ASSOC));
   */
-  #setBitacora('INVENTARIO','MODIFICAR PRODUCTO',$params,$_SESSION['pro']['usr']['user']);
+    #setBitacora('INVENTARIO','MODIFICAR PRODUCTO',$params,$_SESSION['pro']['usr']['user']);
+  }
 }
 
 
