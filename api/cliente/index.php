@@ -89,3 +89,10 @@ if ($post['endpoint'] == 'delete') {
       responseJSON(['status' => 200, 'message' => 'Cliente(es) Borrados Correctamente']);
    endif;
 }
+
+if ($post['endpoint'] === 'getListOptionCli') {
+   $lk = (!isset($post['lk'])) ? null : $post['lk'];
+   $query = "SELECT id_cliente AS id,razon_social AS text FROM pro_1cliente WHERE activo = 1 AND CONCAT(id_cliente,razon_social) LIKE '%" . $lk . "%' ORDER BY razon_social ASC";
+   $rss = prepareRS($conexion, $query, []);
+   echo ($rss->rowCount() > 0) ? json_encode($rss->fetchAll()) : json_encode(`<span>No se encontraron resultados</span>`);
+}

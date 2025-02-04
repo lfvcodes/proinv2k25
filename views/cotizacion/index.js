@@ -25,6 +25,67 @@ function startDOM() {
   });
 }
 
+function initSelectCli() {
+  $(".cli").select2({
+    theme: "bootstrap-5",
+    dropdownParent: $("#mdl-cotizacion"),
+    ajax: {
+      url: "../../api/cliente/",
+      type: "post",
+      dataType: "json",
+      delay: 250,
+      data: function (params) {
+        return {
+          endpoint: "getListOptionCli",
+          lk: params.term,
+        };
+      },
+      processResults: function (response) {
+        return { results: response };
+      },
+    },
+    language: {
+      searching: function () {
+        return "Buscando...";
+      },
+      noResults: function () {
+        return "No se Encontraron Resultados";
+      },
+    },
+  });
+}
+
+function initSelectCot() {
+  $("#mdl-cotizacion #tbl-cond .prod").select2({
+    theme: "bootstrap-5",
+    dropdownParent: $("#mdl-cotizacion"),
+    ajax: {
+      url: "../../api/inventario/",
+      type: "POST",
+      dataType: "json",
+      delay: 250,
+      data: function (params) {
+        return {
+          endpoint: "getOptionProduct",
+          lk: params.term,
+        };
+      },
+      processResults: function (response) {
+        return { results: response };
+      },
+      cache: true,
+    },
+    language: {
+      searching: function () {
+        return "Buscando...";
+      },
+      noResults: function () {
+        return "No se Encontraron Resultados";
+      },
+    },
+  });
+}
+
 window.refreshItemStatus = function () {
   let totalCot = 0;
   let count = 0;
@@ -76,6 +137,7 @@ window.addCot = function () {
   });
 
   refreshItemStatus();
+  initSelectCot();
 };
 
 window.removeCot = function (btn) {
@@ -157,6 +219,10 @@ function loadCotizacion(data, $type) {
           }
         </td>
     </tr>`);
+    if ($type == "edit") {
+      initSelectCli(cotizacion);
+      initSelectCot();
+    }
   });
 
   $("#mdl-cotizacion #stotald").val(

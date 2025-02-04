@@ -67,6 +67,26 @@ if ($post['endpoint'] === 'delete') {
   endif;
 }
 
+if ($post['endpoint'] === 'getOptionProduct') {
+  $lk = (!isset($post['lk'])) ? null : $post['lk'];
+  $query = "SELECT d.cod_producto AS id,IF(u_medida IS NOT NULL, 
+CONCAT(nom_producto,
+    CASE u_medida
+        WHEN 'BD' THEN ' (BIDON)'
+        WHEN 'C' THEN ' (CAJA)'
+        WHEN 'BU' THEN ' (BULTO)'
+        WHEN 'L' THEN ' (LITRO)'
+        WHEN 'G' THEN ' (GALON)'
+        WHEN 'P' THEN ' (PAQUETE)'
+        WHEN 'U' THEN ' (UNIDAD)'
+        WHEN '' THEN ''
+        ELSE u_medida
+    END
+), nom_producto) AS text FROM pro_2producto d WHERE d.nom_producto LIKE '%" . $lk . "%' ORDER BY d.nom_producto ASC";
+  $rss = prepareRS($conexion, $query, []);
+  echo ($rss->rowCount() > 0) ? json_encode($rss->fetchAll()) : json_encode(`<span>No se encontraron resultados</span>`);
+}
+
 if ($post['endpoint'] === 'getProductSupplier') {
   $query = 'SELECT 
     CONCAT(p.sig_idproveedor,"-",p.id_proveedor) AS rif,
