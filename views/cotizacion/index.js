@@ -2,6 +2,7 @@ import { loadComponents, response, empty } from "@util";
 import { loadCrud } from "@StartCrud";
 
 const hiddenCols = ["cod", "registro"];
+let productosSeleccionados = [];
 loadComponents();
 loadCrud("cotizacion", hiddenCols, true);
 
@@ -21,9 +22,19 @@ function startDOM() {
     $(`#mdl-cotizacion input[name="endpoint"]`).val("add");
     $("#mdl-cotizacion #agregarFila").prop("hidden", false);
     $("#mdl-cotizacion #stotald").val("");
+    $("#mdl-cotizacion .cli").html("");
     $("#tbl-cond tbody").html("");
+    initSelectCli();
   });
 }
+
+window.calcm = function (me) {
+  let precio = $(me).parent("td").parent("tr").find("td .monto").val();
+  let titem = $(me).parent("td").parent("tr").find("td .titem");
+  let item = precio * Number($(me).val());
+  titem.val(item.toFixed(2));
+  refreshItemStatus();
+};
 
 function initSelectCli() {
   $(".cli").select2({
@@ -84,6 +95,78 @@ function initSelectCot() {
       },
     },
   });
+
+  $("#mdl-cotizacion #tbl-cond .prod").change(function (e) {
+    var nuevoProducto = $(this).val();
+    var filaActual = $(this).closest("tr");
+    var filaIndex = filaActual.index();
+    var productosSeleccionadosTemp = [...productosSeleccionados]; // Crear una copia temporal del array de productos seleccionados
+
+    // Eliminar el producto previamente seleccionado de la lista de productos seleccionados
+    var productoAnterior = filaActual.data("producto-seleccionado");
+    if (productoAnterior) {
+      var indexProductoAnterior =
+        productosSeleccionadosTemp.indexOf(productoAnterior);
+      if (indexProductoAnterior > -1) {
+        productosSeleccionadosTemp.splice(indexProductoAnterior, 1);
+      }
+    }
+
+    // Validar si el producto ya ha sido seleccionado en otra fila
+    if (productosSeleccionadosTemp.includes(nuevoProducto)) {
+      Swal.fire(
+        "¡El producto seleccionado ya ha sido agregado en otra fila!",
+        "",
+        "warning"
+      );
+      $(this).val(productoAnterior).trigger("change"); // Revertir la selección al producto anterior
+      return;
+    }
+
+    // Actualizar el producto seleccionado en la fila actual
+    filaActual.data("producto-seleccionado", nuevoProducto);
+
+    // Actualizar el array de productos seleccionados después de la validación
+    if (productoAnterior) {
+      var indexProductoAnterior =
+        productosSeleccionados.indexOf(productoAnterior);
+      if (indexProductoAnterior > -1) {
+        productosSeleccionados.splice(indexProductoAnterior, 1);
+      }
+    }
+    if (nuevoProducto) {
+      var vl = $(this).val();
+      response("inventario/", {
+        endpoint: "getProductPrices",
+        id: vl,
+      }).then((data) => {
+        let $rs = data.result[0];
+        if (sessionStorage.getItem("tipo") > 1) {
+          var t = sessionStorage.getItem("tipo");
+          $(this)
+            .parent("td")
+            .parent("tr")
+            .find("td .monto")
+            .val($rs["pventa" + t]);
+        } else {
+          $(this)
+            .parent("td")
+            .parent("tr")
+            .find("td .monto")
+            .val($rs["pventa"]);
+        }
+        /* solo para ventas*/
+        /*
+        $(this)
+          .parent("td")
+          .parent("tr")
+          .find("td .cant")
+          .attr("max", $rs["stockreal"] <= 0 ? $rs["stockreal"] : 0);
+          */
+        productosSeleccionados.push(nuevoProducto);
+      });
+    }
+  });
 }
 
 window.refreshItemStatus = function () {
@@ -114,7 +197,7 @@ window.addCot = function () {
           <select class="form-select form-control prod" name="prod[]"></select>
         </td>
         <td>
-          <input type="number" required name="cant[]" 
+          <input type="number" onchange="calcm(this)" required name="cant[]" 
           class="form-control cant" min="1" step="1" value="">
         </td>
         <td>
@@ -125,7 +208,8 @@ window.addCot = function () {
           <input type="number" readonly class="form-control titem" value="">
         </td>
         <td>
-          <button onclick="removeCot(this);" type="button" class="btn btn-sm btn-danger rounded-pill p-2">
+          <button onclick="removeCot(this);" type="button" title="Quitar Item de la Lista"
+          class="btn btn-sm btn-danger rounded-pill p-2">
               <i class="bi bi-dash-circle m-0"></i>
           </button>
         </td>
@@ -141,6 +225,8 @@ window.addCot = function () {
 };
 
 window.removeCot = function (btn) {
+  let optionSelect = $(btn).parent("td").parent("tr").find("td .prod").val();
+  productosSeleccionados.splice(productosSeleccionados.indexOf(optionSelect));
   $(btn).parent("td").parent("tr").remove();
 
   refreshItemStatus();
@@ -196,7 +282,7 @@ function loadCotizacion(data, $type) {
           </select>
         </td>
         <td>
-          <input type="number" required name="cant[]" 
+          <input type="number" onchange="calcm(this)" required name="cant[]" 
           class="form-control cant" min="1" step="1" value="${item.cant}" >
         </td>
         <td>
@@ -212,7 +298,8 @@ function loadCotizacion(data, $type) {
           ${
             $type == "edit"
               ? `
-          <button onclick="removeCot(this);" type="button" class="btn btn-sm btn-danger rounded-pill p-2">
+          <button onclick="removeCot(this);" type="button" title="Quitar Item de la Lista"
+          class="btn btn-sm btn-danger rounded-pill p-2">
               <i class="bi bi-dash-circle m-0"></i>
           </button> `
               : ``
@@ -280,4 +367,5 @@ $(function () {
         startDOM();
       }
     });
+  initSelectCot();
 });

@@ -70,19 +70,19 @@ if ($post['endpoint'] === 'delete') {
 if ($post['endpoint'] === 'getOptionProduct') {
   $lk = (!isset($post['lk'])) ? null : $post['lk'];
   $query = "SELECT d.cod_producto AS id,IF(u_medida IS NOT NULL, 
-CONCAT(nom_producto,
-    CASE u_medida
-        WHEN 'BD' THEN ' (BIDON)'
-        WHEN 'C' THEN ' (CAJA)'
-        WHEN 'BU' THEN ' (BULTO)'
-        WHEN 'L' THEN ' (LITRO)'
-        WHEN 'G' THEN ' (GALON)'
-        WHEN 'P' THEN ' (PAQUETE)'
-        WHEN 'U' THEN ' (UNIDAD)'
-        WHEN '' THEN ''
-        ELSE u_medida
-    END
-), nom_producto) AS text FROM pro_2producto d WHERE d.nom_producto LIKE '%" . $lk . "%' ORDER BY d.nom_producto ASC";
+  CONCAT(nom_producto,
+      CASE u_medida
+          WHEN 'BD' THEN ' (BIDON)'
+          WHEN 'C' THEN ' (CAJA)'
+          WHEN 'BU' THEN ' (BULTO)'
+          WHEN 'L' THEN ' (LITRO)'
+          WHEN 'G' THEN ' (GALON)'
+          WHEN 'P' THEN ' (PAQUETE)'
+          WHEN 'U' THEN ' (UNIDAD)'
+          WHEN '' THEN ''
+          ELSE u_medida
+      END
+  ), nom_producto) AS text FROM pro_2producto d WHERE d.nom_producto LIKE '%" . $lk . "%' ORDER BY d.nom_producto ASC";
   $rss = prepareRS($conexion, $query, []);
   echo ($rss->rowCount() > 0) ? json_encode($rss->fetchAll()) : json_encode(`<span>No se encontraron resultados</span>`);
 }
@@ -92,17 +92,24 @@ if ($post['endpoint'] === 'getProductSupplier') {
     CONCAT(p.sig_idproveedor,"-",p.id_proveedor) AS rif,
     p.razon_social AS nombre,
     sub.ucompra
-FROM pro_1proveedor p
-JOIN (
-    SELECT 
-        c.id_proveedor,
-        DATE(MAX(c.fecha_compra)) AS ucompra
-    FROM pro_3dcompra dc
-    JOIN pro_2compra c ON dc.id_pago = c.id_pago
-    WHERE dc.cod_producto = ?
-    GROUP BY c.id_proveedor
-) AS sub ON p.id_proveedor = sub.id_proveedor';
+  FROM pro_1proveedor p
+  JOIN (
+      SELECT 
+          c.id_proveedor,
+          DATE(MAX(c.fecha_compra)) AS ucompra
+      FROM pro_3dcompra dc
+      JOIN pro_2compra c ON dc.id_pago = c.id_pago
+      WHERE dc.cod_producto = ?
+      GROUP BY c.id_proveedor
+  ) AS sub ON p.id_proveedor = sub.id_proveedor';
 
+  $rs = prepareRS($conexion, $query, [$post['id']]);
+  resultResponse($rs, 'all');
+}
+
+if ($post['endpoint'] === 'getProductPrices') {
+  $stk = '(SELECT (SELECT SUM(cant) FROM pro_3dcompra dc WHERE dc.cod_producto = d.cod_producto) - IFNULL( (SELECT SUM(cant) FROM pro_3dventa dv WHERE dv.cod_producto = d.cod_producto),0) )';
+  $query = "SELECT p_costo AS pcosto, p_venta AS pventa,stock_maximo AS smaximo, {$stk} AS stockreal FROM pro_2producto d WHERE cod_producto = ? LIMIT 1";
   $rs = prepareRS($conexion, $query, [$post['id']]);
   resultResponse($rs, 'all');
 }

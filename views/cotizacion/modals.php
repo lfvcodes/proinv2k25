@@ -11,8 +11,8 @@
 
       </div>
       <div class="col input-group">
-         <label class="input-group-text" for="freg">Fecha de Cotización</label>
-         <input type="date" name="freg" id="freg" class="form-control">
+         <label class="input-group-text" for="fregc">Fecha de Cotización</label>
+         <input type="date" name="fregc" id="fregc" class="form-control">
          <input type="time" name="ftime" id="ftime" class="form-control">
       </div>
 
@@ -51,7 +51,8 @@
             <th width="20%">Precio</th>
             <th width="20%">Total Item</th>
             <th width="5%">
-               <button type="button" onclick="addCot();" class="btn btn-sm btn-primary p-2 rounded-pill" id="agregarFila">
+               <button type="button" onclick="addCot();" title="Agregar Item a la Lista"
+                  class="btn btn-sm btn-primary p-2 rounded-pill" id="agregarFila">
                   <i class="bi bi-plus-circle m-0"></i>
                </button>
             </th>

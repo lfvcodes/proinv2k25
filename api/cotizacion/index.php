@@ -40,7 +40,6 @@ if ($post['endpoint'] == 'getCotizacion') {
   }
 }
 
-
 if ($post['endpoint'] === 'add') {
 
   $query = "CALL pro_5setProducto (?,?,?,?,?,?,?,?,?,?,?)";
@@ -67,7 +66,7 @@ if ($post['endpoint'] === 'update') {
 
   $end = sizeof($post['cant']);
   $params = array(
-    $post['freg'] . ' ' . $post['ftime'],
+    $post['fregc'] . ' ' . $post['ftime'],
     $post['optcliente'],
     $post['desc'],
     $session['user'],
@@ -127,7 +126,6 @@ if ($post['endpoint'] === 'update') {
     #setBitacora('INVENTARIO','MODIFICAR PRODUCTO',$params,$_SESSION['pro']['usr']['user']);
   }
 }
-
 
 if ($post['endpoint'] === 'delete') {
   $query = "DELETE FROM pro_2cotizacion WHERE id_cotizacion IN ";
