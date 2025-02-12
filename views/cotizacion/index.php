@@ -13,7 +13,6 @@ require_once __DIR__ . '/../../includes/header.php';
 importExtModal(__DIR__ . '/../../views/venta/modals.php');
 importModals();
 ?>
-
 <div class="card">
   <div class="card-header">
     <div class="row">
@@ -37,7 +36,7 @@ importModals();
             <th>ID</th>
             <th>#Comprobante</th>
             <th>Fecha</th>
-            <th>idcliente</th>
+            <th>RIF</th>
             <th>Concepto</th>
             <th>Usuario</th>
             <th hidden>Registro</th>

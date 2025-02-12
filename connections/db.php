@@ -1,5 +1,4 @@
 <?php
-
 $conexion = null;
 $dsn = "mysql:host=localhost;dbname=bd_proinv2k25;charset=utf8";
 $optionsPdo = [

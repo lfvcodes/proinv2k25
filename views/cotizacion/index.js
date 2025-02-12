@@ -1,4 +1,4 @@
-import { loadComponents, response, empty } from "@util";
+import { loadComponents, response, empty, showModalDocument } from "@util";
 import { loadCrud } from "@StartCrud";
 
 const hiddenCols = ["cod", "registro"];
@@ -11,7 +11,14 @@ function startDOM() {
   const $btnCopyVent = `<button type="button" control="copy" id="btn-copy" onclick="copyToVenta(this)" class="btn rounded-circle p-2 btn-primary controls">
                <i class="m-auto bx bx-copy text-white"></i>
             </button>`;
-  let htmlControl = $btnCopyVent + sessionStorage.getItem("controls");
+
+  const $btnPrintCot = `<button type="button" control="pdf" id="btn-print-pdf" onclick="printPdfCot(this)"
+   class="btn rounded-circle p-2 btn-primary controls ms-1">
+      <i class="m-auto bi bi-file-pdf text-white fw-bold"></i>
+  </button>`;
+
+  let htmlControl =
+    $btnCopyVent + $btnPrintCot + sessionStorage.getItem("controls");
   $("#dt-controls").html(htmlControl);
   $("#dt-controls button").attr("row", dataRow);
   alterControl();
@@ -238,6 +245,13 @@ window.removeCot = function (btn) {
 window.copyToVenta = function (btn) {
   let objData = JSON.parse(atob($(btn).attr("row")));
   alert("copiar a venta");
+};
+
+window.printPdfCot = function (btn) {
+  let row = atob($(btn).attr("row"));
+  let dataRow = JSON.parse(row)[0];
+  let urlPdf = `pdf/cotizacion.php?rc=${dataRow.cod}`;
+  showModalDocument(urlPdf, `Cotización N° ${dataRow.cod}`);
 };
 
 async function getCotizacionData(idCotizacion) {

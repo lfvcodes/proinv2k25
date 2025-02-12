@@ -1,4 +1,5 @@
 export const APP_PATH = "../../";
+export const DOCS_PATH = "../../documents/";
 const VIEW_PATH = "../../views/";
 const API_PATH = "../../api/";
 
@@ -43,6 +44,44 @@ function changeStyle(modo) {
       "modo_estilo=oscuro; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
   }
   window.location.reload();
+}
+
+export function showModalDocument(url, pdfTitle) {
+  let modalID = "pdfModal";
+  let iframeID = "pdfIframe";
+
+  // Comprobar si el modal ya existe
+  if ($("#" + modalID).length) {
+    // Si el modal existe, actualizar la URL del iframe
+    $("#" + iframeID).attr("src", url);
+  } else {
+    // Si el modal no existe, crearlo
+    let modalHtml = `
+      <div class="modal fade" id="${modalID}" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">${pdfTitle}</h5>
+              <button type="button" class="btn-close"
+                data-bs-dismiss="modal" aria-label="Close">
+              </button>
+            </div>
+            <div class="modal-body">
+              <iframe id="${iframeID}" src="${DOCS_PATH}${url}" style="width: 100%; height: 80vh;"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    $("body").append(modalHtml);
+    // Inicializar el modal de Bootstrap
+    $("#" + modalID).modal("show");
+    // Asegurarse de que el modal se elimina del DOM al cerrarse, para evitar duplicados
+    $("#" + modalID).on("hidden.bs.modal", function (e) {
+      $(this).remove();
+    });
+  }
 }
 
 export function capitalize(string) {
