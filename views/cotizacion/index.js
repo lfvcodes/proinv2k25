@@ -368,4 +368,5 @@ $(function () {
       }
     });
   initSelectCot();
+  initSelectCli();
 });

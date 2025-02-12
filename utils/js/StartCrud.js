@@ -69,21 +69,32 @@ export function loadCrud(instance, hideCols = []) {
       return obj;
     }, {});
 
-    var titleAlert = mdl.find(".modal-title").text();
+    let titleAlert = mdl.find(".modal-title").text();
 
-    response(`${instance}/`, dataSend)
-      .then((data) => {
-        crudAlert(titleAlert, data.message, "success");
-        refreshTable();
-        mdl.modal("hide");
-        console.log(data.result);
-      })
-      .catch((error) => {
-        const msgError =
-          (error.responseJSON && error.responseJSON.message) ||
-          "Error desconocido";
-        crudAlert(`Error al ${titleAlert} `, msgError, "danger", ".modal-body");
-      });
+    SAConfig.title = "¿Está Seguro(a) de Confirmar este Proceso?";
+    console.log(SAConfig);
+    Swal.fire(SAConfig).then((result) => {
+      if (result.value == true) {
+        response(`${instance}/`, dataSend)
+          .then((data) => {
+            crudAlert(titleAlert, data.message, "success");
+            refreshTable();
+            mdl.modal("hide");
+            console.log(data.result);
+          })
+          .catch((error) => {
+            const msgError =
+              (error.responseJSON && error.responseJSON.message) ||
+              "Error desconocido";
+            crudAlert(
+              `Error al ${titleAlert} `,
+              msgError,
+              "danger",
+              ".modal-body"
+            );
+          });
+      }
+    });
   });
 
   window[`view_${instance}`] = function () {

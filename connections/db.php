@@ -14,7 +14,7 @@ try {
   echo "Error de Conexion: " . $e->getMessage();
 }
 
-function prepareRS($conexion, $query, $params)
+function prepareRS($conexion, $query, $params, $lastInsert = false)
 {
   try {
     $statment = $conexion->prepare($query);

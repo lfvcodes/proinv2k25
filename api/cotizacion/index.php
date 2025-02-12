@@ -42,24 +42,22 @@ if ($post['endpoint'] == 'getCotizacion') {
 
 if ($post['endpoint'] === 'add') {
 
-  $query = "CALL pro_5setProducto (?,?,?,?,?,?,?,?,?,?,?)";
-  $params = [
-    strtoupper($post['cod_product']),
-    !empty($post['cod_alt']) ? strtoupper($post['cod_alt']) : null,
-    strtoupper($post['nom_product']),
-    strtoupper($post['desc_product']),
-    $post['optgrupo'],
-    $post['stockminimo'],
-    $post['stockmaximo'],
-    $post['pcosto'],
-    $post['pventa'],
-    $post['umedida'],
-    $post['stock']
-  ];
+  $params = array(
+    $post['optcliente'],
+    $post['fregc'] . ' ' . $post['ftime'],
+    $post['ncot'],
+    $post['desc'],
+    'admin',
+    implode(",", $post['prod']),
+    implode(",", $post['cant']),
+    implode(",", $post['monto'])
+  );
 
+  $query = 'CALL pro_5setCotizacion (?,?,?,?,?,?,?,?)';
   $rs = prepareRS($conexion, $query, $params);
   responseJSON($rs->fetch(PDO::FETCH_ASSOC));
-  #setBitacora('INVENTARIO','AGREGAR PRODUCTO',$params,$_SESSION['pro']['usr']['user']);
+  #setBitacora('COTIZACIONES', 'AGREGAR COTIZACION: ' . $post['fact'], $params, $_SESSION['pro']['usr']['user']);
+
 }
 
 if ($post['endpoint'] === 'update') {
@@ -104,25 +102,6 @@ if ($post['endpoint'] === 'update') {
         responseJSON(['status' => 200, 'message' => 'Cotizacion Modificada Correctamente']);
       }
     }
-
-    /*$query = "CALL pro_5editProducto (?,?,?,?,?,?,?,?,?,?,?)";
-  $params = [
-    strtoupper($post['cod_product']),
-    !empty($post['cod_alt']) ? $post['cod_alt'] : '0',
-    strtoupper($post['nom_product']),
-    strtoupper($post['desc_product']),
-    $post['optgrupo'],
-    $post['stockminimo'],
-    $post['stockmaximo'],
-    $post['pcosto'],
-    $post['pventa'],
-    $post['umedida'],
-    $post['stock']
-  ];
-
-  $rs = prepareRS($conexion, $query, $params);
-  responseJSON($rs->fetch(PDO::FETCH_ASSOC));
-  */
     #setBitacora('INVENTARIO','MODIFICAR PRODUCTO',$params,$_SESSION['pro']['usr']['user']);
   }
 }
