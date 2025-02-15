@@ -12,7 +12,7 @@ if ($post['endpoint'] == 'getList') {
 if ($post['endpoint'] == 'getCotizacion') {
   $query = 'SELECT cl.razon_social,DATE(c.registro) AS fregistro,
   TIME_FORMAT(TIME(c.registro), "%H:%i") AS tregistro,
-  DATE(c.fecha_cotizacion) AS fvencimiento,c.* 
+  DATE(c.fecha_cotizacion) AS fvencimiento,c.*
   FROM pro_2cotizacion c JOIN pro_1cliente cl ON c.id_cliente = cl.id_cliente
   WHERE c.id_cotizacion = ?';
   $rs = prepareRS($conexion, $query, [$post['idCot']]);
@@ -36,6 +36,26 @@ if ($post['endpoint'] == 'getCotizacion') {
     responseJSON([
       'status' => 400,
       'message' => 'No se encontro la información',
+    ]);
+  }
+}
+
+if ($post['endpoint'] == 'getDetail') {
+  $queryDetail = 'SELECT * FROM pro_3dcotizacion dc
+  JOIN pro_2producto p ON dc.cod_producto = p.cod_producto
+  WHERE id_cotizacion = ?';
+  $rsd = prepareRS($conexion, $queryDetail, [$post['id']]);
+  $dataDetail = $rsd->fetchAll(PDO::FETCH_ASSOC);
+  if (!empty($dataDetail)) {
+    responseJSON([
+      'status' => 200,
+      'message' => 'Información encontrada exitosamente',
+      'result' => $dataDetail
+    ]);
+  } else {
+    responseJSON([
+      'status' => 400,
+      'message' => 'No se encontró la información',
     ]);
   }
 }

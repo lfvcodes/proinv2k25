@@ -12,14 +12,14 @@
 
       <small id="refer" class="text-muted">Referido por: </small>
 
+   </div>
+
+   <div class="row mb-3">
       <div class="col input-group">
          <label class="input-group-text" for="freg">Fecha de venta</label>
          <input type="date" name="freg" id="freg" class="form-control">
       </div>
 
-   </div>
-
-   <div class="row mb-3">
       <div class="col input-group">
          <label class="input-group-text" for="fact">
             <i class="bi bi-receipt me-1"></i>Nota de Entrega
@@ -53,10 +53,10 @@
       </div>
    </div>
 
-   <label class="form-label text-primary">Detalle de venta</label>
+   <label class="form-label text-primary my-0">Detalle de venta</label>
 
    <div class="row mb-3">
-      <table class="table table-sm" id="tbl-items">
+      <table class="table table-sm" id="items-venta">
          <thead>
             <th width="40%">Item</th>
             <th width="15%">Cantidad</th>

@@ -1,5 +1,6 @@
 import { loadComponents, response, empty, showModalDocument } from "@util";
 import { loadCrud } from "@StartCrud";
+import { loadVenta } from "@Venta";
 
 const hiddenCols = ["cod", "registro"];
 let productosSeleccionados = [];
@@ -204,7 +205,7 @@ window.addCot = function () {
           <select class="form-select form-control prod" name="prod[]"></select>
         </td>
         <td>
-          <input type="number" onchange="calcm(this)" required name="cant[]" 
+          <input type="number" onchange="calcm(this)" required name="cant[]"
           class="form-control cant" min="1" step="1" value="">
         </td>
         <td>
@@ -243,8 +244,7 @@ window.removeCot = function (btn) {
 };
 
 window.copyToVenta = function (btn) {
-  let objData = JSON.parse(atob($(btn).attr("row")));
-  alert("copiar a venta");
+  loadVenta(btn, "Cotizacion");
 };
 
 window.printPdfCot = function (btn) {
@@ -296,7 +296,7 @@ function loadCotizacion(data, $type) {
           </select>
         </td>
         <td>
-          <input type="number" onchange="calcm(this)" required name="cant[]" 
+          <input type="number" onchange="calcm(this)" required name="cant[]"
           class="form-control cant" min="1" step="1" value="${item.cant}" >
         </td>
         <td>
