@@ -90,9 +90,15 @@ if ($post['endpoint'] == 'delete') {
    endif;
 }
 
-if ($post['endpoint'] === 'getListOptionCli') {
+if ($post['endpoint'] === 'getListOptionClient') {
    $lk = (!isset($post['lk'])) ? null : $post['lk'];
    $query = "SELECT id_cliente AS id,razon_social AS text FROM pro_1cliente WHERE activo = 1 AND CONCAT(id_cliente,razon_social) LIKE '%" . $lk . "%' ORDER BY razon_social ASC";
-   $rss = prepareRS($conexion, $query, []);
-   echo ($rss->rowCount() > 0) ? json_encode($rss->fetchAll()) : json_encode(`<span>No se encontraron resultados</span>`);
+   $rs = prepareRS($conexion, $query, []);
+   echo ($rs->rowCount() > 0) ? json_encode($rs->fetchAll()) : json_encode(`<span>No se encontraron resultados</span>`);
+}
+
+if ($post['endpoint'] === 'getReferClient') {
+   $query = 'SELECT CONCAT(v.nombre_vendedor," ",v.apellido_vendedor) AS ref FROM pro_1cliente c JOIN pro_1vendedor v ON c.id_vendedor = v.id_vendedor WHERE c.id_cliente = ? LIMIT 1';
+   $rs = prepareRS($conexion, $query, [$post['id']]);
+   resultResponse($rs, 'single');
 }

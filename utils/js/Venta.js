@@ -67,8 +67,15 @@ export function loadVentaItems(instance, $cod) {
     id: $cod,
   }).then((answer) => {
     if (answer.status == 200) {
-      let detalle = answer.result;
+      let dataParent = answer.result.master;
+      let detalle = answer.result.detail;
       let stotal = 0.0;
+
+      let cliOption = `<option selected value="${dataParent.id_cliente}">${dataParent.razon_social}</option>`;
+      $("#optcli").append(cliOption);
+      $("#mdl-venta .cli").select2("destroy");
+      findReferClient(dataParent.id_cliente);
+      initSelectClient();
 
       $("#mdl-venta #items-venta tbody").html("");
       detalle.forEach((item) => {
@@ -108,83 +115,14 @@ export function loadVentaItems(instance, $cod) {
           useGrouping: true,
         })
       );
+
+      initSelectProdVent();
     }
   });
 }
 
-window.changeCredit = function (me) {
-  if ($(me).val() == "C") {
-    $("#tasa,#mpago").parent(".input-group").prop("hidden", true);
-    $('label[for="fact"]').html(
-      '<i class="bi bi-receipt me-1"></i>Nota de Entrega'
-    );
-    $("#tasa,#mpago").prop("required", false);
-    $("#stotal").prop("hidden", true);
-    $("#flimit").prop("hidden", false);
-    $('#flimite,label[for="flimite"]').prop("hidden", false);
-    $('#iva,label[for="iva"]').prop("hidden", false);
-    $("#flimite").prop("required", true);
-
-    $("#iva").prop("checked", false);
-    $("#iva").val("off");
-    //ULTIMA NOTA CONSECUTIVA
-    $("#fact").val(lnota);
-  } else {
-    if ($(me).val() == "FD") {
-      $('label[for="fact"]').html('<i class="bi bi-receipt me-1"></i>Factura');
-    }
-
-    $("#tasa,#mpago").parent(".input-group").prop("hidden", false);
-    $("#tasa,#mpago").prop("required", true);
-    $("#stotal").prop("hidden", false);
-    $("#flimit").prop("hidden", true);
-    $("#flimite").prop("required", false);
-    var vtasa = Number($("#tasa").val());
-    var stotalb = 0;
-    $(".titem").each(function () {
-      stotald += Number($(this).val());
-      stotalb += stotald * vtasa;
-    });
-
-    if ($(me).val() == "F" || $(me).val() == "FD") {
-      $("#iva").prop("checked", true);
-      $("#iva").val("on");
-      $("#frm-venta #fact").val(null);
-      $('#iva,label[for="iva"]').prop("hidden", true);
-      $('#flimite,label[for="flimite"]').prop("hidden", false);
-    } else {
-      $("#iva").prop("checked", false);
-      $("#iva").val("off");
-    }
-
-    if ($(me).val() == "F") {
-      $("#tasa,#mpago").parent(".input-group").prop("hidden", true);
-      $('label[for="fact"]').html('<i class="bi bi-receipt me-1"></i>Factura');
-      $("#tasa,#mpago").prop("required", false);
-      $("#stotal").prop("hidden", true);
-      $("#flimit").prop("hidden", false);
-      $("#flimite").prop("required", true);
-    }
-
-    if ($(me).val() == "D") {
-      $("#fact").val(lnota);
-      $("#flimit").prop("hidden", false);
-      $('#iva,label[for="iva"]').prop("hidden", false);
-      $('#flimite,label[for="flimite"]').prop("hidden", false);
-    }
-    $("#stotald").val(
-      stotalb.toLocaleString("es-ES", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-        useGrouping: true,
-      })
-    );
-  }
-};
-
 function calcm(me) {
   let stotald = 0.0;
-
   let precio = $(me).parent("td").parent("tr").find("td .monto").val();
 
   let titem = $(me).parent("td").parent("tr").find("td .titem");
@@ -200,8 +138,18 @@ function calcm(me) {
   let vls = Number($(stock).attr("stk"));
   stock.val(vls - Number($(me).val()));
 
+  let stotalb = stotald * vtasa;
+
   $("#stotald").val(
     stotald.toLocaleString("es-ES", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      useGrouping: true,
+    })
+  );
+
+  $("#stotal").val(
+    stotalb.toLocaleString("es-ES", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
       useGrouping: true,
@@ -228,8 +176,20 @@ function refreshItemStatus() {
   );
 }
 
-function initSelectCli() {
-  $(".cli").select2({
+function findReferClient(clientId) {
+  $("#refer").text("");
+  response(`cliente/`, {
+    endpoint: "getReferClient",
+    id: clientId,
+  }).then((answer) => {
+    if (answer.status == 200) {
+      $("#refer").text(`Referido por: ${answer.result.ref}`);
+    }
+  });
+}
+
+function initSelectClient() {
+  $("#mdl-venta .cli").select2({
     theme: "bootstrap-5",
     dropdownParent: $("#mdl-venta"),
     ajax: {
@@ -239,7 +199,7 @@ function initSelectCli() {
       delay: 250,
       data: function (params) {
         return {
-          endpoint: "getListOptionCli",
+          endpoint: "getListOptionClient",
           lk: params.term,
         };
       },
@@ -256,11 +216,17 @@ function initSelectCli() {
       },
     },
   });
+
+  $("#mdl-venta .cli").on("change", function (e) {
+    if ($(`.menu-items .menu-title:contains('Vendedor')`).length > 0) {
+      let clientId = $(this).val();
+      findReferClient(clientId);
+    }
+  });
 }
 
 window.initSelectProdVent = function () {
-  console.log("cargar select");
-  $("#items-venta .prod").select2({
+  $("#items-venta tbody tr td .prod").select2({
     theme: "bootstrap-5",
     dropdownParent: $("#mdl-venta"),
     ajax: {
@@ -366,6 +332,104 @@ export function loadVenta(btn, instance) {
   let $jsonData = atob($(btn).attr("row"));
   let $data = JSON.parse($jsonData)[0];
 
+  if (instance == "Cotizacion") {
+    window.changeCredit = function (me) {
+      if ($(me).val() == "C") {
+        $("#tasa,#mpago").parent(".input-group").prop("hidden", true);
+        $('label[for="fact"]').html(
+          '<i class="bi bi-receipt me-1"></i>Nota de Entrega'
+        );
+        $("#tasa,#mpago").prop("required", false);
+        $("#stotal").prop("hidden", true);
+        $("#flimit").prop("hidden", false);
+      } else {
+        $('label[for="fact"]').html(
+          '<i class="bi bi-receipt me-1"></i>Comprobante'
+        );
+        $("#tasa,#mpago").parent(".input-group").prop("hidden", false);
+        $("#tasa,#mpago").prop("required", true);
+        $("#stotal").prop("hidden", false);
+
+        $("#flimit").prop("hidden", true);
+      }
+    };
+  } else {
+    window.changeCredit = function (me) {
+      if ($(me).val() == "C") {
+        $("#tasa,#mpago").parent(".input-group").prop("hidden", true);
+        $('label[for="fact"]').html(
+          '<i class="bi bi-receipt me-1"></i>Nota de Entrega'
+        );
+        $("#tasa,#mpago").prop("required", false);
+        $("#stotal").prop("hidden", true);
+        $("#flimit").prop("hidden", false);
+        $('#flimite,label[for="flimite"]').prop("hidden", false);
+        $('#iva,label[for="iva"]').prop("hidden", false);
+        $("#flimite").prop("required", true);
+
+        $("#iva").prop("checked", false);
+        $("#iva").val("off");
+        //ULTIMA NOTA CONSECUTIVA
+        $("#fact").val(lnota);
+      } else {
+        if ($(me).val() == "FD") {
+          $('label[for="fact"]').html(
+            '<i class="bi bi-receipt me-1"></i>Factura'
+          );
+        }
+
+        $("#tasa,#mpago").parent(".input-group").prop("hidden", false);
+        $("#tasa,#mpago").prop("required", true);
+        $("#stotal").prop("hidden", false);
+        $("#flimit").prop("hidden", true);
+        $("#flimite").prop("required", false);
+        let vtasa = Number($("#tasa").val());
+        let stotalb = 0;
+        let stotald = 0;
+        $(".titem").each(function () {
+          stotald += Number($(this).val());
+          stotalb += stotald * vtasa;
+        });
+
+        if ($(me).val() == "F" || $(me).val() == "FD") {
+          $("#iva").prop("checked", true);
+          $("#iva").val("on");
+          $("#frm-venta #fact").val(null);
+          $('#iva,label[for="iva"]').prop("hidden", true);
+          $('#flimite,label[for="flimite"]').prop("hidden", false);
+        } else {
+          $("#iva").prop("checked", false);
+          $("#iva").val("off");
+        }
+
+        if ($(me).val() == "F") {
+          $("#tasa,#mpago").parent(".input-group").prop("hidden", true);
+          $('label[for="fact"]').html(
+            '<i class="bi bi-receipt me-1"></i>Factura'
+          );
+          $("#tasa,#mpago").prop("required", false);
+          $("#stotal").prop("hidden", true);
+          $("#flimit").prop("hidden", false);
+          $("#flimite").prop("required", true);
+        }
+
+        if ($(me).val() == "D") {
+          $("#fact").val(lnota);
+          $("#flimit").prop("hidden", false);
+          $('#iva,label[for="iva"]').prop("hidden", false);
+          $('#flimite,label[for="flimite"]').prop("hidden", false);
+        }
+        $("#stotald").val(
+          stotalb.toLocaleString("es-ES", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+            useGrouping: true,
+          })
+        );
+      }
+    };
+  }
+
   let $lblTitle =
     instance == "Cotizacion"
       ? "Registrar Venta desde Cotización"
@@ -394,9 +458,6 @@ export function loadVenta(btn, instance) {
       $("#mdl-Venta #form-contained").unwrap();
     }
   });
-
-  initSelectCli();
-  initSelectProdVent();
 
   $("#mdl-venta").modal("show");
 }
@@ -432,6 +493,7 @@ window.addItemVenta = function () {
   });
 
   refreshItemStatus();
+  initSelectProdVent();
 };
 
 window.removeItemVenta = function (btn) {
