@@ -48,7 +48,7 @@ if ($post['endpoint'] == 'update') {
     unset($_SESSION['error']);
     responseJSON(['status' => 400, 'error' => $error]);
   else:
-    responseJSON(['status' => 200, 'message' => 'Vehiculo(s) Editado(s) Correctamente ' . json_encode($post)]);
+    responseJSON(['status' => 200, 'message' => 'Vehiculo(s) Editado(s) Correctamente']);
   endif;
 }
 

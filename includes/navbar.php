@@ -61,7 +61,7 @@
             <div class="dropdown-divider"></div>
 
             <?php if ($session['nivel'] === 1): ?>
-              <a id="btn-empresa-change" class="dropdown-item" href="<?= APP_PATH; ?>tasa/actualizar">
+              <a id="btn-empresa-change" class="dropdown-item" href="<?= VIEW_PATH; ?>tasa/">
                 <i class="bi bi-cash-coin me-2"></i>
                 <span class="align-middle">Actualizar Tasa</span>
               </a>

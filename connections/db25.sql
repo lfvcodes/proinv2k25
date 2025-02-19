@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `pro_1cliente` (
   KEY `cod_estado` (`cod_estado`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_1cliente: ~1,137 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_1cliente: ~1,138 rows (aproximadamente)
 INSERT IGNORE INTO `pro_1cliente` (`sig_idcliente`, `id_cliente`, `id_vendedor`, `razon_social`, `nom_contacto`, `cod_estado`, `dir_cliente`, `email_cliente`, `telf_cliente`, `activo`) VALUES
 	('J', '074202434', 'V-21.464.055', 'LUNCHERIA SORAIDA', 'NELSON GIMENEZ', NULL, 'AV. INTERCOMUNAL LOS RASTROJOS CON CALLE SANTA BARBARA', '', '04143570068', 1),
 	('J', '08503289-4', '31453238-3', 'CENTRO OCCIDENTAL DE INVERSIONES S.C.S', 'ANNY MELENDEZ', NULL, 'AV. LIBERTADOR C/ANTONIO BENITEZ MENDEZ EDIF VALE PTA BAJA LOCAL S/NRO', '', '414-9565396', 1),
@@ -105,6 +105,7 @@ INSERT IGNORE INTO `pro_1cliente` (`sig_idcliente`, `id_cliente`, `id_vendedor`,
 	('V', '146956854', 'V-21.464.055', 'ELSY JOSEFINA LEAL COLMENAREZ', 'ELSY MANAOS BURGUER', NULL, 'CALLE BOLIVAR CASA NRO 85 SECTOR LOS RASTROJOS ', '', '04245534776', 1),
 	('V', '148875045', 'V-21.464.055', 'CECILIA DEL CARMEN SILVA', 'Cecilia Panaderia Raschel', NULL, 'CALLE 3 CASA NRO 3 SECTOR EL TEREQUE. LOS RASTROJOS LARA ZONA POSTAL 3023', '', '412-7748120', 1),
 	('V', '15427420-7', 'V-21.464.055', 'GOMEZ PERALTA EXPRESS', '', NULL, 'CABUDARE CENTRO', '', '', 1),
+	('V', '16530532', 'ID002', 'cliente nuevo', NULL, '02', '', '', '', 1),
 	('V', '16905256-1', 'V-21.464.055', 'FRIGORÍFICO LOS PINOS', 'ROLMA', NULL, 'AV. 5 CON CALLE 5 LOS PINOS. CABUDARE', '', '04245249762', 1),
 	('V', '17504515', '31453238-3', 'JOSE LEAL', 'JOSE LEAL', NULL, 'URB. LA PUERTA CABUDARE', '', '04245429482', 1),
 	('V', '19.780.686', '27.034.459', 'DANIEL GIMENEZ ', 'DANIEL GIMENEZ', NULL, 'AV. MIRANDA ENTRE CALLE EL CEMENTERIO Y BRUZUAL. SARARE', '', ' 0414-5536932', 1),
@@ -4423,7 +4424,7 @@ CREATE TABLE IF NOT EXISTS `pro_2cotizacion` (
   CONSTRAINT `FK_pro_2cotizacion_pro_1cliente` FOREIGN KEY (`id_cliente`) REFERENCES `pro_1cliente` (`id_cliente`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_2cotizacion: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_2cotizacion: ~4 rows (aproximadamente)
 INSERT IGNORE INTO `pro_2cotizacion` (`id_cotizacion`, `cod_nota`, `fecha_cotizacion`, `id_cliente`, `descripcion`, `log_user`, `registro`) VALUES
 	(1, '80023899', '2023-11-09 00:00:00', '31743930-9', 'COMPRA SERV-PAPEL-TOALLAS NUEVAS', 'admin', '2023-11-09 14:19:43'),
 	(2, '1', '2023-11-23 00:00:00', '301854853', 'PRODUCTOS VARIOS', 'OSTORRES', '2023-11-23 16:06:33'),
@@ -8139,6 +8140,76 @@ BEGIN
         COMMIT;
         SELECT 200 AS status, CONCAT('Se ha Guardado el Producto ', in_id_producto, ' Correctamente') AS message;
     END;
+END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento bd_proinv2k25.pro_5setVenta
+DELIMITER //
+CREATE PROCEDURE `pro_5setVenta`()
+BEGIN
+    -- Declaración de variables
+    DECLARE `temp_prod` TEXT;
+    DECLARE `temp_cant` TEXT;
+    DECLARE `temp_monto` TEXT;
+    DECLARE `venta_id` INT;
+    DECLARE `sql_error_message` TEXT;
+
+    -- Declarar handler para excepciones
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        GET DIAGNOSTICS CONDITION 1 `sql_error_message` = MESSAGE_TEXT;
+        ROLLBACK;
+        SELECT 400 AS `status`, `sql_error_message` AS `mensaje`;
+    END;
+
+    -- Iniciar la transacción
+    START TRANSACTION;
+
+    -- Insertar en la tabla pro_2venta
+    INSERT INTO `pro_2venta` (`cod_nota`, `fecha_cotizacion`, `id_cliente`, `descripcion`, `log_user`)
+    VALUES (`p_cod_nota`, `p_fecha_cotizacion`, `p_id_cliente`, `p_descripcion`, `p_log_user`);
+
+    -- Obtener el ID de la cotización insertada
+    SET `venta_id` = LAST_INSERT_ID();
+
+    -- Inicializar variables temporales con los valores recibidos
+    SET `temp_prod` = `p_prod`;
+    SET `temp_cant` = `p_cant`;
+    SET `temp_monto` = `p_monto`;
+
+    -- Insertar en pro_3dventa cada producto, cantidad y monto
+    WHILE LOCATE(',', `temp_prod`) > 0 DO
+        SET @prod = SUBSTRING_INDEX(`temp_prod`, ',', 1);
+        SET @cant = SUBSTRING_INDEX(`temp_cant`, ',', 1);
+        SET @monto = SUBSTRING_INDEX(`temp_monto`, ',', 1);
+
+        INSERT INTO `pro_3dventa` (`id_venta`, `cod_producto`, `cant`, `monto`)
+        VALUES (
+            `cotizacion_id`,
+            CAST(@prod AS UNSIGNED),
+            CAST(@cant AS UNSIGNED),
+            CAST(@monto AS DECIMAL(10, 2))
+        );
+
+        SET `temp_prod` = SUBSTRING(`temp_prod` FROM LOCATE(',', `temp_prod`) + 1);
+        SET `temp_cant` = SUBSTRING(`temp_cant` FROM LOCATE(',', `temp_cant`) + 1);
+        SET `temp_monto` = SUBSTRING(`temp_monto` FROM LOCATE(',', `temp_monto`) + 1);
+    END WHILE;
+
+    -- Insertar el último producto, cantidad y monto
+    INSERT INTO `pro_3dventa` (`id_venta`, `cod_producto`, `cant`, `monto`)
+    VALUES (
+        `cotizacion_id`,
+        CAST(`temp_prod` AS UNSIGNED),
+        CAST(`temp_cant` AS UNSIGNED),
+        CAST(`temp_monto` AS DECIMAL(10, 2))
+    );
+
+    -- Commit de la transacción
+    COMMIT;
+
+    -- Devolver el estado y mensaje de éxito
+    SELECT 200 AS `status`, CONCAT('Venta ', `venta_id`, ' insertada con éxito') AS `mensaje`;
 END//
 DELIMITER ;
 

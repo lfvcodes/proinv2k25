@@ -72,7 +72,6 @@ export function loadCrud(instance, hideCols = []) {
     let titleAlert = mdl.find(".modal-title").text();
 
     SAConfig.title = "¿Está Seguro(a) de Confirmar este Proceso?";
-    console.log(SAConfig);
     Swal.fire(SAConfig).then((result) => {
       if (result.value == true) {
         response(`${instance}/`, dataSend)
@@ -80,7 +79,6 @@ export function loadCrud(instance, hideCols = []) {
             crudAlert(titleAlert, data.message, "success");
             refreshTable();
             mdl.modal("hide");
-            console.log(data.result);
           })
           .catch((error) => {
             const msgError =
@@ -128,17 +126,20 @@ export function loadCrud(instance, hideCols = []) {
   window[`delete_${instance}`] = function () {
     let element = event.currentTarget;
     const data = JSON.parse(atob($(element).attr("row")));
-
     SAConfig.title = "¿Está Seguro de Confirmar el Borrado?";
 
     Swal.fire(SAConfig).then((result) => {
       if (result.value == true) {
         let deleteElements = [];
         data.forEach((element) => {
-          let idElement =
-            empty(element.nac) == false
-              ? `${element.nac}-${element.id}`
-              : `${element.cod}`;
+          let idElement;
+          if (empty(element.nac) == false) {
+            idElement = `${element.nac}-${element.id}`;
+          } else if (empty(element.nac) == true) {
+            idElement = !empty(element.cod)
+              ? `${element.cod}`
+              : `${element.id}`;
+          }
           deleteElements.push(idElement);
         });
 

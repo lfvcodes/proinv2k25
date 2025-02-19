@@ -14,3 +14,23 @@ if ($post['endpoint'] === 'getDetail') {
   $rs = prepareRS($conexion, $query, [$post['id']]);
   resultResponse($rs, 'all');
 }
+
+if ($post['endpoint'] === 'add') {
+
+  $params = array(
+    $post['optcliente'],
+    $post['fregc'] . ' ' . $post['ftime'],
+    $post['ncot'],
+    $post['desc'],
+    'admin',
+    implode(",", $post['prod']),
+    implode(",", $post['cant']),
+    implode(",", $post['monto'])
+  );
+
+  $query = 'CALL pro_5setVenta (?,?,?,?,?,?,?,?)';
+  $rs = prepareRS($conexion, $query, $params);
+  responseJSON($rs->fetch(PDO::FETCH_ASSOC));
+  #setBitacora('VENAS', 'AGREGAR VENTA: ' . $post['fact'], $params, $_SESSION['pro']['usr']['user']);
+
+}
