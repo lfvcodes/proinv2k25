@@ -14,12 +14,15 @@ if ($post['endpoint'] == 'add') {
 
     $query = "INSERT INTO pro_4tasa (tasa,log_user) VALUES (?,?)";
     $params = [$post['tasa'], $session['log_user']];
-
     if (!prepareRS($conexion, $query, $params)):
         $error = $_SESSION['error'];
         unset($_SESSION['error']);
         responseJSON(['status' => 400, 'error' => $error]);
     else:
+        $usrData = ExtractValues​​ExcludingKeys($session, ['iat', 'exp']);
+        $usrData['tasa'] = $post['tasa'];
+        generateToken($usrData);
+        #setBitacora('TASA', "AGREGAR TASA", $params, json_encode($usrData));
         responseJSON(['status' => 200, 'message' => "Se ha Actualizado la Nueva Tasa de Cambio Correctamente"]);
     endif;
 }

@@ -46,6 +46,21 @@ function changeStyle(modo) {
   window.location.reload();
 }
 
+export function encodeBase64WithoutPadding(input) {
+  let encoded = btoa(input);
+  // Eliminar los caracteres "=" al final
+  return encoded.replace(/=+$/, "");
+}
+
+// Función para decodificar Base64 sin los caracteres "==" al final
+export function decodeBase64WithoutPadding(encoded) {
+  // Agregar de nuevo los caracteres "=" para hacer la longitud divisible por 4
+  while (encoded.length % 4 !== 0) {
+    encoded += "=";
+  }
+  return atob(encoded);
+}
+
 export function showModalDocument(url, pdfTitle) {
   let modalID = "pdfModal";
   let iframeID = "pdfIframe";
@@ -94,6 +109,31 @@ export function capitalize(string) {
   });
 
   return output.join(" ");
+}
+
+export function parseJwt(token) {
+  var base64Url = token.split(".")[1];
+  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  var jsonPayload = decodeURIComponent(
+    window
+      .atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+
+  return JSON.parse(jsonPayload);
+}
+
+export function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop().split(";").shift();
+  }
+  return undefined; // Devolver undefined si no se encuentra la cookie
 }
 
 export const scrollStartPosition =

@@ -118,6 +118,19 @@ function dateDifferences($fi, $ff)
   return $nd;
 }
 
+function ExtractValues​​ExcludingKeys($OriginalArray, $excludeKeys)
+{
+  $resultArray = [];
+
+  foreach ($OriginalArray as $clave => $valor) {
+    if (!in_array($clave, $excludeKeys)) {
+      $resultArray[$clave] = $valor;
+    }
+  }
+
+  return $resultArray;
+}
+
 function HexToRgb($color)
 {
   $color = ltrim($color, '#'); // Elimina el símbolo '#' si está presente
