@@ -16,7 +16,7 @@ $viewPort = explode("views/", $referer)[1];
 if ($viewPort !== 'login/') {
    $session = verifySession();
    if (!$session) {
-      responseJSON(['status' => 400, 'error' => 'Sesión Invalida para' . $x]);
+      responseJSON(['status' => 400, 'error' => 'Estimado usuario, su sesión ha expirado. Por favor, inicie sesión nuevamente.']);
    }
 }
 

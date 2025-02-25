@@ -72,6 +72,12 @@ if ($post['endpoint'] == 'getDetail') {
   }
 }
 
+if ($post['endpoint'] == 'getTasa') {
+  $query = 'SELECT tasa FROM pro_4tasa WHERE 1 ORDER BY id_act DESC LIMIT 1';
+  $rs = prepareRS($conexion, $query, []);
+  resultResponse($rs, 'single');
+}
+
 if ($post['endpoint'] === 'add') {
 
   $params = array(

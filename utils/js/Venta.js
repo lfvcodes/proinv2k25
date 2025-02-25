@@ -1,4 +1,4 @@
-import { prepareFormData, response, SAConfig, empty } from "@util";
+import { prepareFormData, response, SAConfig, empty, getTasa } from "@util";
 
 let productosVentaSeleccionados = [];
 
@@ -328,9 +328,10 @@ window.initSelectProdVent = function () {
   });
 };
 
-export function loadVenta(btn, instance) {
+export async function loadVenta(btn, instance) {
   let $jsonData = atob($(btn).attr("row"));
   let $data = JSON.parse($jsonData)[0];
+  let $tasaActual = await getTasa();
 
   if (instance == "Cotizacion") {
     window.changeCredit = function (me) {
@@ -445,6 +446,8 @@ export function loadVenta(btn, instance) {
   $("#mdl-venta .modal-title").text($lblTitle);
   $("#mdl-venta #form-contained").wrap($frm);
   $("#tbl-venta tbody").html("");
+
+  $("#mdl-venta #tasa").val($tasaActual);
 
   loadVentaItems(instance, $data["cod"]);
 

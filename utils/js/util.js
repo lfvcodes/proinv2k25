@@ -111,6 +111,17 @@ export function capitalize(string) {
   return output.join(" ");
 }
 
+export function getTasa() {
+  //tasa de cambio exchange
+  return response("cotizacion/", { endpoint: "getTasa" }).then((data) => {
+    if (data.status == 200) {
+      return data.result.tasa;
+    } else {
+      return null;
+    }
+  });
+}
+
 export function parseJwt(token) {
   var base64Url = token.split(".")[1];
   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
