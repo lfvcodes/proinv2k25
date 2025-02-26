@@ -5,9 +5,9 @@ $session = verifySession();
 if (!$session) {
   header("Location: ../login/");
 }
+setBitacora(null, "ACTUALIZAR TASA", "ENTRAR AL MODULO DE CAMBIO DE TASA", [], $session['log_user']);
 
 $title = 'Tasa';
-
 require_once __DIR__ . '/../../includes/head.php';
 require_once __DIR__ . '/../../includes/header.php';
 

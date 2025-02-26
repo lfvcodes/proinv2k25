@@ -1,8 +1,33 @@
 <?php
-
 require_once(__DIR__ . "/../../connections/db.php");
 require_once __DIR__ . '/../../utils/php/utils.php';
 require_once __DIR__ . '/../api_header.php';
+
+if ($post['endpoint'] == 'getTasaToday') {
+
+    $fechaActual = date('Y-m-d');
+    $query = 'SELECT DATE(fecha) AS ultimaTasa FROM pro_bitacora.pro_2bitacora WHERE modulo = ? ORDER BY fecha DESC LIMIT 1';
+    $result = prepareRS($conexion, $query, array('ACTUALIZAR TASA'));
+    $start = $result->fetch();
+
+    if ($start['ultimaTasa'] !== $fechaActual) {
+
+        $queryTasaLast = 'SELECT tasa,fecha_tasa AS ultimaTasa FROM pro_4tasa WHERE ? ORDER BY DATE(fecha_tasa) DESC LIMIT 1';
+        $resultTasa = prepareRS($conexion, $queryTasaLast, array(1));
+
+        if ($resultTasa->rowCount() > 0) {
+            $row = $resultTasa->fetch();
+            $fechaObtenida = $row['ultimaTasa'];
+            if ($fechaObtenida < $fechaActual):
+                responseJSON(['status' => 200, 'result' => 'Actualizar Tasa']);
+            endif;
+        } else {
+            responseJSON(['status' => 200, 'result' => 'Actualizar Tasa']);
+        }
+    } else {
+        responseJSON(['status' => 200, 'result' => 'No Actualizar']);
+    }
+}
 
 if ($post['endpoint'] == 'getList') {
     $query = 'SELECT id_act AS id,tasa,fecha_tasa AS fecha, log_user AS log FROM pro_4tasa ORDER BY (id_act) DESC';

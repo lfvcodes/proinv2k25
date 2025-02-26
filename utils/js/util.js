@@ -61,6 +61,24 @@ export function decodeBase64WithoutPadding(encoded) {
   return atob(encoded);
 }
 
+export function getParameterByName(name) {
+  name = name.replace(/[$]/, "$").replace(/[$]/, "$");
+  let regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+  let results = regex.exec(location.search);
+
+  if (results === null) {
+    return "";
+  } else {
+    let value = decodeURIComponent(results[1].replace(/\+/g, " "));
+    try {
+      let decodedValue = atob(value);
+      return decodedValue;
+    } catch (e) {
+      return value;
+    }
+  }
+}
+
 export function showModalDocument(url, pdfTitle) {
   let modalID = "pdfModal";
   let iframeID = "pdfIframe";

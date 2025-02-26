@@ -246,9 +246,11 @@ function alert($type, $text)
 	';
 }
 
-function setBitacora($modulo, $accion, $params, $usr)
+function setBitacora($conexion, $modulo, $accion, $params, $usr)
 {
-  require_once __DIR__ . '/../connections/db.php';
+  if (is_null($conexion)) {
+    require_once __DIR__ . '/../../connections/db.php';
+  }
   $query = 'INSERT INTO pro_bitacora.pro_2bitacora (modulo,accion,params,log_usuario) VALUES (?,?,?,?)';
   $p = implode(",", $params);
   prepareRS($conexion, $query, array($modulo, $accion, $p, $usr));
