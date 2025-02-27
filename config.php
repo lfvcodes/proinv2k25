@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set("America/Caracas");
 /* Definir el nombre de la cookie del proyecto */
 if (!defined('COOKIE_LOGIN')) {
   $encoded = base64_encode('proinv2K25');

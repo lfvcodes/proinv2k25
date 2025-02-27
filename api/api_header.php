@@ -20,6 +20,8 @@ if ($viewPort !== 'login/') {
    }
 }
 
+setlocale(LC_TIME, 'Spanish');
+date_default_timezone_set("America/Caracas");
 $post = filter_var_array($_POST, FILTER_SANITIZE_STRING);
 $query = null;
 
