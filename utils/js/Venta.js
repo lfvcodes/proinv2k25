@@ -4,10 +4,10 @@ let productosVentaSeleccionados = [];
 
 function saveVenta(instance, $data) {
   let total_Venta = 0;
-  let title = instance == "cxp" ? "Cuenta por Pagar" : "Cuenta por Cobrar";
+  let title = instance == "Cotizacion" ? "Venta desde Cotización" : "Venta";
   let closeCall = false;
 
-  $("#tbl-Venta tbody tr").each(function () {
+  $("#items-venta tbody tr").each(function () {
     if ($(this).find("td:eq(1) .monto").val() < 0) {
       Swal.fire("No pueden haber Ventas con valores negativos", "", "error");
       closeCall = true;
@@ -16,15 +16,6 @@ function saveVenta(instance, $data) {
       total_Venta += Number($(this).find("td:eq(1) .monto").val());
     }
   });
-
-  if (total_Venta > $('#frm-Venta input[name="mdeuda"]').val()) {
-    Swal.fire(
-      `El Total de Ventas a Guardar Supera el Monto de la ${title}`,
-      "",
-      "error"
-    );
-    return false;
-  }
 
   if (total_Venta < 0) {
     Swal.fire(
@@ -39,14 +30,19 @@ function saveVenta(instance, $data) {
     return false;
   }
 
-  SAConfig.title = `¿Está seguro(a) de Actualizar Venta de ${title}?`;
+  SAConfig.title = `¿Está seguro(a) de Confirmar ${title}?`;
+
+  let $frm = $("#items-venta").closest("form");
+  if (!$frm[0].checkValidity()) {
+    $frm[0].reportValidity();
+    return;
+  }
 
   Swal.fire(SAConfig).then((result) => {
     if (result.value == true) {
-      let $frm = $("#form-Venta");
       let frmData = prepareFormData($frm);
+
       frmData.endpoint = "setVenta";
-      frmData.mdeuda = $data["monto"];
       frmData.id = $data["cod"];
       response(`${instance}/`, frmData).then((answer) => {
         if (answer.status == 200) {
@@ -332,111 +328,67 @@ export async function loadVenta(btn, instance) {
   let $jsonData = atob($(btn).attr("row"));
   let $data = JSON.parse($jsonData)[0];
   let $tasaActual = await getTasa();
+  //#const lnota = 5;
 
-  if (instance == "Cotizacion") {
-    window.changeCredit = function (me) {
-      if ($(me).val() == "C") {
-        $("#tasa,#mpago").parent(".input-group").prop("hidden", true);
-        $('label[for="fact"]').html(
-          '<i class="bi bi-receipt me-1"></i>Nota de Entrega'
-        );
-        $("#tasa,#mpago").prop("required", false);
-        $("#stotal").prop("hidden", true);
-        $("#flimit").prop("hidden", false);
-      } else {
-        $('label[for="fact"]').html(
-          '<i class="bi bi-receipt me-1"></i>Comprobante'
-        );
-        $("#tasa,#mpago").parent(".input-group").prop("hidden", false);
-        $("#tasa,#mpago").prop("required", true);
-        $("#stotal").prop("hidden", false);
+  window.changeCredit = function (me) {
+    if ($(me).val() == "C") {
+      $("#tasa,#mpago").parent(".input-group").prop("hidden", true);
+      $('label[for="fact"]').html(
+        '<i class="bi bi-receipt me-1"></i>Nota de Entrega'
+      );
+      $("#tasa,#mpago").prop("required", false);
+      $("#stotal").prop("hidden", true);
+      $("#flimit").prop("hidden", false);
+      $('#flimite,label[for="flimite"]').prop("hidden", false);
+      $('#iva,label[for="iva"]').prop("hidden", false);
+      $("#flimite").prop("required", true);
 
-        $("#flimit").prop("hidden", true);
-      }
-    };
-  } else {
-    window.changeCredit = function (me) {
-      if ($(me).val() == "C") {
-        $("#tasa,#mpago").parent(".input-group").prop("hidden", true);
-        $('label[for="fact"]').html(
-          '<i class="bi bi-receipt me-1"></i>Nota de Entrega'
-        );
-        $("#tasa,#mpago").prop("required", false);
-        $("#stotal").prop("hidden", true);
+      $("#iva").prop("checked", false);
+      $("#iva").val("off");
+      //ULTIMA NOTA CONSECUTIVA
+      //$("#fact").val(lnota);
+    } else {
+      $("#tasa,#mpago").parent(".input-group").prop("hidden", false);
+      $("#tasa,#mpago").prop("required", true);
+      $("#stotal").prop("hidden", false);
+      $("#flimit").prop("hidden", true);
+      $("#flimite").prop("required", false);
+      let vtasa = Number($("#tasa").val());
+      let stotalb = 0;
+      let stotald = 0;
+      $(".titem").each(function () {
+        stotald += Number($(this).val());
+        stotalb += stotald * vtasa;
+      });
+
+      if ($(me).val() == "D") {
+        //$("#fact").val(lnota); #buscar ultima nota de entrega a generar
         $("#flimit").prop("hidden", false);
-        $('#flimite,label[for="flimite"]').prop("hidden", false);
         $('#iva,label[for="iva"]').prop("hidden", false);
-        $("#flimite").prop("required", true);
-
-        $("#iva").prop("checked", false);
-        $("#iva").val("off");
-        //ULTIMA NOTA CONSECUTIVA
-        $("#fact").val(lnota);
-      } else {
-        if ($(me).val() == "FD") {
-          $('label[for="fact"]').html(
-            '<i class="bi bi-receipt me-1"></i>Factura'
-          );
-        }
-
-        $("#tasa,#mpago").parent(".input-group").prop("hidden", false);
-        $("#tasa,#mpago").prop("required", true);
-        $("#stotal").prop("hidden", false);
-        $("#flimit").prop("hidden", true);
-        $("#flimite").prop("required", false);
-        let vtasa = Number($("#tasa").val());
-        let stotalb = 0;
-        let stotald = 0;
-        $(".titem").each(function () {
-          stotald += Number($(this).val());
-          stotalb += stotald * vtasa;
-        });
-
-        if ($(me).val() == "F" || $(me).val() == "FD") {
-          $("#iva").prop("checked", true);
-          $("#iva").val("on");
-          $("#frm-venta #fact").val(null);
-          $('#iva,label[for="iva"]').prop("hidden", true);
-          $('#flimite,label[for="flimite"]').prop("hidden", false);
-        } else {
-          $("#iva").prop("checked", false);
-          $("#iva").val("off");
-        }
-
-        if ($(me).val() == "F") {
-          $("#tasa,#mpago").parent(".input-group").prop("hidden", true);
-          $('label[for="fact"]').html(
-            '<i class="bi bi-receipt me-1"></i>Factura'
-          );
-          $("#tasa,#mpago").prop("required", false);
-          $("#stotal").prop("hidden", true);
-          $("#flimit").prop("hidden", false);
-          $("#flimite").prop("required", true);
-        }
-
-        if ($(me).val() == "D") {
-          $("#fact").val(lnota);
-          $("#flimit").prop("hidden", false);
-          $('#iva,label[for="iva"]').prop("hidden", false);
-          $('#flimite,label[for="flimite"]').prop("hidden", false);
-        }
-        $("#stotald").val(
-          stotalb.toLocaleString("es-ES", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-            useGrouping: true,
-          })
-        );
+        $('#flimite,label[for="flimite"]').prop("hidden", false);
       }
-    };
-  }
+      $("#stotal").val(
+        stotalb.toLocaleString("es-ES", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+          useGrouping: true,
+        })
+      );
+      $("#stotald").val(
+        stotald.toLocaleString("es-ES", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+          useGrouping: true,
+        })
+      );
+    }
+  };
 
   let $lblTitle =
     instance == "Cotizacion"
       ? "Registrar Venta desde Cotización"
       : "Registrar Nueva Venta";
 
-  const $btnSaveVenta = $("#mdl-venta .modal-footer .btn-primary");
   const $frm = `<form action="#" id="form-Venta" enctype="multipart/form-data" method="POST"></form>`;
   $("#mdl-venta .modal-footer").html(
     `<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -451,15 +403,17 @@ export async function loadVenta(btn, instance) {
 
   loadVentaItems(instance, $data["cod"]);
 
-  $btnSaveVenta.click(() => {
-    saveVenta(instance, $data);
-  });
-
   $("#mdl-venta").on("hide.bs.modal", () => {
-    $btnSaveVenta.unbind("click");
+    $("#mdl-venta .modal-footer .btn-primary").unbind("click");
     if ($("#form-Venta").length > 0 && $("#form-contained").length > 0) {
       $("#mdl-Venta #form-contained").unwrap();
     }
+  });
+
+  $("#mdl-venta").on("show.bs.modal", () => {
+    $("#mdl-venta .modal-footer .btn-primary").click(function () {
+      saveVenta(instance, $data);
+    });
   });
 
   $("#mdl-venta").modal("show");

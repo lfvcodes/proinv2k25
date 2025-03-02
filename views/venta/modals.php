@@ -35,7 +35,7 @@
    </div>
 
    <div class="row mb-3">
-      <div class="col input-group">
+      <div hidden class="col input-group">
          <label class="input-group-text" for="mpago">
             <i class="bi bi-receipt me-1"></i>Forma de Pago
          </label>
@@ -47,7 +47,7 @@
             <option value="DT">DIVISA TRANSFERENCIA</option>
          </select>
       </div>
-      <div class="col input-group">
+      <div hidden class="col input-group">
          <label class="input-group-text" for="tasa">Tasa de Cambio</label>
          <input readonly id="tasa" name="tasa" class="form-control tasa" value="" min="0.01" step="0.01" type="number">
       </div>
@@ -101,12 +101,13 @@
       <div class="col input-group offset-7">
          <label class="input-group-text" for="tventa">Tipo de venta</label>
          <select onchange="changeCredit(this)" required name="tventa" id="tventa" class="form-select form-control">
-            <option selected value="C">Credito</option>
+            <option selected disabled value="">Elige uno</option>
+            <option value="C">Credito</option>
             <option value="D">Debito</option>
          </select>
       </div>
    </div>
-   <div id="flimit" class="row justify-content-end mb-3">
+   <div id="flimit" hidden class="row justify-content-end mb-3">
       <div class="col input-group offset-7">
          <label class="input-group-text" for="stotal">Fecha Limite de Credito</label>
          <input required class="form-control" type="date" name="flimite" id="flimite">
