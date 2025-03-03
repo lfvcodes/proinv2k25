@@ -42,13 +42,14 @@ function saveVenta(instance, $data) {
     if (result.value == true) {
       let frmData = prepareFormData($frm);
 
-      frmData.endpoint = "setVenta";
       frmData.id = $data["cod"];
-      response(`${instance}/`, frmData).then((answer) => {
+      response(`venta/`, frmData).then((answer) => {
         if (answer.status == 200) {
-          Swal.fire(answer.message, "", "success").then(() => {
-            $("#mdl-Venta").modal("hide");
-          });
+          console.log(frmData);
+          console.log(answer);
+          // Swal.fire(answer.message, "", "success").then(() => {
+          //   $("#mdl-Venta").modal("hide");
+          // });
         } else {
           Swal.fire(answer.error, "", "error");
         }
@@ -363,7 +364,6 @@ export async function loadVenta(btn, instance) {
 
       if ($(me).val() == "D") {
         //$("#fact").val(lnota); #buscar ultima nota de entrega a generar
-        $("#flimit").prop("hidden", false);
         $('#iva,label[for="iva"]').prop("hidden", false);
         $('#flimite,label[for="flimite"]').prop("hidden", false);
       }

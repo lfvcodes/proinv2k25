@@ -1,6 +1,6 @@
 <fieldset id="mdl-venta" crud="true" title="Registrar Venta">
    <div class="row mb-3">
-      <div class="col input-group mb-3">
+      <div class="col input-group">
          <label class="input-group-text" for="optcli">
             <i class="menu-icon tf-icons bx bx-user-pin"></i>
             Cliente
@@ -114,6 +114,6 @@
       </div>
    </div>
 
-   <input type="hidden" value="setVenta" name="action">
+   <input type="hidden" value="setVenta" name="endpoint">
 
 </fieldset>

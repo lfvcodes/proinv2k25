@@ -3,7 +3,6 @@ require_once(__DIR__ . "/../../connections/db.php");
 require_once __DIR__ . '/../../utils/php/utils.php';
 require_once __DIR__ . '/../api_header.php';
 
-
 if ($post['endpoint'] === 'getDetail') {
   $query = 'SELECT *,
   (SELECT fvencimiento FROM pro_2cxc WHERE id_venta = c.id_venta) AS vence
@@ -15,22 +14,29 @@ if ($post['endpoint'] === 'getDetail') {
   resultResponse($rs, 'all');
 }
 
-if ($post['endpoint'] === 'add') {
+if ($post['endpoint'] === 'setVenta') {
 
   $params = array(
-    $post['optcliente'],
-    $post['fregc'] . ' ' . $post['ftime'],
-    $post['ncot'],
+    $post['optcli'],
+    $post['freg'],
     $post['desc'],
+    $post['fact'],
+    $post['tasa'],
+    $post['tventa'],
     'admin',
-    implode(",", $post['prod']),
-    implode(",", $post['cant']),
-    implode(",", $post['monto'])
+    implode(",", $post['prod[]']),
+    implode(",", $post['cant[]']),
+    implode(",", $post['monto[]']),
   );
-
-  $query = 'CALL pro_5setVenta (?,?,?,?,?,?,?,?)';
+  $query = 'CALL pro_5setVenta (?,?,?,?,?,?,?,?,?,?)';
   $rs = prepareRS($conexion, $query, $params);
-  responseJSON($rs->fetch(PDO::FETCH_ASSOC));
-  #setBitacora('VENAS', 'AGREGAR VENTA: ' . $post['fact'], $params, $_SESSION['pro']['usr']['user']);
-
+  if ($rs) {
+    #setBitacora('VENTAS', 'AGREGAR VENTA: ' . $post['fact'], $params, $session['user']);
+    responseJSON($rs->fetch(PDO::FETCH_ASSOC));
+  } else {
+    // Manejar el error aquí, por ejemplo, mostrar un mensaje de error
+    responseJSON(array('error' => $_SESSION['error']));
+  }
 }
+
+responseJSON(['status' => 400, 'message' => 'Endpoint not found']);
