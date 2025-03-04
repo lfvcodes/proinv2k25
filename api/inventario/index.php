@@ -11,10 +11,11 @@ if ($post['endpoint'] == 'getList') {
 
 if ($post['endpoint'] === 'add') {
 
-  $query = "CALL pro_5setProducto (?,?,?,?,?,?,?,?,?,?,?)";
+  $query = "CALL pro_5setProducto (?,?,?,?,?,?,?,?,?,?,?,?)";
   $params = [
     strtoupper($post['cod_product']),
     !empty($post['cod_alt']) ? strtoupper($post['cod_alt']) : null,
+    (isset($post['excento']) && $post['excento'] == 'on') ? 1 : 0,
     strtoupper($post['nom_product']),
     strtoupper($post['desc_product']),
     $post['optgrupo'],
@@ -32,10 +33,11 @@ if ($post['endpoint'] === 'add') {
 }
 
 if ($post['endpoint'] === 'update') {
-  $query = "CALL pro_5editProducto (?,?,?,?,?,?,?,?,?,?,?)";
+  $query = "CALL pro_5editProducto (?,?,?,?,?,?,?,?,?,?,?,?)";
   $params = [
     strtoupper($post['cod_product']),
     !empty($post['cod_alt']) ? $post['cod_alt'] : '0',
+    (isset($post['excento']) && $post['excento'] == 'on') ? 1 : 0,
     strtoupper($post['nom_product']),
     strtoupper($post['desc_product']),
     $post['optgrupo'],

@@ -67,6 +67,7 @@ export function loadVentaItems(instance, $cod) {
       let dataParent = answer.result.master;
       let detalle = answer.result.detail;
       let stotal = 0.0;
+      let stotald = 0.0;
 
       let cliOption = `<option selected value="${dataParent.id_cliente}">${dataParent.razon_social}</option>`;
       $("#optcli").append(cliOption);
@@ -77,7 +78,8 @@ export function loadVentaItems(instance, $cod) {
       $("#mdl-venta #items-venta tbody").html("");
       detalle.forEach((item) => {
         let total_item = item.cant * item.monto;
-        stotal += total_item;
+        stotal += total_item * Number($("#tasa").val());
+        stotald += total_item;
         $("#mdl-venta #items-venta tbody").append(`
           <tr>
             <td>
@@ -105,8 +107,16 @@ export function loadVentaItems(instance, $cod) {
         </tr>`);
       });
 
-      $("#mdl-venta #stotald").val(
+      $("#mdl-venta #stotal").val(
         stotal.toLocaleString("es-ES", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+          useGrouping: true,
+        })
+      );
+
+      $("#mdl-venta #stotald").val(
+        stotald.toLocaleString("es-ES", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
           useGrouping: true,
@@ -332,13 +342,12 @@ export async function loadVenta(btn, instance) {
   //#const lnota = 5;
 
   window.changeCredit = function (me) {
-    if ($(me).val() == "C") {
+    if ($(me).val() === "C" || $(me).val() === "FC") {
       $("#tasa,#mpago").parent(".input-group").prop("hidden", true);
       $('label[for="fact"]').html(
         '<i class="bi bi-receipt me-1"></i>Nota de Entrega'
       );
       $("#tasa,#mpago").prop("required", false);
-      $("#stotal").prop("hidden", true);
       $("#flimit").prop("hidden", false);
       $('#flimite,label[for="flimite"]').prop("hidden", false);
       $('#iva,label[for="iva"]').prop("hidden", false);
@@ -351,35 +360,21 @@ export async function loadVenta(btn, instance) {
     } else {
       $("#tasa,#mpago").parent(".input-group").prop("hidden", false);
       $("#tasa,#mpago").prop("required", true);
-      $("#stotal").prop("hidden", false);
       $("#flimit").prop("hidden", true);
       $("#flimite").prop("required", false);
-      let vtasa = Number($("#tasa").val());
-      let stotalb = 0;
-      let stotald = 0;
-      $(".titem").each(function () {
-        stotald += Number($(this).val());
-        stotalb += stotald * vtasa;
-      });
 
-      if ($(me).val() == "D") {
+      if ($(me).val() == "D" || $(me).val() === "FD") {
         //$("#fact").val(lnota); #buscar ultima nota de entrega a generar
         $('#iva,label[for="iva"]').prop("hidden", false);
         $('#flimite,label[for="flimite"]').prop("hidden", false);
       }
-      $("#stotal").val(
-        stotalb.toLocaleString("es-ES", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-          useGrouping: true,
-        })
-      );
-      $("#stotald").val(
-        stotald.toLocaleString("es-ES", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-          useGrouping: true,
-        })
+    }
+
+    if ($(me).val() !== "C" && $(me).val() !== "D") {
+      $('label[for="fact"]').html('<i class="bi bi-receipt me-1"></i>Factura');
+    } else {
+      $('label[for="fact"]').html(
+        '<i class="bi bi-receipt me-1"></i>Nota de Entrega'
       );
     }
   };

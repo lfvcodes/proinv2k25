@@ -45,6 +45,7 @@ importModals();
           <th hidden>S.Minimo</th>
           <th hidden>S.Maximo</th>
           <th hidden>U.M</th>
+          <th hidden>Excento</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">

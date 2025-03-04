@@ -62,7 +62,7 @@ select.tt-query,
 select.tt-hint {
   padding: 0.4375rem 0.75rem;
   border: 0;
-  color: #4b5564;
+  /* color: #4b5564; */
 }
 
 /* Tables */
@@ -86,8 +86,6 @@ select.tt-hint {
   border-bottom-color: #2c2e33;
 }
 
-
-
 .nav-tabs .nav-link {
   background: #000000;
   color: #ffffff;
@@ -95,7 +93,6 @@ select.tt-hint {
   border: 1px solid #2c2e33;
   padding: 0.75rem 1.5rem;
 }
-
 
 .nav-pills {
   border-bottom: 1px solid #2c2e33;
@@ -115,7 +112,6 @@ select.tt-hint {
 .context-menu-list .context-menu-item.context-menu-hover {
   background: #000000;
 }
-
 
 .select2-container--default .select2-selection--single,
 .select2-container--default .select2-dropdown,
@@ -321,7 +317,6 @@ div.tagsinput span.tag a {
 }
 
 @media (min-width: 992px) {
-
   .sidebar-icon-only .sidebar .nav .nav-item.hover-open .nav-link .menu-title {
     display: -webkit-flex;
     display: flex;

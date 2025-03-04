@@ -9,6 +9,7 @@ export function initCrudDataTable(sectionName, hiddenCols) {
       let cols = Object.keys(data.result[0]).map((key) => ({
         data: key,
         visible: !hiddenCols.includes(key),
+        type: "string",
       }));
       DTConfig.data = data.result;
       DTConfig.buttons = [
@@ -20,7 +21,6 @@ export function initCrudDataTable(sectionName, hiddenCols) {
           },
         },
       ];
-
       DTConfig.drawCallback = function (settings) {
         setCrudControls(settings);
         const iconSearch = `<i class="p-1 bi bi-search"></i>Buscar:`;

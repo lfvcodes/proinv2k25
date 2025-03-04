@@ -21,16 +21,21 @@
       </div>
 
       <div class="col input-group">
+         <label class="input-group-text" for="tventa">Tipo de venta</label>
+         <select onchange="changeCredit(this)" required name="tventa" id="tventa" class="form-select form-control">
+            <option selected disabled value="">Elige uno</option>
+            <option value="FC">Factura Credito</option>
+            <option value="FD">Factura Debito</option>
+            <option value="C">Nota Credito</option>
+            <option value="D">Nota Debito</option>
+         </select>
+      </div>
+
+      <div class="col input-group">
          <label class="input-group-text" for="fact">
             <i class="bi bi-receipt me-1"></i>Nota de Entrega
          </label>
          <input required class="form-control fact" maxlength="64" type="text" name="fact" id="fact">
-      </div>
-      <div class="col input-group">
-         <label class="input-group-text" for="desc">
-            Concepto
-         </label>
-         <input required class="form-control desc" maxlength="42" type="text" name="desc" id="desc">
       </div>
    </div>
 
@@ -50,6 +55,19 @@
       <div hidden class="col input-group">
          <label class="input-group-text" for="tasa">Tasa de Cambio</label>
          <input readonly id="tasa" name="tasa" class="form-control tasa" value="" min="0.01" step="0.01" type="number">
+      </div>
+   </div>
+
+   <div class="row mb-3">
+      <div hidden id="flimit" class="col input-group">
+         <label class="input-group-text" for="stotal">Fecha Limite de Credito</label>
+         <input required class="form-control" type="date" name="flimite" id="flimite">
+      </div>
+      <div class="col input-group">
+         <label class="input-group-text" for="desc">
+            Concepto
+         </label>
+         <input required class="form-control desc" maxlength="42" type="text" name="desc" id="desc">
       </div>
    </div>
 
@@ -90,30 +108,14 @@
    <div class="row justify-content-end mb-3">
       <div class="col input-group offset-7">
          <label class="input-group-text" for="stotal">
-            Total
+            Total Bs.
          </label>
-         <input hidden required readonly placeholder="Bs." type="text" class="form-control fw-bold" name="stotal" id="stotal">
+         <input required readonly placeholder="Bs." type="text" class="form-control fw-bold" name="stotal" id="stotal">
+         <label class="input-group-text" for="stotald">
+            Total $
+         </label>
          <input required readonly placeholder="$." type="text" class="form-control fw-bold" name="stotald" id="stotald">
       </div>
    </div>
-
-   <div class="row justify-content-end mb-3">
-      <div class="col input-group offset-7">
-         <label class="input-group-text" for="tventa">Tipo de venta</label>
-         <select onchange="changeCredit(this)" required name="tventa" id="tventa" class="form-select form-control">
-            <option selected disabled value="">Elige uno</option>
-            <option value="C">Credito</option>
-            <option value="D">Debito</option>
-         </select>
-      </div>
-   </div>
-   <div id="flimit" hidden class="row justify-content-end mb-3">
-      <div class="col input-group offset-7">
-         <label class="input-group-text" for="stotal">Fecha Limite de Credito</label>
-         <input required class="form-control" type="date" name="flimite" id="flimite">
-      </div>
-   </div>
-
    <input type="hidden" value="setVenta" name="endpoint">
-
 </fieldset>

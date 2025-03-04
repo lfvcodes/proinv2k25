@@ -24,6 +24,9 @@ export function loadCrud(instance, hideCols = []) {
         $(`#${key} option[value="${value}"]`).prop("selected", true);
 
         initSelect(key, instance);
+      } else if (element.is("input[type='checkbox']")) {
+        // Condición para checkboxes
+        element.prop("checked", value != null && value != 0);
       } else {
         element.val(value);
         form.find(`input[name="${key}"]`).val(value);

@@ -8,6 +8,7 @@ const hiddenCols = [
   "stockminimo",
   "stockmaximo",
   "umedida",
+  "excento",
 ];
 const codProd = $('#mdl-inventario input[name="cod_product"]');
 

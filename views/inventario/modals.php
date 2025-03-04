@@ -1,5 +1,5 @@
 <fieldset id="mdl-inventario" crud="true" title="Agregar Nuevo Producto">
-  <div class="row mb-3">
+  <div class="row">
     <div id="bar" title="codigo de barras" class="col-lg input-group">
 
     </div>
@@ -11,6 +11,10 @@
       <div class="input-group m-2">
         <span class="input-group-text">Código Alterno</span>
         <input name="cod_alt" type="text" maxlength="50" class="form-control" placeholder="Codigo Auxiliar del Articulo">
+      </div>
+      <div class="input-group m-2 justify-content-end">
+        <input id="excento" name="excento" type="checkbox" class="input">
+        <label class="ms-2" for="excento">Excento de Iva</label>
       </div>
     </div>
   </div>
