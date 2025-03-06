@@ -26,30 +26,33 @@ importModals();
          </div>
       </div>
    </div>
-   <div class="table-responsive text-nowrap">
+   <div class="card-body pt-0 pb-1">
+      <div class="table-responsive text-nowrap">
 
+         <table id="tbl-venta" class="table table-striped table-hover w-100">
+            <thead>
+               <tr>
+                  <th>ID</th>
+                  <th>#Venta</th>
+                  <th>#Factura</th>
+                  <th>#Nota.E</th>
+                  <th>Tipo de venta</th>
+                  <th>Fecha</th>
+                  <th hidden>idcliente</th>
+                  <th hidden>Concepto</th>
+                  <th hidden>Forma Pago</th>
+                  <th hidden>Tasa</th>
+                  <th hidden>IVA</th>
+                  <th>Usuario</th>
+                  <th hidden>Comision</th>
+                  <th hidden>Registro</th>
+               </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
 
-      <table id="tbl-venta" class="table table-striped table-hover">
-         <thead>
-            <tr>
-               <th>ID</th>
-               <th>#Factura</th>
-               <th>#Nota.E</th>
-               <th>Tipo de venta</th>
-               <th>Fecha</th>
-               <th>idcliente</th>
-               <th>Cliente</th>
-               <th>Concepto</th>
-               <th>Forma Pago</th>
-               <th>Tasa</th>
-               <th>Usuario</th>
-               <th>Acción</th>
-            </tr>
-         </thead>
-         <tbody class="table-border-bottom-0">
-
-         </tbody>
-      </table>
+            </tbody>
+         </table>
+      </div>
    </div>
 </div>
 <?php

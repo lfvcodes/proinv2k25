@@ -4901,7 +4901,7 @@ CREATE TABLE IF NOT EXISTS `pro_2empresa` (
   PRIMARY KEY (`rif_empresa`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_2empresa: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_2empresa: ~0 rows (aproximadamente)
 INSERT IGNORE INTO `pro_2empresa` (`rif_empresa`, `nom_empresa`, `tel_empresa`, `email_empresa`, `direccion_empresa`, `vendedor`, `lector_barras`, `cod_alternativo`, `percomision`, `activo`) VALUES
 	('J-88888888-4', 'mi negocio', '02512678548', 'minegocio08@hotmail.com', 'Av. Celestial Casa N° 476 Urb. CoolMart  II, Barquisimeto,Estado Lara', 1, 1, 1, 5, 'S');
 
@@ -5202,7 +5202,7 @@ CREATE TABLE IF NOT EXISTS `pro_2venta` (
   `registro` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id_venta`),
   KEY `id_cliente` (`id_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=393 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=395 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_2venta: ~372 rows (aproximadamente)
 INSERT IGNORE INTO `pro_2venta` (`id_venta`, `cod_factura`, `cod_nota`, `tipo_venta`, `fecha_venta`, `id_cliente`, `descripcion`, `forma_pago`, `tasa`, `iva`, `log_user`, `comision`, `registro`) VALUES
@@ -6063,7 +6063,7 @@ CREATE TABLE IF NOT EXISTS `pro_3dguia` (
   CONSTRAINT `pro_3dguia_ibfk_1` FOREIGN KEY (`id_guia`) REFERENCES `pro_2guia` (`id_guia`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_3dguia: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_3dguia: ~0 rows (aproximadamente)
 INSERT IGNORE INTO `pro_3dguia` (`id_detalle`, `id_guia`, `id_venta`) VALUES
 	(1, 2, 10);
 
@@ -6079,7 +6079,7 @@ CREATE TABLE IF NOT EXISTS `pro_3dventa` (
   KEY `id_venta` (`id_venta`),
   CONSTRAINT `FK_pro_3dventa_pro_2producto` FOREIGN KEY (`cod_producto`) REFERENCES `pro_2producto` (`cod_producto`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `FK_pro_3dventa_pro_2venta` FOREIGN KEY (`id_venta`) REFERENCES `pro_2venta` (`id_venta`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2647 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=2663 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_3dventa: ~1,326 rows (aproximadamente)
 INSERT IGNORE INTO `pro_3dventa` (`id_detalle`, `id_venta`, `cod_producto`, `cant`, `monto`) VALUES
@@ -8189,7 +8189,7 @@ BEGIN
     INSERT INTO pro_2venta (cod_nota, fecha_venta, id_cliente, descripcion, tasa, log_user)
     VALUES (p_fact, p_fecha_venta, p_id_cliente, p_descripcion, p_tasa, p_log_user);
 	ELSE
-	    INSERT INTO pro_2venta (cod_fact, fecha_venta, id_cliente, descripcion, tasa, log_user)
+	    INSERT INTO pro_2venta (cod_factura, fecha_venta, id_cliente, descripcion, tasa, log_user)
 	    VALUES (p_fact, p_fecha_venta, p_id_cliente, p_descripcion, p_tasa, p_log_user);
 	END IF;
 

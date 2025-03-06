@@ -45,11 +45,9 @@ function saveVenta(instance, $data) {
       frmData.id = $data["cod"];
       response(`venta/`, frmData).then((answer) => {
         if (answer.status == 200) {
-          console.log(frmData);
-          console.log(answer);
-          // Swal.fire(answer.message, "", "success").then(() => {
-          //   $("#mdl-Venta").modal("hide");
-          // });
+          Swal.fire(answer.message, "", "success").then(() => {
+            $("#mdl-Venta").modal("hide");
+          });
         } else {
           Swal.fire(answer.error, "", "error");
         }
