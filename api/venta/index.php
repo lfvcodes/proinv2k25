@@ -10,17 +10,39 @@ if ($post['endpoint'] == 'getList') {
 }
 
 if ($post['endpoint'] === 'getDetail') {
-  $query = 'SELECT *,
-  (SELECT fvencimiento FROM pro_2cxc WHERE id_venta = c.id_venta) AS vence
-  FROM pro_3dventa c
-  JOIN pro_2producto p ON c.cod_producto = p.cod_producto
-  WHERE c.id_venta = ?
-  ORDER BY id_detalle ASC';
+
+  $query = 'SELECT cl.razon_social,DATE(v.registro) AS fregistro,
+  TIME_FORMAT(TIME(v.registro), "%H:%i") AS tregistro,
+  DATE(v.fecha_venta) AS freg,v.*
+  FROM pro_2venta v JOIN pro_1cliente cl ON v.id_cliente = cl.id_cliente
+  WHERE v.id_venta = ?';
   $rs = prepareRS($conexion, $query, [$post['id']]);
-  resultResponse($rs, 'all');
+  $dataResponse =  $rs->fetch(PDO::FETCH_ASSOC);
+
+  $queryDetail = 'SELECT * FROM pro_3dventa dv
+  JOIN pro_2producto p ON dv.cod_producto = p.cod_producto
+  WHERE id_venta = ?';
+  $rsd = prepareRS($conexion, $queryDetail, [$post['id']]);
+  $dataDetail = $rsd->fetchAll(PDO::FETCH_ASSOC);
+
+  if (!empty($dataResponse)) {
+    responseJSON([
+      'status' => 200,
+      'message' => 'Información encontrada exitosamente',
+      'result' => [
+        'master' => $dataResponse,
+        'detail' => $dataDetail
+      ]
+    ]);
+  } else {
+    responseJSON([
+      'status' => 400,
+      'message' => 'No se encontro la información',
+    ]);
+  }
 }
 
-if ($post['endpoint'] === 'setVenta') {
+if ($post['endpoint'] === 'setVenta' || $post['endpoint'] === 'add') {
 
   $params = array(
     $post['optcli'],
@@ -30,10 +52,11 @@ if ($post['endpoint'] === 'setVenta') {
     $post['tasa'],
     $post['tventa'],
     'admin',
-    implode(",", $post['prod[]']),
-    implode(",", $post['cant[]']),
-    implode(",", $post['monto[]']),
+    implode(",", $post['prod[]']) ?? $post['prod[]'],
+    implode(",", $post['cant[]']) ?? $post['cant[]'],
+    implode(",", $post['monto[]']) ?? $post['monto[]'],
   );
+
   $query = 'CALL pro_5setVenta (?,?,?,?,?,?,?,?,?,?)';
   $rs = prepareRS($conexion, $query, $params);
   if ($rs) {

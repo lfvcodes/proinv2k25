@@ -20,8 +20,8 @@ importModals();
             <i class="menu-icon tf-icons me-1 bi bi-building-down"></i>Ventas
          </h5>
          <div class="col text-end">
-            <button type="button" class="btn btn-primary btn-md" data-bs-toggle="modal" data-bs-target="#mdl-venta">
-               <i class="bx bx-folder-plus"></i>Agregar
+            <button type="button" control="add" row="W10=" class="btn btn-primary btn-md" data-bs-toggle="modal" data-bs-target="#mdl-venta">
+               <i class="bx bx-plus-circle"></i>Agregar
             </button>
          </div>
       </div>

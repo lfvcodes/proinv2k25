@@ -55,7 +55,7 @@ function initSelectCli() {
       delay: 250,
       data: function (params) {
         return {
-          endpoint: "getListOptionCli",
+          endpoint: "getListOptionClient",
           lk: params.term,
         };
       },

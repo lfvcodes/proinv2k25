@@ -12,6 +12,58 @@ const hiddenCols = [
   "comision",
   "registro",
 ];
+
 let productosSeleccionados = [];
 loadComponents();
 loadCrud("venta", hiddenCols, true);
+
+function startDOM() {
+  let dataRow = $('#dt-controls button[control="view"]').attr("row");
+  let htmlControl = sessionStorage.getItem("controls");
+  $("#dt-controls").html(htmlControl);
+  $("#dt-controls button").attr("row", dataRow);
+  alterControl();
+
+  $("#mdl-venta").on("hidden.bs.modal", () => {
+    $("#mdl-venta input, #mdl-venta select").prop("readonly", false);
+    $("#mdl-venta input, #mdl-venta select").val("");
+    $(`#mdl-venta input[name="endpoint"]`).val("setVenta");
+    $("#mdl-venta #agregarFila").prop("hidden", false);
+    $("#items-venta tbody").html("");
+    $("#mdl-venta #stotald").val("");
+    $("#mdl-venta #refer").html("");
+    $("#mdl-venta .cli").html("");
+  });
+}
+
+window.alterControl = function () {
+  const btnAddVenta = $('button[control="setVenta"]');
+  const btnEditVenta = $('#dt-controls button[control="edit"]');
+  const btnViewVenta = $('#dt-controls button[control="view"]');
+
+  btnAddVenta.click(async () => {
+    unselectAllRows();
+    loadVenta(btnAddVenta, "Venta");
+  });
+
+  btnViewVenta.click(async () => {
+    loadVenta(btnViewVenta, "Venta", "view");
+  });
+
+  btnEditVenta.click(async () => {
+    loadVenta(btnEditVenta, "Venta", "edit");
+  });
+};
+
+$(function () {
+  sessionStorage.setItem("controls", $("#dt-controls").html());
+  let table = $("#tbl-venta")
+    .DataTable()
+    .on("draw.dt search.dt select.dt deselect.dt length.dt", () => {
+      let selectedRows = table.rows({ selected: true });
+      if (selectedRows.count() === 1) {
+        startDOM();
+      }
+    });
+  startDOM();
+});

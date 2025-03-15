@@ -42,11 +42,10 @@ function saveVenta(instance, $data) {
     if (result.value == true) {
       let frmData = prepareFormData($frm);
 
-      frmData.id = $data["cod"];
       response(`venta/`, frmData).then((answer) => {
         if (answer.status == 200) {
           Swal.fire(answer.message, "", "success").then(() => {
-            $("#mdl-Venta").modal("hide");
+            document.location.reload();
           });
         } else {
           Swal.fire(answer.error, "", "error");
@@ -56,12 +55,13 @@ function saveVenta(instance, $data) {
   });
 }
 
-export function loadVentaItems(instance, $cod) {
+export function loadVentaItems(instance, $cod, $type = false) {
   response(`${instance}/`, {
     endpoint: "getDetail",
     id: $cod,
   }).then((answer) => {
     if (answer.status == 200) {
+      console.log(answer);
       let dataParent = answer.result.master;
       let detalle = answer.result.detail;
       let stotal = 0.0;
@@ -69,9 +69,16 @@ export function loadVentaItems(instance, $cod) {
 
       let cliOption = `<option selected value="${dataParent.id_cliente}">${dataParent.razon_social}</option>`;
       $("#optcli").append(cliOption);
-      $("#mdl-venta .cli").select2("destroy");
+      if ($("#mdl-venta .cli").data("select2")) {
+        $("#mdl-venta .cli").select2("destroy");
+      }
       findReferClient(dataParent.id_cliente);
       initSelectClient();
+
+      $("#freg").val(dataParent.freg);
+      $("#desc").val(dataParent.descripcion);
+      $("#tventa").val(dataParent.tipo_venta).trigger("change");
+      $("#mpago").val(dataParent.forma_pago).trigger("change");
 
       $("#mdl-venta #items-venta tbody").html("");
       detalle.forEach((item) => {
@@ -82,7 +89,9 @@ export function loadVentaItems(instance, $cod) {
           <tr>
             <td>
               <select class="form-select form-control prod" name="prod[]">
-                <option selected value="${item.cod_producto}">${item.nom_producto}</option>
+                <option selected value="${item.cod_producto}">${
+          item.nom_producto
+        }</option>
               </select>
             </td>
             <td>
@@ -90,18 +99,25 @@ export function loadVentaItems(instance, $cod) {
               class="form-control cant" min="1" step="1" value="${item.cant}" >
             </td>
             <td>
-              <input type="number" required readonly name="monto[]" value="${item.monto}"
+              <input type="number" required readonly name="monto[]" value="${
+                item.monto
+              }"
               class="form-control monto" min="0.01" step="0.01">
             </td>
             <td>
               <input type="number" disabled class="form-control titem" value="${total_item}">
             </td>
+            ${
+              $type == "edit" || $type == false
+                ? `
             <td>
               <button onclick="removeItemVenta(this);" type="button" title="Quitar Item de la Lista"
               class="btn btn-sm btn-danger rounded-pill p-2">
                   <i class="bi bi-dash-circle m-0"></i>
               </button>
-            </td>
+            </td>`
+                : ``
+            }
         </tr>`);
       });
 
@@ -121,12 +137,26 @@ export function loadVentaItems(instance, $cod) {
         })
       );
 
-      initSelectProdVent();
+      if ($type == "edit" || $type == false) {
+        $(`#mdl-venta #agregarFila`).prop("hidden", false);
+        initSelectProdVent();
+      }
+
+      if ($type == "view") {
+        $(`#mdl-venta #agregarFila`).prop("hidden", true);
+        $(`#mdl-venta input, #mdl-venta select`).prop("readonly", true);
+        $(`#mdl-venta input, #mdl-venta select`).prop("disabled", true);
+      } else if ($type == "edit") {
+        $(`#mdl-venta input[name="endpoint"]`).val("update");
+        $(`#mdl-venta input, #mdl-venta select`).prop("readonly", false);
+        $(`#mdl-venta input, #mdl-venta select`).prop("disabled", false);
+        $("#stotal,#stotald,#tasa").prop("disabled", true);
+      }
     }
   });
 }
 
-function calcm(me) {
+window.calcm = function (me) {
   let stotald = 0.0;
   let precio = $(me).parent("td").parent("tr").find("td .monto").val();
 
@@ -160,7 +190,7 @@ function calcm(me) {
       useGrouping: true,
     })
   );
-}
+};
 
 function refreshItemStatus() {
   let tVenta = 0;
@@ -333,7 +363,7 @@ window.initSelectProdVent = function () {
   });
 };
 
-export async function loadVenta(btn, instance) {
+export async function loadVenta(btn, instance, $type = false) {
   let $jsonData = atob($(btn).attr("row"));
   let $data = JSON.parse($jsonData)[0];
   let $tasaActual = await getTasa();
@@ -382,19 +412,33 @@ export async function loadVenta(btn, instance) {
       ? "Registrar Venta desde Cotización"
       : "Registrar Nueva Venta";
 
+  if (instance == "Venta") {
+    $lblTitle = $type == "edit" ? "Editar Venta" : "Ver Venta";
+  }
+
+  let saveButton =
+    $type == "edit" || $type == false
+      ? `<button type="button" id="save" class="btn btn-primary">Guardar</button>`
+      : ``;
   const $frm = `<form action="#" id="form-Venta" enctype="multipart/form-data" method="POST"></form>`;
+
   $("#mdl-venta .modal-footer").html(
     `<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-    <button type="button" class="btn btn-primary">Guardar</button>`
+    ${saveButton}`
   );
 
   $("#mdl-venta .modal-title").text($lblTitle);
   $("#mdl-venta #form-contained").wrap($frm);
-  $("#tbl-venta tbody").html("");
 
   $("#mdl-venta #tasa").val($tasaActual);
 
-  loadVentaItems(instance, $data["cod"]);
+  if (instance == "Cotizacion" || $type != false) {
+    loadVentaItems(instance, $data["cod"], $type);
+  } else {
+    initSelectClient();
+    $(`#mdl-venta #agregarFila`).prop("hidden", false);
+    initSelectProdVent();
+  }
 
   $("#mdl-venta").on("hide.bs.modal", () => {
     $("#mdl-venta .modal-footer .btn-primary").unbind("click");
@@ -403,10 +447,12 @@ export async function loadVenta(btn, instance) {
     }
   });
 
-  $("#mdl-venta").on("show.bs.modal", () => {
-    $("#mdl-venta .modal-footer .btn-primary").click(function () {
-      saveVenta(instance, $data);
-    });
+  $("#mdl-venta #save").click(function () {
+    if ($type == "edit") {
+      let $frm = $("#items-venta").closest("form");
+      $frm.append(`<input type="hidden" name="id" value="${$data["cod"]}"/>`);
+    }
+    saveVenta(instance, $data);
   });
 
   $("#mdl-venta").modal("show");
