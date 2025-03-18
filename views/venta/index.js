@@ -1,4 +1,4 @@
-import { loadComponents } from "@util";
+import { loadComponents, showModalDocument } from "@util";
 import { loadCrud } from "@StartCrud";
 import { loadVenta } from "@Venta";
 
@@ -19,7 +19,13 @@ loadCrud("venta", hiddenCols, true);
 
 function startDOM() {
   let dataRow = $('#dt-controls button[control="view"]').attr("row");
-  let htmlControl = sessionStorage.getItem("controls");
+  const $btnPrintVenta = `<button type="button" control="pdf" id="btn-print-pdf" onclick="printPdfVenta(this)"
+   class="btn rounded-circle p-2 btn-primary controls ms-1">
+      <i class="m-auto bi bi-file-pdf text-white fw-bold"></i>
+  </button>`;
+
+  let htmlControl = $btnPrintVenta + sessionStorage.getItem("controls");
+
   $("#dt-controls").html(htmlControl);
   $("#dt-controls button").attr("row", dataRow);
   alterControl();
@@ -35,6 +41,13 @@ function startDOM() {
     $("#mdl-venta .cli").html("");
   });
 }
+
+window.printPdfVenta = function (btn) {
+  let row = atob($(btn).attr("row"));
+  let dataRow = JSON.parse(row)[0];
+  let urlPdf = `pdf/venta.php?v=${dataRow.cod}&t=${dataRow.tipo_venta}`;
+  showModalDocument(urlPdf, `Venta N° ${dataRow.cod}`);
+};
 
 window.alterControl = function () {
   const btnAddVenta = $('button[control="setVenta"]');
