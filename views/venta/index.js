@@ -50,7 +50,7 @@ window.printPdfVenta = function (btn) {
 };
 
 window.alterControl = function () {
-  const btnAddVenta = $('button[control="setVenta"]');
+  const btnAddVenta = $('button[control="add"]');
   const btnEditVenta = $('#dt-controls button[control="edit"]');
   const btnViewVenta = $('#dt-controls button[control="view"]');
 

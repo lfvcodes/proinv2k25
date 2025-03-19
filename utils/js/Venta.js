@@ -45,7 +45,7 @@ function saveVenta(instance, $data) {
       response(`venta/`, frmData).then((answer) => {
         if (answer.status == 200) {
           Swal.fire(answer.message, "", "success").then(() => {
-            document.location.reload();
+            //document.location.reload();
           });
         } else {
           Swal.fire(answer.error, "", "error");
@@ -412,7 +412,7 @@ export async function loadVenta(btn, instance, $type = false) {
       ? "Registrar Venta desde Cotización"
       : "Registrar Nueva Venta";
 
-  if (instance == "Venta") {
+  if (instance == "Venta" && !empty($type)) {
     $lblTitle = $type == "edit" ? "Editar Venta" : "Ver Venta";
   }
 

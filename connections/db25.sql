@@ -27,8 +27,7 @@ CREATE TABLE IF NOT EXISTS `glo_1estado` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.glo_1estado: ~25 rows (aproximadamente)
-DELETE FROM `glo_1estado`;
-INSERT INTO `glo_1estado` (`cod_estado`, `nom_estado`) VALUES
+INSERT IGNORE INTO `glo_1estado` (`cod_estado`, `nom_estado`) VALUES
 	('00', 'NO ESPECIFICADO'),
 	('01', 'ANZOATEGUI'),
 	('02', 'APURE'),
@@ -64,8 +63,7 @@ CREATE TABLE IF NOT EXISTS `pro_1categoria` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_1categoria: ~8 rows (aproximadamente)
-DELETE FROM `pro_1categoria`;
-INSERT INTO `pro_1categoria` (`id_categoria`, `nom_categoria`, `activo`) VALUES
+INSERT IGNORE INTO `pro_1categoria` (`id_categoria`, `nom_categoria`, `activo`) VALUES
 	(1, 'Bolsas Plasticas', 'S'),
 	(2, 'Bolsas Papel Kraf', 'S'),
 	(3, 'Bandejas Anime/ Platos de Anime/Platos Carton', 'S'),
@@ -92,9 +90,8 @@ CREATE TABLE IF NOT EXISTS `pro_1cliente` (
   KEY `cod_estado` (`cod_estado`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_1cliente: ~1.138 rows (aproximadamente)
-DELETE FROM `pro_1cliente`;
-INSERT INTO `pro_1cliente` (`sig_idcliente`, `id_cliente`, `id_vendedor`, `razon_social`, `nom_contacto`, `cod_estado`, `dir_cliente`, `email_cliente`, `telf_cliente`, `activo`) VALUES
+-- Volcando datos para la tabla bd_proinv2k25.pro_1cliente: ~1,138 rows (aproximadamente)
+INSERT IGNORE INTO `pro_1cliente` (`sig_idcliente`, `id_cliente`, `id_vendedor`, `razon_social`, `nom_contacto`, `cod_estado`, `dir_cliente`, `email_cliente`, `telf_cliente`, `activo`) VALUES
 	('J', '074202434', 'V-21.464.055', 'LUNCHERIA SORAIDA', 'NELSON GIMENEZ', NULL, 'AV. INTERCOMUNAL LOS RASTROJOS CON CALLE SANTA BARBARA', '', '04143570068', 1),
 	('J', '08503289-4', '31453238-3', 'CENTRO OCCIDENTAL DE INVERSIONES S.C.S', 'ANNY MELENDEZ', NULL, 'AV. LIBERTADOR C/ANTONIO BENITEZ MENDEZ EDIF VALE PTA BAJA LOCAL S/NRO', '', '414-9565396', 1),
 	('J', '08518977-7', '31453238-3', 'DROGUERIA NENA C.A', 'FUSIL', NULL, 'CARRERA 3 CON CALLE 3 EDIFICIO PISO DRONENA ZONA INDUSTRIAL III BARQUISIMETO', '', '414-5047573', 1),
@@ -1248,8 +1245,7 @@ CREATE TABLE IF NOT EXISTS `pro_1conductor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_1conductor: ~998 rows (aproximadamente)
-DELETE FROM `pro_1conductor`;
-INSERT INTO `pro_1conductor` (`sig_idconductor`, `id_conductor`, `nombre_conductor`, `apellido_conductor`, `dir_conductor`, `email_conductor`, `telf_conductor`, `activo`) VALUES
+INSERT IGNORE INTO `pro_1conductor` (`sig_idconductor`, `id_conductor`, `nombre_conductor`, `apellido_conductor`, `dir_conductor`, `email_conductor`, `telf_conductor`, `activo`) VALUES
 	('V', '27.034.459', 'MILENA NATHALY', 'LUCENA ANGULO', 'URBANISMO GLORIA SUR MANZANA 6 CASA 413 SARARE', 'milenalucena@gmail.com', '04243258177', 1),
 	('J', '31453238-3', 'Venequimica CA', 'Oficina', 'Urb. Patarata II casa nro. 476 Barquisimeto', 'venequimica08@hotmail.com', '04145456017', 1),
 	('P', 'ID002', 'Nombre002', 'Apellido002', 'Dirección002', 'email002@example.com', '555-555-0002', 1),
@@ -2265,8 +2261,7 @@ CREATE TABLE IF NOT EXISTS `pro_1proveedor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_1proveedor: ~971 rows (aproximadamente)
-DELETE FROM `pro_1proveedor`;
-INSERT INTO `pro_1proveedor` (`sig_idproveedor`, `id_proveedor`, `razon_social`, `nombre_contacto`, `email_proveedor`, `telf_proveedor`, `cod_estado`, `dir_proveedor`, `activo`) VALUES
+INSERT IGNORE INTO `pro_1proveedor` (`sig_idproveedor`, `id_proveedor`, `razon_social`, `nombre_contacto`, `email_proveedor`, `telf_proveedor`, `cod_estado`, `dir_proveedor`, `activo`) VALUES
 	('V', '312312321321', 'michael emprendimiento', 'fernandito', 'feliciano1@uny.edu.ve', '04125231785', '00', 'cabudare', 1),
 	('V', '3123123213212', 'michael emprendimientox', 'fernandito', 'feliciano1@uny.edu.ve', '04125231785', '00', 'cabudare', 1),
 	('J', '401279600', 'DISTRIBUIDORA EL SOL 2013 C.A.', 'GERALDINE', 'elsol2013@gmail.com', '04268366350', '00', 'AV VARGAS ENTRE CALLES 17 Y 18 EDIF EL SOL PISO 1 APTO 2', 1),
@@ -3250,8 +3245,7 @@ CREATE TABLE IF NOT EXISTS `pro_1vehiculo` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_1vehiculo: ~2 rows (aproximadamente)
-DELETE FROM `pro_1vehiculo`;
-INSERT INTO `pro_1vehiculo` (`id_vehiculo`, `placa`, `descripcion`, `activo`) VALUES
+INSERT IGNORE INTO `pro_1vehiculo` (`id_vehiculo`, `placa`, `descripcion`, `activo`) VALUES
 	(1, 'XYZ-123', 'Ford Fiesta Power Gris', 'S'),
 	(2, 'XYZ-234', 'Ford Explorer 2008', 'S');
 
@@ -3270,9 +3264,8 @@ CREATE TABLE IF NOT EXISTS `pro_1vendedor` (
   KEY `cod_estado` (`cod_estado`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_1vendedor: ~1.001 rows (aproximadamente)
-DELETE FROM `pro_1vendedor`;
-INSERT INTO `pro_1vendedor` (`sig_idvendedor`, `id_vendedor`, `nombre_vendedor`, `apellido_vendedor`, `cod_estado`, `dir_vendedor`, `email_vendedor`, `telf_vendedor`, `activo`) VALUES
+-- Volcando datos para la tabla bd_proinv2k25.pro_1vendedor: ~1,001 rows (aproximadamente)
+INSERT IGNORE INTO `pro_1vendedor` (`sig_idvendedor`, `id_vendedor`, `nombre_vendedor`, `apellido_vendedor`, `cod_estado`, `dir_vendedor`, `email_vendedor`, `telf_vendedor`, `activo`) VALUES
 	('V', '27.034.459', 'MILENA NATHALYx', 'LUCENA ANGULO', '11', 'milenalucena@gmail.com', 'milenalucena@gmail.com', '04243258177', 1),
 	('J', '31453238-3', 'Venequimica CA', 'Oficina', '00', 'Urb. Patarata II casa nro. 476 Barquisimeto', 'venequimica08@hotmail.com', '04145456017', 1),
 	('G', 'ID001', 'Nombre001', 'Apellido001', '00', 'Dirección001', 'email001@example.com', '555-555-0001', 1),
@@ -4293,8 +4286,7 @@ CREATE TABLE IF NOT EXISTS `pro_2compra` (
 ) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_2compra: ~122 rows (aproximadamente)
-DELETE FROM `pro_2compra`;
-INSERT INTO `pro_2compra` (`id_pago`, `cod_factura`, `cod_nota`, `tipo_compra`, `fecha_compra`, `id_proveedor`, `descripcion`, `forma_pago`, `tasa`, `log_user`, `registro`) VALUES
+INSERT IGNORE INTO `pro_2compra` (`id_pago`, `cod_factura`, `cod_nota`, `tipo_compra`, `fecha_compra`, `id_proveedor`, `descripcion`, `forma_pago`, `tasa`, `log_user`, `registro`) VALUES
 	(1, '99999999', '', 'C', '2023-11-02 00:00:00', '', 'COMPRA INICIAL', 'B', 37, 'admin', '2023-11-02 17:39:07'),
 	(8, '59', '59', 'D', '2023-11-07 00:00:00', '7364803', 'QUIMICOS', 'BT', 35.24, 'OSTORRES', '2023-11-07 17:02:03'),
 	(13, '9686', '9686', 'D', '2023-11-15 00:00:00', '401279600', 'VARIOS', 'D', 35.38, 'OSTORRES', '2023-11-15 13:18:23'),
@@ -4433,8 +4425,7 @@ CREATE TABLE IF NOT EXISTS `pro_2cotizacion` (
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_2cotizacion: ~4 rows (aproximadamente)
-DELETE FROM `pro_2cotizacion`;
-INSERT INTO `pro_2cotizacion` (`id_cotizacion`, `cod_nota`, `fecha_cotizacion`, `id_cliente`, `descripcion`, `log_user`, `registro`) VALUES
+INSERT IGNORE INTO `pro_2cotizacion` (`id_cotizacion`, `cod_nota`, `fecha_cotizacion`, `id_cliente`, `descripcion`, `log_user`, `registro`) VALUES
 	(1, '80023899', '2023-11-09 00:00:00', '31743930-9', 'COMPRA SERV-PAPEL-TOALLAS NUEVAS', 'admin', '2023-11-09 14:19:43'),
 	(2, '1', '2023-11-23 00:00:00', '301854853', 'PRODUCTOS VARIOS', 'OSTORRES', '2023-11-23 16:06:33'),
 	(3, '3', '2025-12-06 10:29:00', '297216251', 'COTIZACION PRODUCTOS VARIOS', '', '2023-12-06 14:29:01'),
@@ -4456,11 +4447,10 @@ CREATE TABLE IF NOT EXISTS `pro_2cxc` (
   KEY `id_proveedor` (`id_cliente`) USING BTREE,
   KEY `id_compra` (`id_venta`) USING BTREE,
   CONSTRAINT `FK_pro_2cxc_pro_2venta` FOREIGN KEY (`id_venta`) REFERENCES `pro_2venta` (`id_venta`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=694 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=695 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_2cxc: ~349 rows (aproximadamente)
-DELETE FROM `pro_2cxc`;
-INSERT INTO `pro_2cxc` (`id_cxc`, `id_cliente`, `id_venta`, `monto`, `concepto`, `fvencimiento`, `estado`, `fecha_cobro`, `log_user`, `registro`) VALUES
+INSERT IGNORE INTO `pro_2cxc` (`id_cxc`, `id_cliente`, `id_venta`, `monto`, `concepto`, `fvencimiento`, `estado`, `fecha_cobro`, `log_user`, `registro`) VALUES
 	(82, '409335801', 6, 45.98, 'BOLSA PLASTICAS/ ENVOPLAST', '2023-11-22', 'S', '2023-11-29', 'OSTORRES', '2023-11-30 14:51:37'),
 	(83, '409721549', 7, 42.42, 'BOLSAS', '2023-11-22', 'S', '2023-11-29', 'OSTORRES', '2023-11-30 14:52:50'),
 	(84, '406256870', 9, 42.02, 'QUIMICOS/BANDEJAS/BOLSAS', '2023-11-22', 'S', '2023-11-29', 'OSTORRES', '2023-11-30 14:54:37'),
@@ -4809,7 +4799,8 @@ INSERT INTO `pro_2cxc` (`id_cxc`, `id_cliente`, `id_venta`, `monto`, `concepto`,
 	(684, '504649791', 380, 154.44, 'VASOS 127 ', '2024-01-31', 'V', NULL, 'MGACUNA', '2024-01-24 19:08:07'),
 	(685, '500879830', 381, 35.28, 'PRODUCTOS VARIOS', '2024-01-31', 'V', NULL, 'MGACUNA', '2024-01-24 19:13:09'),
 	(692, '7364803', 384, 21.64, 'QUIMICOS', '2024-01-31', 'S', '2024-01-25', 'admin', '2024-01-25 22:39:50'),
-	(693, '294369537', 382, 70.98, 'PRODUCTOS VARIOS', '2024-01-31', 'S', '2024-03-02', 'admin', '2024-03-02 22:24:31');
+	(693, '294369537', 382, 70.98, 'PRODUCTOS VARIOS', '2024-01-31', 'S', '2024-03-02', 'admin', '2024-03-02 22:24:31'),
+	(694, '403145288', 392, 105.04, 'PROD VARIOS', '2025-03-20', 'P', NULL, 'admin', '2025-03-03 19:00:03');
 
 -- Volcando estructura para tabla bd_proinv2k25.pro_2cxp
 CREATE TABLE IF NOT EXISTS `pro_2cxp` (
@@ -4830,8 +4821,7 @@ CREATE TABLE IF NOT EXISTS `pro_2cxp` (
 ) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_2cxp: ~52 rows (aproximadamente)
-DELETE FROM `pro_2cxp`;
-INSERT INTO `pro_2cxp` (`id_cxp`, `id_proveedor`, `id_compra`, `monto`, `concepto`, `fvencimiento`, `fecha_cobro`, `estado`, `log_user`, `registro`) VALUES
+INSERT IGNORE INTO `pro_2cxp` (`id_cxp`, `id_proveedor`, `id_compra`, `monto`, `concepto`, `fvencimiento`, `fecha_cobro`, `estado`, `log_user`, `registro`) VALUES
 	(25, '408648490', 20, 292.74, 'SERVILLETAS', '2023-12-07', '2023-12-07', 'S', 'OSTORRES', '2023-11-30 18:55:15'),
 	(31, '7364803', 15, 143, 'QUIMICOS', '2023-12-07', '2023-12-07', 'S', 'OSTORRES', '2023-11-30 19:51:07'),
 	(32, '7364803', 16, 19.61, 'QUIMICOS', '2023-12-07', '2023-12-07', 'S', 'OSTORRES', '2023-11-30 19:51:49'),
@@ -4896,7 +4886,6 @@ CREATE TABLE IF NOT EXISTS `pro_2egreso_otro` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_2egreso_otro: ~0 rows (aproximadamente)
-DELETE FROM `pro_2egreso_otro`;
 
 -- Volcando estructura para tabla bd_proinv2k25.pro_2empresa
 CREATE TABLE IF NOT EXISTS `pro_2empresa` (
@@ -4913,9 +4902,8 @@ CREATE TABLE IF NOT EXISTS `pro_2empresa` (
   PRIMARY KEY (`rif_empresa`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_2empresa: ~1 rows (aproximadamente)
-DELETE FROM `pro_2empresa`;
-INSERT INTO `pro_2empresa` (`rif_empresa`, `nom_empresa`, `tel_empresa`, `email_empresa`, `direccion_empresa`, `vendedor`, `lector_barras`, `cod_alternativo`, `percomision`, `activo`) VALUES
+-- Volcando datos para la tabla bd_proinv2k25.pro_2empresa: ~0 rows (aproximadamente)
+INSERT IGNORE INTO `pro_2empresa` (`rif_empresa`, `nom_empresa`, `tel_empresa`, `email_empresa`, `direccion_empresa`, `vendedor`, `lector_barras`, `cod_alternativo`, `percomision`, `activo`) VALUES
 	('J-88888888-4', 'mi negocio', '02512678548', 'minegocio08@hotmail.com', 'Av. Celestial Casa N° 476 Urb. CoolMart  II, Barquisimeto,Estado Lara', 1, 1, 1, 5, 'S');
 
 -- Volcando estructura para tabla bd_proinv2k25.pro_2guia
@@ -4932,8 +4920,7 @@ CREATE TABLE IF NOT EXISTS `pro_2guia` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_2guia: ~2 rows (aproximadamente)
-DELETE FROM `pro_2guia`;
-INSERT INTO `pro_2guia` (`id_guia`, `fecha_guia`, `id_conductor`, `id_vehiculo`, `log_user`, `registro`) VALUES
+INSERT IGNORE INTO `pro_2guia` (`id_guia`, `fecha_guia`, `id_conductor`, `id_vehiculo`, `log_user`, `registro`) VALUES
 	(1, '2025-01-03 09:12:22', '27.034.459', 1, 'admin', '2025-01-03 13:12:23'),
 	(2, '2025-01-03 09:12:22', '27.034.459', 2, 'admin', '2025-01-03 13:12:23');
 
@@ -4957,8 +4944,7 @@ CREATE TABLE IF NOT EXISTS `pro_2producto` (
 ) ENGINE=InnoDB AUTO_INCREMENT=605 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_2producto: ~219 rows (aproximadamente)
-DELETE FROM `pro_2producto`;
-INSERT INTO `pro_2producto` (`cod_producto`, `cod_alterno`, `nom_producto`, `descripcion`, `cod_categoria`, `stock_minimo`, `stock_maximo`, `p_costo`, `p_venta`, `u_medida`, `excento`, `activo`) VALUES
+INSERT IGNORE INTO `pro_2producto` (`cod_producto`, `cod_alterno`, `nom_producto`, `descripcion`, `cod_categoria`, `stock_minimo`, `stock_maximo`, `p_costo`, `p_venta`, `u_medida`, `excento`, `activo`) VALUES
 	(8, '0', 'SERVILLETAS Z TIPO PEQUENA 20X160', 'SERVILLETAS Z TIPO PEQUENA 20X160', 5, 5, 40, 14.43, 20.4, 'BU', 0, 1),
 	(9, '0', 'TOALLA EN ESPIRAL SENCILLAS 100 MTS 1X6', 'TOALLA EN ESPIRAL SANITISU HOJAS SENCILLAS 1X6', 5, 5, 20, 26.84, 30.8, 'BU', 0, 1),
 	(10, '0', 'PAPEL HIG ESPRIN SOFT 4 ROLLOS 500 HOJAS NARANJA', 'PAPEL HIG ESPRIN SOFT 4 ROLLOS 500 HOJAS NARANJA', 5, 5, 20, 18.83, 25.42, 'BU', 0, 1),
@@ -5195,8 +5181,7 @@ CREATE TABLE IF NOT EXISTS `pro_2usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_2usuario: ~3 rows (aproximadamente)
-DELETE FROM `pro_2usuario`;
-INSERT INTO `pro_2usuario` (`id_usuario`, `empresa`, `log_user`, `email`, `nom_usuario`, `psw`, `nivel`, `activo`, `registro`) VALUES
+INSERT IGNORE INTO `pro_2usuario` (`id_usuario`, `empresa`, `log_user`, `email`, `nom_usuario`, `psw`, `nivel`, `activo`, `registro`) VALUES
 	(7382421, 'J-88888888-4', 'OSTORRES', 'otorrescamargo@gmail.com', 'Omaira Torres', '$2y$10$oYWTkqk6syRDEt.fU4xO/.e4eMJFWhloR9i8RduE1khtcVGYObvCm', 1, 'N', '2024-10-21 13:16:26'),
 	(18332142, 'J-88888888-4', 'admin', 'prueba@gmail.com', 'administrador', '$2y$10$Mm5lOJ244h2A0JV6Txaa6.xGJfiBY9rwYHMJ.xOeJAt2mV2AsgHLC', 1, 'S', '2024-10-21 13:16:17'),
 	(27397044, 'J-88888888-4', 'MGACUNA', 'mariagabrielacu90@gmail.com', 'Maria Gabriela Acuña', '$2y$10$uPhbKsdxRGBmMBp2PrgeV.UziRjJIUsxzq3iU2QDiZqAyxLcIPfOC', 1, 'N', '2024-10-21 13:16:23');
@@ -5218,11 +5203,10 @@ CREATE TABLE IF NOT EXISTS `pro_2venta` (
   `registro` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id_venta`),
   KEY `id_cliente` (`id_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=399 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=401 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_2venta: ~373 rows (aproximadamente)
-DELETE FROM `pro_2venta`;
-INSERT INTO `pro_2venta` (`id_venta`, `cod_factura`, `cod_nota`, `tipo_venta`, `fecha_venta`, `id_cliente`, `descripcion`, `forma_pago`, `tasa`, `iva`, `log_user`, `comision`, `registro`) VALUES
+-- Volcando datos para la tabla bd_proinv2k25.pro_2venta: ~372 rows (aproximadamente)
+INSERT IGNORE INTO `pro_2venta` (`id_venta`, `cod_factura`, `cod_nota`, `tipo_venta`, `fecha_venta`, `id_cliente`, `descripcion`, `forma_pago`, `tasa`, `iva`, `log_user`, `comision`, `registro`) VALUES
 	(6, '', 1, 'D', '2023-11-15 00:00:00', '409335801', 'BOLSA PLASTICAS/ ENVOPLAST', 'BT', 35.39, 0, 'OSTORRES', 2.5, '2024-04-02 03:46:27'),
 	(7, '', 2, 'D', '2023-11-15 00:00:00', '409721549', 'BOLSAS', 'BT', 35.5, 0, 'OSTORRES', 2.5, '2024-04-02 03:46:27'),
 	(8, '', 3, 'D', '2023-11-15 00:00:00', '16905256-1', 'BOLSA PLASTICA', 'BT', 35.83, 0, 'OSTORRES', 2.5, '2024-04-02 03:46:27'),
@@ -5594,8 +5578,7 @@ INSERT INTO `pro_2venta` (`id_venta`, `cod_factura`, `cod_nota`, `tipo_venta`, `
 	(388, '', 378, 'D', '2024-04-02 07:48:00', '41036704-0', 'segunda ventax', 'B', 38.03, 0, 'admin', 5, '2024-04-02 12:05:10'),
 	(389, '100156', NULL, 'FD', '2024-04-02 08:17:00', '502796070', 'venta de factura corpolivo1', 'B', 38.03, 1, 'admin', 5, '2024-04-02 12:18:58'),
 	(390, '', 379, 'D', '2024-04-02 08:27:00', '502500570', 'terca venta', 'MB', 38.03, 0, 'admin', 5, '2024-04-02 12:27:49'),
-	(392, '', 233, 'C', '2025-03-03 00:00:00', '403145288', 'pago planta electrica', 'B', 72.01, 0, 'admin', NULL, '2025-03-03 22:07:26'),
-	(398, '989898', NULL, 'C', '2025-03-15 00:00:00', '403145288', 'la murga de panama', 'B', 36.26, 0, 'admin', NULL, '2025-03-15 16:41:07');
+	(392, '', 233, 'C', '2025-03-03 00:00:00', '403145288', 'pago planta electrica', 'B', 72.01, 0, 'admin', NULL, '2025-03-03 22:07:26');
 
 -- Volcando estructura para tabla bd_proinv2k25.pro_3dcompra
 CREATE TABLE IF NOT EXISTS `pro_3dcompra` (
@@ -5611,9 +5594,8 @@ CREATE TABLE IF NOT EXISTS `pro_3dcompra` (
   CONSTRAINT `FK_pro_3dcompra_pro_2producto` FOREIGN KEY (`cod_producto`) REFERENCES `pro_2producto` (`cod_producto`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=10013 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_3dcompra: ~363 rows (aproximadamente)
-DELETE FROM `pro_3dcompra`;
-INSERT INTO `pro_3dcompra` (`id_detalle`, `id_pago`, `cod_producto`, `cant`, `monto`) VALUES
+-- Volcando datos para la tabla bd_proinv2k25.pro_3dcompra: ~362 rows (aproximadamente)
+INSERT IGNORE INTO `pro_3dcompra` (`id_detalle`, `id_pago`, `cod_producto`, `cant`, `monto`) VALUES
 	(246, 13, 79, 1, 10.6),
 	(247, 13, 84, 3, 18),
 	(248, 13, 73, 5, 12),
@@ -5993,8 +5975,7 @@ CREATE TABLE IF NOT EXISTS `pro_3dcotizacion` (
 ) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_3dcotizacion: ~20 rows (aproximadamente)
-DELETE FROM `pro_3dcotizacion`;
-INSERT INTO `pro_3dcotizacion` (`id_detalle`, `id_cotizacion`, `cod_producto`, `cant`, `monto`) VALUES
+INSERT IGNORE INTO `pro_3dcotizacion` (`id_detalle`, `id_cotizacion`, `cod_producto`, `cant`, `monto`) VALUES
 	(1, 1, 128, 1, 13.3),
 	(2, 1, 95, 1, 0.56),
 	(10, 2, 120, 1, 2.2),
@@ -6027,8 +6008,7 @@ CREATE TABLE IF NOT EXISTS `pro_3dcxc_abono` (
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_3dcxc_abono: ~12 rows (aproximadamente)
-DELETE FROM `pro_3dcxc_abono`;
-INSERT INTO `pro_3dcxc_abono` (`id_abono`, `id_cxc`, `fecha_abono`, `monto_abono`, `concepto_abono`) VALUES
+INSERT IGNORE INTO `pro_3dcxc_abono` (`id_abono`, `id_cxc`, `fecha_abono`, `monto_abono`, `concepto_abono`) VALUES
 	(2, 393, '2024-01-09', 41.6, 'ABONO'),
 	(3, 398, '2023-12-05', 46.34, 'ABONO'),
 	(12, 500, '2024-01-14', 23.6, 'ABONO'),
@@ -6053,8 +6033,7 @@ CREATE TABLE IF NOT EXISTS `pro_3dcxp_abono` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_3dcxp_abono: ~2 rows (aproximadamente)
-DELETE FROM `pro_3dcxp_abono`;
-INSERT INTO `pro_3dcxp_abono` (`id_abono`, `id_cxp`, `fecha_abono`, `monto_abono`, `concepto_abono`) VALUES
+INSERT IGNORE INTO `pro_3dcxp_abono` (`id_abono`, `id_cxp`, `fecha_abono`, `monto_abono`, `concepto_abono`) VALUES
 	(1, 68, '2024-01-23', 9.1, 'ABONOX'),
 	(2, 113, '2025-01-14', 10, 'nuevo abono');
 
@@ -6072,7 +6051,6 @@ CREATE TABLE IF NOT EXISTS `pro_3degreso_otro` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_3degreso_otro: ~0 rows (aproximadamente)
-DELETE FROM `pro_3degreso_otro`;
 
 -- Volcando estructura para tabla bd_proinv2k25.pro_3dguia
 CREATE TABLE IF NOT EXISTS `pro_3dguia` (
@@ -6086,9 +6064,8 @@ CREATE TABLE IF NOT EXISTS `pro_3dguia` (
   CONSTRAINT `pro_3dguia_ibfk_1` FOREIGN KEY (`id_guia`) REFERENCES `pro_2guia` (`id_guia`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_3dguia: ~1 rows (aproximadamente)
-DELETE FROM `pro_3dguia`;
-INSERT INTO `pro_3dguia` (`id_detalle`, `id_guia`, `id_venta`) VALUES
+-- Volcando datos para la tabla bd_proinv2k25.pro_3dguia: ~0 rows (aproximadamente)
+INSERT IGNORE INTO `pro_3dguia` (`id_detalle`, `id_guia`, `id_venta`) VALUES
 	(1, 2, 10);
 
 -- Volcando estructura para tabla bd_proinv2k25.pro_3dventa
@@ -6103,11 +6080,10 @@ CREATE TABLE IF NOT EXISTS `pro_3dventa` (
   KEY `id_venta` (`id_venta`),
   CONSTRAINT `FK_pro_3dventa_pro_2producto` FOREIGN KEY (`cod_producto`) REFERENCES `pro_2producto` (`cod_producto`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `FK_pro_3dventa_pro_2venta` FOREIGN KEY (`id_venta`) REFERENCES `pro_2venta` (`id_venta`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2665 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=2669 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_3dventa: ~1.326 rows (aproximadamente)
-DELETE FROM `pro_3dventa`;
-INSERT INTO `pro_3dventa` (`id_detalle`, `id_venta`, `cod_producto`, `cant`, `monto`) VALUES
+-- Volcando datos para la tabla bd_proinv2k25.pro_3dventa: ~1,326 rows (aproximadamente)
+INSERT IGNORE INTO `pro_3dventa` (`id_detalle`, `id_venta`, `cod_producto`, `cant`, `monto`) VALUES
 	(242, 54, 120, 1, 3),
 	(243, 54, 57, 6, 1.85),
 	(244, 54, 93, 24, 0.88),
@@ -7433,8 +7409,7 @@ INSERT INTO `pro_3dventa` (`id_detalle`, `id_venta`, `cod_producto`, `cant`, `mo
 	(2643, 389, 76, 1, 30.38),
 	(2644, 390, 253, 2, 8),
 	(2645, 392, 77, 2, 26.26),
-	(2646, 392, 128, 2, 26.26),
-	(2664, 398, 235, 2, 1.73);
+	(2646, 392, 128, 2, 26.26);
 
 -- Volcando estructura para tabla bd_proinv2k25.pro_4comision_hist
 CREATE TABLE IF NOT EXISTS `pro_4comision_hist` (
@@ -7449,8 +7424,7 @@ CREATE TABLE IF NOT EXISTS `pro_4comision_hist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Volcando datos para la tabla bd_proinv2k25.pro_4comision_hist: ~4 rows (aproximadamente)
-DELETE FROM `pro_4comision_hist`;
-INSERT INTO `pro_4comision_hist` (`fecha_comision`, `cod_categoria`, `comision`, `comision2`, `comision3`, `comision4`) VALUES
+INSERT IGNORE INTO `pro_4comision_hist` (`fecha_comision`, `cod_categoria`, `comision`, `comision2`, `comision3`, `comision4`) VALUES
 	('2024-01-24', 3, 1, 1, 1, 1),
 	('2024-01-25', 3, 2, 3, 4, 6),
 	('2024-01-24', 4, 1, 1, 1, 1),
@@ -7466,9 +7440,8 @@ CREATE TABLE IF NOT EXISTS `pro_4producto_hist` (
   CONSTRAINT `FK_pro_4producto_hist_pro_2producto` FOREIGN KEY (`cod_producto`) REFERENCES `pro_2producto` (`cod_producto`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_4producto_hist: ~395 rows (aproximadamente)
-DELETE FROM `pro_4producto_hist`;
-INSERT INTO `pro_4producto_hist` (`fecha_precio`, `cod_producto`, `pcosto`, `pventa`) VALUES
+-- Volcando datos para la tabla bd_proinv2k25.pro_4producto_hist: ~394 rows (aproximadamente)
+INSERT IGNORE INTO `pro_4producto_hist` (`fecha_precio`, `cod_producto`, `pcosto`, `pventa`) VALUES
 	('2023-12-29', 8, 13.59, 20.4),
 	('2024-01-09', 8, 13.59, 20.4),
 	('2024-01-10', 8, 13.59, 20.4),
@@ -7872,11 +7845,10 @@ CREATE TABLE IF NOT EXISTS `pro_4tasa` (
   `log_user` text NOT NULL,
   `fecha_tasa` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id_act`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_4tasa: ~49 rows (aproximadamente)
-DELETE FROM `pro_4tasa`;
-INSERT INTO `pro_4tasa` (`id_act`, `tasa`, `log_user`, `fecha_tasa`) VALUES
+-- Volcando datos para la tabla bd_proinv2k25.pro_4tasa: ~51 rows (aproximadamente)
+INSERT IGNORE INTO `pro_4tasa` (`id_act`, `tasa`, `log_user`, `fecha_tasa`) VALUES
 	(1, 36, 'admin', '2023-10-30 13:27:39'),
 	(2, 35.15, 'OSTORRES', '2023-11-03 00:08:41'),
 	(3, 35.17, 'OSTORRES', '2023-11-03 13:07:17'),
@@ -7925,7 +7897,9 @@ INSERT INTO `pro_4tasa` (`id_act`, `tasa`, `log_user`, `fecha_tasa`) VALUES
 	(46, 36.13, 'MGACUNA', '2024-01-24 14:41:01'),
 	(47, 38.38, 'admin', '2024-01-25 19:37:56'),
 	(48, 38.03, 'admin', '2024-02-20 12:54:39'),
-	(49, 36.26, 'admin', '2024-04-02 13:07:13');
+	(49, 36.26, 'admin', '2024-04-02 13:07:13'),
+	(50, 67.22, 'admin', '2025-03-16 14:18:28'),
+	(61, 70, 'admin', '2025-03-19 18:55:43');
 
 -- Volcando estructura para procedimiento bd_proinv2k25.pro_5confirmarCxc
 DELIMITER //
@@ -8192,7 +8166,8 @@ CREATE PROCEDURE `pro_5setVenta`(
 	IN `p_log_user` VARCHAR(32),
 	IN `p_prod` TEXT,
 	IN `p_cant` INT,
-	IN `p_monto` DOUBLE
+	IN `p_monto` DOUBLE,
+	IN `p_flimite` DATE
 )
 BEGIN
     -- Declaración de variables
@@ -8207,7 +8182,7 @@ BEGIN
     BEGIN
         GET DIAGNOSTICS CONDITION 1 `sql_error_message` = MESSAGE_TEXT;
         ROLLBACK;
-        SELECT 400 AS `status`, `sql_error_message` AS `message`;
+        SELECT 400 AS `status`, `sql_error_message` AS `mensaje`;
     END;
 
     -- Iniciar la transacción
@@ -8223,13 +8198,42 @@ BEGIN
 	END IF;
 
 
-    -- Obtener el ID de la cotización insertada
+    -- Obtener el ID de la venta insertada
     SET `venta_id` = LAST_INSERT_ID();
 
     -- Inicializar variables temporales con los valores recibidos
     SET `temp_prod` = `p_prod`;
     SET `temp_cant` = `p_cant`;
     SET `temp_monto` = `p_monto`;
+    
+	-- si es tipo de venta a credito generar CXC
+	-- si es tipo de venta a crédito generar CXC
+	IF (p_tipo_venta = 'C' OR p_tipo_venta = 'FC') THEN
+	
+	    -- Calcular el monto total
+	    SET @total_monto = 0;
+	    WHILE LOCATE(',', `temp_monto`) > 0 DO
+	        SET @item_monto = SUBSTRING_INDEX(`temp_monto`, ',', 1);
+	        SET @total_monto = @total_monto + CAST(@item_monto AS DECIMAL(10, 2));
+	        SET `temp_monto` = SUBSTRING(`temp_monto` FROM LOCATE(',', `temp_monto`) + 1);
+	    END WHILE;
+	
+	    -- Procesar el último valor restante
+	    SET @total_monto = @total_monto + CAST(`temp_monto` AS DECIMAL(10, 2));
+	
+	    -- Intentar insertar en pro_2cxc
+	    INSERT INTO pro_2cxc (id_cliente, id_venta, monto, concepto, fvencimiento, estado, log_user)
+	    VALUES (p_id_cliente, venta_id, @total_monto, p_descripcion, p_flimite, 'P', p_log_user);
+	
+	    -- Verificar que se insertó al menos una fila
+	    IF ROW_COUNT() = 0 THEN
+	        -- Lanza un error explícito
+	        SIGNAL SQLSTATE '45000'
+	        SET MESSAGE_TEXT = 'Error: No se pudo insertar en la tabla pro_2cxc.';
+	    END IF;
+	
+	END IF;
+
 
     -- Insertar en pro_3dventa cada producto, cantidad y monto
     WHILE LOCATE(',', `temp_prod`) > 0 DO
@@ -8263,7 +8267,7 @@ BEGIN
     COMMIT;
 
     -- Devolver el estado y mensaje de éxito
-    SELECT 200 AS `status`, CONCAT('Venta ', `venta_id`, ' insertada con éxito') AS `message`;
+    SELECT 200 AS `status`, CONCAT('Venta ', `venta_id`, ' insertada con éxito') AS `mensaje`;
 END//
 DELIMITER ;
 

@@ -55,9 +55,10 @@ if ($post['endpoint'] === 'setVenta' || $post['endpoint'] === 'add') {
     implode(",", $post['prod[]']) ?? $post['prod[]'],
     implode(",", $post['cant[]']) ?? $post['cant[]'],
     implode(",", $post['monto[]']) ?? $post['monto[]'],
+    $post['flimite'] ?? null
   );
 
-  $query = 'CALL pro_5setVenta (?,?,?,?,?,?,?,?,?,?)';
+  $query = 'CALL pro_5setVenta (?,?,?,?,?,?,?,?,?,?,?)';
   $rs = prepareRS($conexion, $query, $params);
   if ($rs) {
     #setBitacora('VENTAS', 'AGREGAR VENTA: ' . $post['fact'], $params, $session['user']);
