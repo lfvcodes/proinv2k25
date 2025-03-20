@@ -76,3 +76,10 @@ if ($post['endpoint'] == 'delete') {
       responseJSON(['status' => 200, 'message' => 'Provedor(es) Borrados Correctamente']);
    endif;
 }
+
+if ($post['endpoint'] == 'getListOptionProveedor') {
+   $lk = (!isset($post['lk'])) ? null : $post['lk'];
+   $query = "SELECT id_proveedor AS id,razon_social AS text FROM pro_1proveedor WHERE activo = 1 AND CONCAT(id_proveedor,razon_social) LIKE '%" . $lk . "%' ORDER BY razon_social ASC";
+   $rs = prepareRS($conexion, $query, []);
+   echo ($rs->rowCount() > 0) ? json_encode($rs->fetchAll()) : json_encode(`<span>No se encontraron resultados</span>`);
+}

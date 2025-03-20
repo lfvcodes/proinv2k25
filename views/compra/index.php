@@ -19,34 +19,33 @@ importModals();
     <div class="row">
       <h5 class="col text-primary m-auto"><i class="bi bi-building-up"></i> Compras Registradas</h5>
       <div class="col text-end">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mdl-compra">
+        <button type="button" control="add" row="W10=" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mdl-compra">
           <i class="bx bx-plus-circle"></i>Agregar
         </button>
       </div>
     </div>
   </div>
+  <div class="card-body pt-0 pb-1">
+    <div class="table-responsive text-nowrap">
+      <table id="tbl-compra" class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>#comprobante</th>
+            <th>Tipo de Compra</th>
+            <th>Fecha</th>
+            <th>Proveedor</th>
+            <th>Concepto</th>
+            <th>Forma Pago</th>
+            <th>Tasa</th>
+            <th>Usuario</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
 
-  <div class="table-responsive text-nowrap">
-    <table id="tbl-compra" class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>#Comprobante</th>
-          <th>Tipo de Compra</th>
-          <th>Fecha</th>
-          <th>idproveedor</th>
-          <th>Proveedor</th>
-          <th>Concepto</th>
-          <th>Forma Pago</th>
-          <th>Tasa</th>
-          <th>Usuario</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody class="table-border-bottom-0">
-
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 

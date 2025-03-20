@@ -1,4 +1,4 @@
-<fieldset id="mdl-compra" title="Registrar Compra">
+<fieldset id="mdl-compra" crud="true" title="Registrar Compra">
   <div class="row mb-3">
     <div class="col input-group">
       <label class="input-group-text" for="optprov">
@@ -71,14 +71,17 @@
   <label class="form-label text-primary">Detalle de Compra</label>
 
   <div class="row mb-3">
-    <table class="table table-sm" id="tbl-cond">
+    <table class="table table-sm" id="items-compra">
       <thead>
         <th width="40%">Item</th>
         <th width="15%">Cantidad</th>
         <th width="10%">Stock</th>
         <th width="15%">Precio</th>
         <th width="15%">Total Item</th>
-        <th width="5%"><button onclick="add();" class="btn btn-sm btn-primary" type="button" id="agregarFila"> + </button></th>
+        <th width="5%">
+          <button onclick="addItemCompra();" class="btn btn-sm btn-primary p-2 rounded-pill" type="button" id="agregarFila">
+            <i class="bi bi-plus-circle m-0"></i>
+          </button>
       </thead>
       <tbody>
         <tr>
@@ -89,7 +92,11 @@
           <td><input readonly class="form-control stock" type="number"></td>
           <td><input required readonly name="monto[]" class="form-control monto" min="0.01" step="0.01" type="number"></td>
           <td><input readonly class="form-control titem" type="number"></td>
-          <td><button onclick="remove(this);" type="button" class="btn btn-sm btn-danger">-</button></td>
+          <td>
+            <button onclick="removeItemCompra(this);" type="button" class="btn btn-sm btn-danger rounded-pill p-2">
+              <i class="bi bi-dash-circle m-0"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -105,5 +112,5 @@
     </div>
   </div>
 
-  <input type="hidden" value="setCompra" name="action">
+  <input type="hidden" value="setCompra" name="endpoint">
 </fieldset>
