@@ -14,7 +14,7 @@ if ($post['endpoint'] === 'getDetail') {
 
   $query = 'SELECT pv.razon_social,DATE(c.registro) AS fregistro,
   TIME_FORMAT(TIME(c.registro), "%H:%i") AS tregistro,
-  DATE(c.fecha_compra) AS freg,c.*
+  c.fecha_compra AS freg,c.*
   FROM pro_2compra c JOIN pro_1proveedor pv ON c.id_proveedor = pv.id_proveedor
   WHERE c.id_pago = ?';
   $rs = prepareRS($conexion, $query, [$post['id']]);
@@ -47,22 +47,24 @@ if ($post['endpoint'] === 'setcompra' || $post['endpoint'] === 'add') {
 
   $params = array(
     $post['optprov'],
-    $post['freg'],
+    $post['freg'] . $post['ftime'],
     $post['desc'],
     $post['fact'],
     $post['tasa'],
     $post['tcompra'],
-    'admin',
+    $session['user'],
     implode(",", $post['prod[]']) ?? $post['prod[]'],
     implode(",", $post['cant[]']) ?? $post['cant[]'],
     implode(",", $post['monto[]']) ?? $post['monto[]'],
     $post['flimite'] ?? null
   );
 
+  responseJSON(['status' => 200, 'result' => $params]);
+
   $query = 'CALL pro_5setcompra (?,?,?,?,?,?,?,?,?,?,?)';
   $rs = prepareRS($conexion, $query, $params);
   if ($rs) {
-    #setBitacora('compraS', 'AGREGAR compra: ' . $post['fact'], $params, $session['user']);
+    #setBitacora('compraS', 'AGREGAR Compra: ' . $post['fact'], $params, $session['user']);
     responseJSON($rs->fetch(PDO::FETCH_ASSOC));
   } else {
     // Manejar el error aquí, por ejemplo, mostrar un mensaje de error

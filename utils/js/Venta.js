@@ -75,7 +75,10 @@ export function loadVentaItems(instance, $cod, $type = false) {
       findReferClient(dataParent.id_cliente);
       initSelectClient();
 
-      $("#freg").val(dataParent.freg);
+      $("#freg").val(moment.utc(dataParent.freg).format("YYYY-MM-DD"));
+      let hour = moment.utc(dataParent.freg).format("HH:mm");
+      $("#ftime").val(hour);
+
       $("#desc").val(dataParent.descripcion);
       $("#tventa").val(dataParent.tipo_venta).trigger("change");
       $("#mpago").val(dataParent.forma_pago).trigger("change");

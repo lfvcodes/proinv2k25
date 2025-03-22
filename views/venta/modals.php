@@ -16,8 +16,10 @@
 
    <div class="row mb-3">
       <div class="col input-group">
-         <label class="input-group-text" for="freg">Fecha de venta</label>
+         <label class="input-group-text" for="freg">Fecha</label>
          <input type="date" name="freg" id="freg" class="form-control">
+         <label class="input-group-text" for="fime">Hora</label>
+         <input type="time" name="ftime" id="ftime" class="form-control">
       </div>
 
       <div class="col input-group">

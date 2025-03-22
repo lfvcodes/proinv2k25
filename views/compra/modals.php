@@ -18,23 +18,22 @@
   </div>
 
   <div class="row mb-3">
+    <div class="col-lg col-md col-sm input-group">
+      <label class="input-group-text" for="tcompra">Tipo de Compra</label>
+      <select onchange="changeCredit(this)" required name="tcompra" id="tcompra" class="form-select form-control">
+        <option selected value="C">Credito</option>
+        <option value="D">Debito</option>
+      </select>
+    </div>
     <div class="col input-group">
       <label class="input-group-text" for="fact">
-        <i class="bi bi-receipt me-1"></i>Nota de Entrega
+        <i class="bi bi-receipt me-1"></i>Comprobante
       </label>
       <input required class="form-control fact" maxlength="64" type="text" name="fact" id="fact">
     </div>
-
-    <div class="col input-group">
-      <label class="input-group-text" for="desc">
-        Concepto
-      </label>
-      <input required class="form-control desc" maxlength="42" type="text" name="desc" id="desc">
-    </div>
   </div>
-
-  <div hidden id="row-tcompra" class="row mb-3">
-    <div class="col input-group">
+  <div class="row mb-3">
+    <div hidden class="col input-group">
       <label class="input-group-text" for="mpago">
         <i class="bi bi-receipt me-1"></i>Forma de Pago
       </label>
@@ -44,30 +43,25 @@
         <option value="BT">BS TRANSFERENCIA</option>
         <option value="D">DIVISA EFECTIVO</option>
         <option value="DT">DIVISA TRANSFERENCIA</option>
-        <option value="M">BS + DIVISA</option>
-        <option value="MB">BS EFECTIVO + TRANSFERENCIA</option>
       </select>
     </div>
-    <div class="col input-group">
+    <div hidden class="col input-group">
       <label class="input-group-text" for="tasa">Tasa de Cambio</label>
-      <input id="tasa" name="tasa" class="form-control tasa" min="0.01" step="0.01" type="number">
+      <input readonly id="tasa" name="tasa" class="form-control tasa" value="" min="0.01" step="0.01" type="number">
     </div>
   </div>
-
   <div class="row mb-3">
-    <div class="col-lg col-md col-sm input-group">
-      <label class="input-group-text" for="tcompra">Tipo de Compra</label>
-      <select onchange="changeCredit(this)" required name="tcompra" id="tcompra" class="form-select form-control">
-        <option selected value="C">Credito</option>
-        <option value="D">Debito</option>
-      </select>
-    </div>
     <div class="col-lg col-md col-sm input-group">
       <label class="input-group-text" for="flimite">Fecha Limite de Credito</label>
       <input required class="form-control " type="date" name="flimite" id="flimite">
     </div>
+    <div class="col input-group">
+      <label class="input-group-text" for="desc">
+        Concepto
+      </label>
+      <input required class="form-control desc" maxlength="42" type="text" name="desc" id="desc">
+    </div>
   </div>
-
   <label class="form-label text-primary">Detalle de Compra</label>
 
   <div class="row mb-3">

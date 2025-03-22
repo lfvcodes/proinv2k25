@@ -39,7 +39,10 @@ window.loadCompraItems = function ($cod, $type = false) {
 
       initSelectProveedor();
 
-      $("#freg").val(dataParent.freg);
+      $("#freg").val(moment.utc(dataParent.freg).format("YYYY-MM-DD"));
+      let hour = moment.utc(dataParent.freg).format("HH:mm");
+      $("#ftime").val(hour);
+
       $("#desc").val(dataParent.descripcion);
       $("#tcompra").val(dataParent.tipo_compra).trigger("change");
       $("#mpago").val(dataParent.forma_pago).trigger("change");
@@ -127,10 +130,11 @@ window.loadcompra = async function (btn, $type = false) {
   let $jsonData = atob($(btn).attr("row"));
   let $data = JSON.parse($jsonData)[0];
   let $tasaActual = await getTasa();
+  let $lblTitle = "";
   //#const lnota = 5;
 
   window.changeCredit = function (me) {
-    if ($(me).val() === "C" || $(me).val() === "FC") {
+    if ($(me).val() === "C") {
       $("#tasa,#mpago").parent(".input-group").prop("hidden", true);
       $('label[for="fact"]').html(
         '<i class="bi bi-receipt me-1"></i>Nota de Entrega'
@@ -151,25 +155,26 @@ window.loadcompra = async function (btn, $type = false) {
       $("#flimit").prop("hidden", true);
       $("#flimite").prop("required", false);
 
-      if ($(me).val() == "D" || $(me).val() === "FD") {
+      if ($(me).val() == "D") {
         //$("#fact").val(lnota); #buscar ultima nota de entrega a generar
         $('#iva,label[for="iva"]').prop("hidden", false);
-        $('#flimite,label[for="flimite"]').prop("hidden", false);
+        $('#flimite, label[for="flimite"]').parent().prop("hidden", true);
+      } else {
+        $('#flimite, label[for="flimite"]').parent().prop("hidden", false);
       }
     }
 
-    if ($(me).val() !== "C" && $(me).val() !== "D") {
-      $('label[for="fact"]').html('<i class="bi bi-receipt me-1"></i>Factura');
-    } else {
-      $('label[for="fact"]').html(
-        '<i class="bi bi-receipt me-1"></i>Nota de Entrega'
-      );
-    }
+    $('label[for="fact"]').html(
+      '<i class="bi bi-receipt me-1"></i>Comprobante'
+    );
   };
 
-  let $lblTitle = "Registrar Nueva compra";
-
-  $lblTitle = $type == "edit" ? "Editar compra" : "Ver compra";
+  if ($type == false) {
+    $lblTitle = "Registrar Nueva compra";
+  } else {
+    $lblTitle =
+      $type == "edit" && $type != false ? "Editar compra" : "Ver compra";
+  }
 
   let saveButton =
     $type == "edit" || $type == false
@@ -224,7 +229,23 @@ function startDOM() {
 
   $("#dt-controls").html(htmlControl);
   $("#dt-controls button").attr("row", dataRow);
+
   alterControl();
+
+  $("#freg").val(moment().format("YYYY-MM-DD"));
+  $("#ftime").val(moment().format("HH:mm"));
+
+  $("#freg").change(async function (e) {
+    e.preventDefault();
+    let $date = $(this).val();
+    if ($date != moment().format("YYYY-MM-DD")) {
+      $("#tasa").attr("readonly", false);
+    } else {
+      const $tasaActual = await getTasa();
+      $("#tasa").val($tasaActual);
+      $("#tasa").attr("readonly", true);
+    }
+  });
 
   $("#mdl-compra").on("hidden.bs.modal", () => {
     $("#mdl-compra input, #mdl-compra select").prop("readonly", false);
@@ -233,7 +254,10 @@ function startDOM() {
     $("#mdl-compra #agregarFila").prop("hidden", false);
     $("#items-compra tbody").html("");
     $("#mdl-compra #stotald").val("");
+    $("#tasa").attr("readonly", true);
     $("#mdl-compra .prov").html("");
+    $("#freg").val(moment().format("YYYY-MM-DD"));
+    $("#ftime").val(moment().format("HH:mm"));
   });
 }
 
@@ -261,6 +285,43 @@ window.alterControl = function () {
   btnEditcompra.click(async () => {
     loadcompra(btnEditcompra, "edit");
   });
+};
+
+window.calcm = function (me) {
+  let stotald = 0.0;
+  let precio = $(me).parents("tr").find("td .monto").val();
+
+  let titem = $(me).parents("tr").find("td .titem");
+  let item = precio * Number($(me).val());
+  titem.val(item.toFixed(2));
+
+  let vtasa = Number($("#tasa").val());
+
+  $(".titem").each(function () {
+    stotald += Number($(this).val());
+  });
+
+  let stock = $(me).parent("td").parent("tr").find("td .stock");
+  let vls = Number($(stock).attr("stk"));
+  stock.val(vls + Number($(me).val()));
+
+  let stotalb = stotald * vtasa;
+
+  $("#stotald").val(
+    stotald.toLocaleString("es-ES", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      useGrouping: true,
+    })
+  );
+
+  $("#stotal").val(
+    stotalb.toLocaleString("es-ES", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      useGrouping: true,
+    })
+  );
 };
 
 function refreshItemStatus() {
@@ -317,7 +378,7 @@ window.initSelectProdCompra = function () {
     theme: "bootstrap-5",
     dropdownParent: $("#mdl-compra"),
     ajax: {
-      url: "../../api/incomprario/",
+      url: "../../api/inventario/",
       type: "POST",
       dataType: "json",
       delay: 250,
@@ -343,15 +404,15 @@ window.initSelectProdCompra = function () {
   });
 
   $("#items-compra .prod").change(function (e) {
-    var nuevoProducto = $(this).val();
-    var filaActual = $(this).closest("tr");
-    var filaIndex = filaActual.index();
-    var productosSeleccionadosTemp = [...productosCompraSeleccionados]; // Crear una copia temporal del array de productos seleccionados
+    let nuevoProducto = $(this).val();
+    let filaActual = $(this).closest("tr");
+    let filaIndex = filaActual.index();
+    let productosSeleccionadosTemp = [...productosCompraSeleccionados]; // Crear una copia temporal del array de productos seleccionados
 
     // Eliminar el producto previamente seleccionado de la lista de productos seleccionados
-    var productoAnterior = filaActual.data("producto-seleccionado");
+    let productoAnterior = filaActual.data("producto-seleccionado");
     if (productoAnterior) {
-      var indexProductoAnterior =
+      let indexProductoAnterior =
         productosSeleccionadosTemp.indexOf(productoAnterior);
       if (indexProductoAnterior > -1) {
         productosSeleccionadosTemp.splice(indexProductoAnterior, 1);
@@ -382,32 +443,19 @@ window.initSelectProdCompra = function () {
     }
     if (nuevoProducto) {
       var vl = $(this).val();
-      response("incomprario/", {
+      response("inventario/", {
         endpoint: "getProductPrices",
         id: vl,
       }).then((data) => {
         let $rs = data.result[0];
-        if (sessionStorage.getItem("tipo") > 1) {
-          var t = sessionStorage.getItem("tipo");
-          $(this)
-            .parent("td")
-            .parent("tr")
-            .find("td .monto")
-            .val($rs["pcompra" + t]);
-        } else {
-          $(this)
-            .parent("td")
-            .parent("tr")
-            .find("td .monto")
-            .val($rs["pcompra"]);
-        }
-        /* solo para compras*/
+        $(this).parents("tr").find("td .monto").val($rs["pcosto"]);
 
-        $(this)
-          .parent("td")
-          .parent("tr")
-          .find("td .cant")
-          .attr("max", $rs["stockreal"] <= 0 ? $rs["stockreal"] : 0);
+        /* solo para compras*/
+        let stockProduct = $rs["stockreal"] <= 0 ? $rs["stockreal"] : 0;
+        let cellStock = $(this).parents("tr").find("td .stock");
+        let cellCant = $(this).parents("tr").find("td .cant");
+        cellCant.attr("max", stockProduct);
+        cellStock.val(stockProduct);
 
         productosCompraSeleccionados.push(nuevoProducto);
       });

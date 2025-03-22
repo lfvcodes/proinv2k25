@@ -1,4 +1,4 @@
-import { loadComponents, showModalDocument } from "@util";
+import { loadComponents, showModalDocument, getTasa } from "@util";
 import { loadCrud } from "@StartCrud";
 import { loadVenta } from "@Venta";
 
@@ -30,6 +30,21 @@ function startDOM() {
   $("#dt-controls button").attr("row", dataRow);
   alterControl();
 
+  $("#freg").val(moment().format("YYYY-MM-DD"));
+  $("#ftime").val(moment().format("HH:mm"));
+
+  $("#freg").change(async function (e) {
+    e.preventDefault();
+    let $date = $(this).val();
+    if ($date != moment().format("YYYY-MM-DD")) {
+      $("#tasa").attr("readonly", false);
+    } else {
+      const $tasaActual = await getTasa();
+      $("#tasa").val($tasaActual);
+      $("#tasa").attr("readonly", true);
+    }
+  });
+
   $("#mdl-venta").on("hidden.bs.modal", () => {
     $("#mdl-venta input, #mdl-venta select").prop("readonly", false);
     $("#mdl-venta input, #mdl-venta select").val("");
@@ -39,6 +54,8 @@ function startDOM() {
     $("#mdl-venta #stotald").val("");
     $("#mdl-venta #refer").html("");
     $("#mdl-venta .cli").html("");
+    $("#freg").val(moment().format("YYYY-MM-DD"));
+    $("#ftime").val(moment().format("HH:mm"));
   });
 }
 
