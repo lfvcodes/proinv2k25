@@ -4904,7 +4904,7 @@ CREATE TABLE IF NOT EXISTS `pro_2empresa` (
   PRIMARY KEY (`rif_empresa`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_2empresa: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_2empresa: ~0 rows (aproximadamente)
 INSERT IGNORE INTO `pro_2empresa` (`rif_empresa`, `nom_empresa`, `tel_empresa`, `email_empresa`, `direccion_empresa`, `vendedor`, `lector_barras`, `cod_alternativo`, `percomision`, `activo`) VALUES
 	('J-88888888-4', 'mi negocio', '02512678548', 'minegocio08@hotmail.com', 'Av. Celestial Casa N° 476 Urb. CoolMart  II, Barquisimeto,Estado Lara', 1, 1, 1, 5, 'S');
 
@@ -6067,7 +6067,7 @@ CREATE TABLE IF NOT EXISTS `pro_3dguia` (
   CONSTRAINT `pro_3dguia_ibfk_1` FOREIGN KEY (`id_guia`) REFERENCES `pro_2guia` (`id_guia`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_3dguia: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_3dguia: ~0 rows (aproximadamente)
 INSERT IGNORE INTO `pro_3dguia` (`id_detalle`, `id_guia`, `id_venta`) VALUES
 	(1, 2, 10);
 
@@ -7849,9 +7849,9 @@ CREATE TABLE IF NOT EXISTS `pro_4tasa` (
   `log_user` text NOT NULL,
   `fecha_tasa` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id_act`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_proinv2k25.pro_4tasa: ~51 rows (aproximadamente)
+-- Volcando datos para la tabla bd_proinv2k25.pro_4tasa: ~53 rows (aproximadamente)
 INSERT IGNORE INTO `pro_4tasa` (`id_act`, `tasa`, `log_user`, `fecha_tasa`) VALUES
 	(1, 36, 'admin', '2023-10-30 13:27:39'),
 	(2, 35.15, 'OSTORRES', '2023-11-03 00:08:41'),
@@ -7904,7 +7904,8 @@ INSERT IGNORE INTO `pro_4tasa` (`id_act`, `tasa`, `log_user`, `fecha_tasa`) VALU
 	(49, 36.26, 'admin', '2024-04-02 13:07:13'),
 	(50, 67.22, 'admin', '2025-03-16 14:18:28'),
 	(61, 70, 'admin', '2025-03-19 18:55:43'),
-	(62, 80.12, 'admin', '2025-03-22 12:44:11');
+	(62, 80.12, 'admin', '2025-03-22 12:44:11'),
+	(63, 84.22, 'admin', '2025-03-23 16:48:26');
 
 -- Volcando estructura para procedimiento bd_proinv2k25.pro_5confirmarCxc
 DELIMITER //
@@ -8030,6 +8031,181 @@ BEGIN
         COMMIT;
         SELECT 200 AS status, CONCAT('Se ha Guardado el Producto ', in_id_producto, ' Correctamente') AS message;
     END;
+END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento bd_proinv2k25.pro_5get_dashboard_data
+DELIMITER //
+CREATE PROCEDURE `pro_5get_dashboard_data`()
+BEGIN
+    DECLARE currentMonth INT;
+    SET currentMonth = MONTH(CURDATE());
+
+    -- Tabla temporal para almacenar las ventas mensuales
+    CREATE TEMPORARY TABLE temp_ventas (
+        mes INT,
+        total_monto DECIMAL(10, 2)
+    );
+
+    -- Tabla temporal para almacenar las compras mensuales
+    CREATE TEMPORARY TABLE temp_compras (
+        mes INT,
+        total_monto DECIMAL(10, 2)
+    );
+
+    -- Llenar las tablas temporales con los resultados mensuales
+    WHILE currentMonth > 0 DO
+        INSERT INTO temp_ventas (mes, total_monto)
+        SELECT currentMonth, IFNULL(SUM(d.monto), 0)
+        FROM pro_3dventa d
+        JOIN pro_2venta c ON d.id_venta = c.id_venta
+        WHERE MONTH(c.fecha_venta) = currentMonth;
+
+        INSERT INTO temp_compras (mes, total_monto)
+        SELECT currentMonth, IFNULL(SUM(d.monto), 0)
+        FROM pro_3dcompra d
+        JOIN pro_2compra c ON d.id_pago = c.id_pago
+        WHERE MONTH(c.fecha_compra) = currentMonth;
+
+        SET currentMonth = currentMonth - 1;
+    END WHILE;
+
+    -- Contar total de compras y ventas
+    SELECT COUNT(id_pago) INTO @countCompra FROM pro_2compra;
+    SELECT COUNT(id_venta) INTO @countVenta FROM pro_2venta;
+
+    -- Calcular cuentas por cobrar y pagar
+    SELECT SUM(monto) INTO @tcxc FROM pro_2cxc WHERE estado <> 'S';
+    SELECT SUM(monto) INTO @tcxp FROM pro_2cxp WHERE estado <> 'S';
+
+    -- Resultado final
+    SELECT 
+        (SELECT JSON_ARRAYAGG(total_monto) FROM temp_ventas) AS ventas_por_mes,
+        (SELECT JSON_ARRAYAGG(total_monto) FROM temp_compras) AS compras_por_mes,
+        @countCompra AS total_compras,
+        @countVenta AS total_ventas,
+        @tcxc AS total_cxc,
+        @tcxp AS total_cxp;
+
+    -- Eliminar tablas temporales
+    DROP TEMPORARY TABLE IF EXISTS temp_ventas;
+    DROP TEMPORARY TABLE IF EXISTS temp_compras;
+END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento bd_proinv2k25.pro_5setCompra
+DELIMITER //
+CREATE PROCEDURE `pro_5setCompra`(
+	IN `p_id_proveedor` VARCHAR(20),
+	IN `p_fecha_compra` DATETIME,
+	IN `p_descripcion` TEXT,
+	IN `p_fact` VARCHAR(20),
+	IN `p_tasa` DOUBLE,
+	IN `p_tipo_venta` VARCHAR(2),
+	IN `p_log_user` VARCHAR(32),
+	IN `p_prod` TEXT,
+	IN `p_cant` INT,
+	IN `p_monto` DOUBLE,
+	IN `p_flimite` DATE
+)
+BEGIN
+    -- Declaración de variables
+    DECLARE `temp_prod` TEXT;
+    DECLARE `temp_cant` TEXT;
+    DECLARE `temp_monto` TEXT;
+    DECLARE `compra_id` INT;
+    DECLARE `sql_error_message` TEXT;
+
+    -- Declarar handler para excepciones
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        GET DIAGNOSTICS CONDITION 1 `sql_error_message` = MESSAGE_TEXT;
+        ROLLBACK;
+        SELECT 400 AS `status`, `sql_error_message` AS `mensaje`;
+    END;
+
+    -- Iniciar la transacción
+    START TRANSACTION;
+
+    -- Insertar en la tabla pro_2compra
+    IF (p_tipo_compra = 'C' OR p_tipo_compra = 'D') THEN
+        INSERT INTO pro_2venta (cod_nota,tipo_venta,fecha_venta, id_proveedor, descripcion, tasa, log_user)
+        VALUES (p_fact,p_tipo_compra, p_fecha_venta, p_id_proveedor, p_descripcion, p_tasa, p_log_user);
+    ELSE
+        INSERT INTO pro_2compra (cod_factura, tipo_venta,fecha_venta, id_proveedor, descripcion, tasa, log_user)
+        VALUES (p_fact,p_tipo_compra, p_fecha_venta, p_id_proveedor, p_descripcion, p_tasa, p_log_user);
+    END IF;
+
+    -- Obtener el ID de la compra insertada
+    SET `compra_id` = LAST_INSERT_ID();
+
+    -- Inicializar variables temporales con los valores recibidos
+    SET `temp_prod` = `p_prod`;
+    SET `temp_cant` = `p_cant`;
+    SET `temp_monto` = `p_monto`;
+
+    -- Si es tipo de compra a crédito generar CXP
+    IF (p_tipo_compra = 'C') THEN
+    
+        -- Calcular el monto total
+        SET @total_monto = 0;
+
+        IF LOCATE(',', `temp_monto`) = 0 THEN
+            -- Solo un valor
+            SET @total_monto = CAST(`temp_monto` AS DECIMAL(10, 2));
+        ELSE
+            -- Múltiples valores separados por comas
+            WHILE LOCATE(',', `temp_monto`) > 0 DO
+                SET @item_monto = SUBSTRING_INDEX(`temp_monto`, ',', 1);
+                SET @total_monto = @total_monto + CAST(@item_monto AS DECIMAL(10, 2));
+                SET `temp_monto` = SUBSTRING(`temp_monto` FROM LOCATE(',', `temp_monto`) + 1);
+            END WHILE;
+            SET @total_monto = @total_monto + CAST(`temp_monto` AS DECIMAL(10, 2));
+        END IF;
+
+        -- Intentar insertar en pro_2cxp
+        INSERT INTO pro_2cxp (id_proveedor, id_compra, monto, concepto, fvencimiento, estado, log_user)
+        VALUES (p_id_proveedor, compra_id, @total_monto, p_descripcion, p_flimite, 'P', p_log_user);
+
+        -- Verificar si se insertó correctamente
+        IF (SELECT COUNT(*) FROM pro_2cxp WHERE id_compra = compra_id) = 0 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se pudo generar la cuenta por pagar';
+        END IF;
+    END IF;
+
+    -- Insertar en la tabla pro_3dcompra (detalle de venta)
+    WHILE LOCATE(',', `temp_prod`) > 0 DO
+        SET @producto = SUBSTRING_INDEX(`temp_prod`, ',', 1);
+        SET @cantidad = SUBSTRING_INDEX(`temp_cant`, ',', 1);
+        SET @monto = SUBSTRING_INDEX(`temp_monto`, ',', 1);
+
+        INSERT INTO pro_3dcompra (id_pago, id_producto, cant, monto)
+        VALUES (compra_id, @producto, @cantidad, @monto);
+
+        -- Verificar si la inserción fue exitosa
+        IF ROW_COUNT() = 0 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se pudo insertar en pro_3dcompra';
+        END IF;
+
+        -- Eliminar el producto, cantidad y monto procesados
+        SET `temp_prod` = SUBSTRING(`temp_prod` FROM LOCATE(',', `temp_prod`) + 1);
+        SET `temp_cant` = SUBSTRING(`temp_cant` FROM LOCATE(',', `temp_cant`) + 1);
+        SET `temp_monto` = SUBSTRING(`temp_monto` FROM LOCATE(',', `temp_monto`) + 1);
+    END WHILE;
+
+    -- Procesar el último detalle de venta
+    INSERT INTO pro_3dcompra (id_pago, cod_producto, cant, monto)
+    VALUES (venta_id, `temp_prod`, `temp_cant`, `temp_monto`);
+
+    IF ROW_COUNT() = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se pudo insertar el último detalle en pro_3dcompra';
+    END IF;
+
+    -- Commit de la transacción
+    COMMIT;
+
+    -- Devolver el estado y mensaje de éxito
+    SELECT 200 AS `status`, CONCAT('Compra ', `compra_id`, ' insertada con éxito') AS `mensaje`;
 END//
 DELIMITER ;
 
@@ -8272,122 +8448,6 @@ BEGIN
 
     -- Devolver el estado y mensaje de éxito
     SELECT 200 AS `status`, CONCAT('Venta ', `venta_id`, ' insertada con éxito') AS `mensaje`;
-END//
-DELIMITER ;
-
--- Volcando estructura para procedimiento bd_proinv2k25.pro_5setCompra
-DELIMITER //
-CREATE PROCEDURE `pro_5setCompra`(
-	IN `p_id_proveedor` VARCHAR(20),
-	IN `p_fecha_compra` DATETIME,
-	IN `p_descripcion` TEXT,
-	IN `p_fact` VARCHAR(20),
-	IN `p_tasa` DOUBLE,
-	IN `p_tipo_venta` VARCHAR(2),
-	IN `p_log_user` VARCHAR(32),
-	IN `p_prod` TEXT,
-	IN `p_cant` INT,
-	IN `p_monto` DOUBLE,
-	IN `p_flimite` DATE
-)
-BEGIN
-    -- Declaración de variables
-    DECLARE `temp_prod` TEXT;
-    DECLARE `temp_cant` TEXT;
-    DECLARE `temp_monto` TEXT;
-    DECLARE `compra_id` INT;
-    DECLARE `sql_error_message` TEXT;
-
-    -- Declarar handler para excepciones
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        GET DIAGNOSTICS CONDITION 1 `sql_error_message` = MESSAGE_TEXT;
-        ROLLBACK;
-        SELECT 400 AS `status`, `sql_error_message` AS `mensaje`;
-    END;
-
-    -- Iniciar la transacción
-    START TRANSACTION;
-
-    -- Insertar en la tabla pro_2compra
-    IF (p_tipo_compra = 'C' OR p_tipo_compra = 'D') THEN
-        INSERT INTO pro_2venta (cod_nota,tipo_venta,fecha_venta, id_proveedor, descripcion, tasa, log_user)
-        VALUES (p_fact,p_tipo_compra, p_fecha_venta, p_id_proveedor, p_descripcion, p_tasa, p_log_user);
-    ELSE
-        INSERT INTO pro_2compra (cod_factura, tipo_venta,fecha_venta, id_proveedor, descripcion, tasa, log_user)
-        VALUES (p_fact,p_tipo_compra, p_fecha_venta, p_id_proveedor, p_descripcion, p_tasa, p_log_user);
-    END IF;
-
-    -- Obtener el ID de la compra insertada
-    SET `compra_id` = LAST_INSERT_ID();
-
-    -- Inicializar variables temporales con los valores recibidos
-    SET `temp_prod` = `p_prod`;
-    SET `temp_cant` = `p_cant`;
-    SET `temp_monto` = `p_monto`;
-
-    -- Si es tipo de compra a crédito generar CXP
-    IF (p_tipo_compra = 'C') THEN
-    
-        -- Calcular el monto total
-        SET @total_monto = 0;
-
-        IF LOCATE(',', `temp_monto`) = 0 THEN
-            -- Solo un valor
-            SET @total_monto = CAST(`temp_monto` AS DECIMAL(10, 2));
-        ELSE
-            -- Múltiples valores separados por comas
-            WHILE LOCATE(',', `temp_monto`) > 0 DO
-                SET @item_monto = SUBSTRING_INDEX(`temp_monto`, ',', 1);
-                SET @total_monto = @total_monto + CAST(@item_monto AS DECIMAL(10, 2));
-                SET `temp_monto` = SUBSTRING(`temp_monto` FROM LOCATE(',', `temp_monto`) + 1);
-            END WHILE;
-            SET @total_monto = @total_monto + CAST(`temp_monto` AS DECIMAL(10, 2));
-        END IF;
-
-        -- Intentar insertar en pro_2cxp
-        INSERT INTO pro_2cxp (id_proveedor, id_compra, monto, concepto, fvencimiento, estado, log_user)
-        VALUES (p_id_proveedor, compra_id, @total_monto, p_descripcion, p_flimite, 'P', p_log_user);
-
-        -- Verificar si se insertó correctamente
-        IF (SELECT COUNT(*) FROM pro_2cxp WHERE id_compra = compra_id) = 0 THEN
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se pudo generar la cuenta por pagar';
-        END IF;
-    END IF;
-
-    -- Insertar en la tabla pro_3dcompra (detalle de venta)
-    WHILE LOCATE(',', `temp_prod`) > 0 DO
-        SET @producto = SUBSTRING_INDEX(`temp_prod`, ',', 1);
-        SET @cantidad = SUBSTRING_INDEX(`temp_cant`, ',', 1);
-        SET @monto = SUBSTRING_INDEX(`temp_monto`, ',', 1);
-
-        INSERT INTO pro_3dcompra (id_pago, id_producto, cant, monto)
-        VALUES (compra_id, @producto, @cantidad, @monto);
-
-        -- Verificar si la inserción fue exitosa
-        IF ROW_COUNT() = 0 THEN
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se pudo insertar en pro_3dcompra';
-        END IF;
-
-        -- Eliminar el producto, cantidad y monto procesados
-        SET `temp_prod` = SUBSTRING(`temp_prod` FROM LOCATE(',', `temp_prod`) + 1);
-        SET `temp_cant` = SUBSTRING(`temp_cant` FROM LOCATE(',', `temp_cant`) + 1);
-        SET `temp_monto` = SUBSTRING(`temp_monto` FROM LOCATE(',', `temp_monto`) + 1);
-    END WHILE;
-
-    -- Procesar el último detalle de venta
-    INSERT INTO pro_3dcompra (id_pago, cod_producto, cant, monto)
-    VALUES (venta_id, `temp_prod`, `temp_cant`, `temp_monto`);
-
-    IF ROW_COUNT() = 0 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se pudo insertar el último detalle en pro_3dcompra';
-    END IF;
-
-    -- Commit de la transacción
-    COMMIT;
-
-    -- Devolver el estado y mensaje de éxito
-    SELECT 200 AS `status`, CONCAT('Compra ', `compra_id`, ' insertada con éxito') AS `mensaje`;
 END//
 DELIMITER ;
 

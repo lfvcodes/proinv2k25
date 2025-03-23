@@ -115,3 +115,10 @@ if ($post['endpoint'] === 'getProductPrices') {
   $rs = prepareRS($conexion, $query, [$post['id']]);
   resultResponse($rs, 'all');
 }
+
+if ($post['endpoint'] === 'getDashboard') {
+  $query = "CALL pro_5get_dashboard_data()";
+  $rs = prepareRS($conexion, $query, []);
+  $data = $rs->fetch(PDO::FETCH_ASSOC);
+  responseJSON(['status' => 200, 'result' => $data]);
+}

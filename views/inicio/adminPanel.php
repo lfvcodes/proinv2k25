@@ -2,11 +2,19 @@
   <div class="icard card col-lg col-md col-sm m-1">
     <div class="card-body p-3">
       <h4>
+        <span class="fw-semibold d-block mb-3"><i class="bi bi-building"></i> Proinv 2k25</span>
+      </h4>
+
+    </div>
+
+  </div>
+  <div class="icard card col-lg col-md col-sm m-1">
+    <div class="card-body p-3">
+      <h4>
         <span class="fw-semibold d-block mb-3">Cuentas por Cobrar</span>
       </h4>
       <div class="d-flex">
-        <h4 id="tcxc" class="card-title mb-1 <?php echo ($modo === 'claro') ? 'text-dark' : 'text-white'; ?>">
-        </h4>
+        <h4 id="tcxc" class="card-title mb-1 text-dark">$2.202,16</h4>
       </div>
     </div>
 
@@ -14,37 +22,11 @@
 
   <div class="icard card col-lg col-md col-sm m-1">
     <div class="card-body p-3">
-
       <h4>
-        <span class="fw-semibold d-block mb-3">Cuentas por Pagar</span>
+        <span class="fw-semibold d-block mb-3">Cuentas por Cobrar</span>
       </h4>
       <div class="d-flex">
-        <h4 id="tcxp" class="card-title mb-2 <?php echo ($modo === 'claro') ? 'text-dark' : 'text-white'; ?>">
-        </h4>
-      </div>
-    </div>
-  </div>
-  <div class="icard card col-lg col-md col-sm m-1">
-    <div class="card-body p-3">
-
-      <h4>
-        <span class="fw-semibold d-block mb-3">Ventas Hoy</span>
-      </h4>
-      <div class="d-flex">
-        <h4 id="tcxp" class="card-title mb-2 <?php echo ($modo === 'claro') ? 'text-dark' : 'text-white'; ?>">
-        </h4>
-      </div>
-    </div>
-  </div>
-  <div class="icard card col-lg col-md col-sm m-1">
-    <div class="card-body p-3">
-
-      <h4>
-        <span class="fw-semibold d-block mb-3">Ventas Esta Semana</span>
-      </h4>
-      <div class="d-flex">
-        <h4 id="tcxp" class="card-title mb-2 <?php echo ($modo === 'claro') ? 'text-dark' : 'text-white'; ?>">
-        </h4>
+        <h4 id="tcxc" class="card-title mb-1 text-dark">$2.202,16</h4>
       </div>
     </div>
   </div>
